@@ -6775,7 +6775,7 @@ var WorksService = (function () {
         var _this = this;
         if (id === void 0) { id = 0; }
         if (append === void 0) { append = false; }
-        if (window.location.pathname == this.routecache) {
+        if (window.location.pathname == this.routecache && !append) {
             return;
         }
         this.routecache = window.location.pathname;
@@ -7771,6 +7771,7 @@ var SelectionService = (function () {
         }
         this.length = this.items.length;
         if (currentlength != this.length) {
+            this.clearDetailItem();
             this.selection.next(this.items);
         }
     };
@@ -46362,8 +46363,7 @@ var ViewerComponent = (function () {
         this.location = location;
         this.objects = [];
         this.viewall = false;
-        this.index = 0;
-        this.isimage = true;
+        this.index = -1;
         this.width = 0;
         this.height = 0;
         this.width = window.innerWidth;
@@ -46468,7 +46468,14 @@ var ViewerComponent = (function () {
     ViewerComponent.prototype.setIndex = function (index) {
         this.index = index;
         if (this.objects.length) {
-            this.isimage = this.objects[index].guid.charAt(0) == '1';
+            switch (this.objects[index].guid.charAt(0)) {
+                case '1':
+                    this.itemtype = 'image';
+                    break;
+                case '2':
+                    this.itemtype = 'video';
+                    break;
+            }
             this.selectionservice.setDetailItem(this.objects[index], false);
         }
     };
@@ -46495,7 +46502,7 @@ var ViewerComponent = (function () {
     ViewerComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["G" /* Component */])({
             selector: 'viewer',
-            template: "\n    <works-detail></works-detail>\n    \n    <div *ngIf=\"objects.length > 1\" class='col s1 left nav-arrow noselect'>\n        <a (click)=\"previous()\"><i class=\"material-icons large\" [style.margin-top.px]=\"height / 2\">navigate_before</i></a>\n    </div>\n    <div *ngIf=\"objects.length > 1\" class='col s1 right nav-arrow noselect'>\n        <a (click)=\"next()\"><i class=\"material-icons large\" [style.margin-top.px]=\"height / 2\">navigate_next</i></a>\n    </div>\n    \n    <div *ngIf=\"objects.length > 0\" class='actions noselect'>\n        <a (click)=\"close($event)\" class=\"btn-floating right red darken-4\"><i class=\"material-icons white-text\">close</i></a>\n        <a (click)=\"original()\" class=\"waves-effect waves-light btn-floating right grey darken-4 original\" title=\"Zoom to the original size\">1:1</a>\n        <a (click)=\"fitToWindow()\" class=\"waves-effect waves-light btn-floating right grey darken-4\" title=\"Zoom to fit the current window\"><i class=\"material-icons\">settings_overscan</i></a>\n        <a (click)=\"setFocus()\" class=\"waves-effect waves-light btn-floating right grey darken-4\" title=\"Show information panel\"><i class=\"material-icons\">info_outline</i></a>\n        <a *ngIf=\"objects.length > 1\" class=\"btn-flat disabled right\">{{index + 1}}/{{objects.length}}</a>\n        \n    </div>\n    <div id='viewer' class=\"noselect\">\n        <frog-image *ngIf=\"isimage\"></frog-image>\n        <frog-video *ngIf=\"!isimage\"></frog-video>\n    </div>\n    ",
+            template: "\n    <works-detail></works-detail>\n    \n    <div *ngIf=\"objects.length > 1\" class='col s1 left nav-arrow noselect'>\n        <a (click)=\"previous()\"><i class=\"material-icons large\" [style.margin-top.px]=\"height / 2\">navigate_before</i></a>\n    </div>\n    <div *ngIf=\"objects.length > 1\" class='col s1 right nav-arrow noselect'>\n        <a (click)=\"next()\"><i class=\"material-icons large\" [style.margin-top.px]=\"height / 2\">navigate_next</i></a>\n    </div>\n    \n    <div *ngIf=\"objects.length > 0\" class='actions noselect'>\n        <a (click)=\"close($event)\" class=\"btn-floating right red darken-4\"><i class=\"material-icons white-text\">close</i></a>\n        <a (click)=\"original()\" class=\"waves-effect waves-light btn-floating right grey darken-4 original\" title=\"Zoom to the original size\">1:1</a>\n        <a (click)=\"fitToWindow()\" class=\"waves-effect waves-light btn-floating right grey darken-4\" title=\"Zoom to fit the current window\"><i class=\"material-icons\">settings_overscan</i></a>\n        <a (click)=\"setFocus()\" class=\"waves-effect waves-light btn-floating right grey darken-4\" title=\"Show information panel\"><i class=\"material-icons\">info_outline</i></a>\n        <a *ngIf=\"objects.length > 1\" class=\"btn-flat disabled right\">{{index + 1}}/{{objects.length}}</a>\n        \n    </div>\n    <div id='viewer' class=\"noselect\">\n        <frog-image *ngIf=\"itemtype === 'image'\"></frog-image>\n        <frog-video *ngIf=\"itemtype === 'video'\"></frog-video>\n    </div>\n    ",
             styles: [
                 '#viewer { background: #000; position: absolute; width: 100%; height: 100%; top: 0; left: 0; }',
                 '.actions { position: absolute; top: 16px; right: 16px; z-index: 3000; }',
@@ -62033,6 +62040,9 @@ var WorksDetailComponent = (function () {
                 }
                 _this.item = item;
             }
+            else {
+                _this.visible = (show) ? 'show' : 'hide';
+            }
         });
     }
     WorksDetailComponent.prototype.ngOnDestroy = function () {
@@ -62433,7 +62443,7 @@ var FilterComponent = (function () {
     FilterComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["G" /* Component */])({
             selector: 'works-filter',
-            template: "\n    <div class=\"navbar-fixed\">\n        <nav class=\"light-green darken-2\">\n            <div class=\"nav-wrapper\">\n                <a href=\"#\" class=\"brand-logo right\"><i class=\"material-icons\">collections</i></a>\n                <ul>\n                    <li>\n                        <a (click)=\"nav.toggle()\" class=\"dropdown-button\">\n                            <i class=\"small material-icons\">apps</i>\n                        </a>\n                    </li>\n                    <li>\n                        <div class=\"file-field input-field\">\n                            <i class=\"material-icons left\">cloud_upload</i>\n                            <input type=\"file\" multiple (change)=\"addFiles($event)\">\n                        </div>\n                    </li>\n                    <li>\n                        <autocomplete (onSelect)=\"addTag($event)\"></autocomplete>\n                    </li>\n                    <li id='filtered_results' *ngFor=\"let bucket of service.terms\">\n                        <tag *ngFor=\"let item of bucket\" [item]=\"item\" (onClose)=\"removeTag($event)\"></tag>\n                    </li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n    <works-nav></works-nav>\n    ",
+            template: "\n    <div class=\"navbar-fixed\">\n        <nav class=\"light-green darken-2\">\n            <div class=\"nav-wrapper\">\n                <a href=\"#\" class=\"brand-logo right\"><i class=\"material-icons\">collections</i></a>\n                <ul>\n                    <li>\n                        <a (click)=\"nav.toggle()\" class=\"dropdown-button\">\n                            <i class=\"small material-icons left\">collections</i>Galleries\n                        </a>\n                    </li>\n                    <li>\n                        <div class=\"file-field input-field\">\n                            <i class=\"material-icons left\">cloud_upload</i>\n                            <input type=\"file\" multiple (change)=\"addFiles($event)\" title=\"Upload files\">\n                        </div>\n                    </li>\n                    <li>\n                        <autocomplete (onSelect)=\"addTag($event)\"></autocomplete>\n                    </li>\n                    <li id='filtered_results' *ngFor=\"let bucket of service.terms\">\n                        <tag *ngFor=\"let item of bucket\" [item]=\"item\" (onClose)=\"removeTag($event)\"></tag>\n                    </li>\n                </ul>\n            </div>\n        </nav>\n    </div>\n    <works-nav></works-nav>\n    ",
             styles: [
                 '#filtered_results { position: relative; display: inline-flex; height: 100%; }',
                 '.file-field { height: 64px; padding: 0 15px; }',
@@ -62491,12 +62501,11 @@ var SelectionDetailComponent = (function () {
             _this.enabled = items.length > 0;
             _this.guids = _this.items.map(function (_) { return _.guid; }).join(',');
             _this.aggregateTags();
+            if (_this.items.length == 0) {
+                _this.visible = 'hide';
+            }
         });
     }
-    SelectionDetailComponent.prototype.ngOnInit = function () {
-    };
-    SelectionDetailComponent.prototype.ngAfterViewInit = function () {
-    };
     SelectionDetailComponent.prototype.zIndex = function () {
         return (this.enabled) ? 950 : 0;
     };
@@ -62567,10 +62576,8 @@ var SelectionDetailComponent = (function () {
     SelectionDetailComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["G" /* Component */])({
             selector: 'selection-detail',
-            template: "\n    <ul [@panelState]=\"visible\" id=\"selection_sidenav\" class=\"side-nav grey darken-4 grey-text text-lighten-1\">\n        <div>\n            <i (click)=\"toggle()\" class=\"material-icons tiny right\">close</i>\n        </div>\n        <li class=\"stack\">\n            <img *ngFor=\"let item of items | slice:0:10; let i = index\" [style.left.px]=\"offset(i)\" [style.top.px]=\"offset(i)\" class=\"z-depth-1\" src=\"{{item.thumbnail}}\">\n        </li>\n        <h4 class=\"title\">\n            <i class=\"material-icons green-text\">photo_size_select_large</i> {{items.length}} Selected Items\n        </h4>\n        <div class=\"row\">\n            <div class=\"col s6\">\n                <a href=\"/frog/download?guids={{guids}}\" class=\"waves-effect waves-light btn blue\"><i class=\"material-icons\">cloud_download</i> Download</a>\n            </div>\n            <div class=\"col s6\">\n                <a (click)=\"favorite()\" class=\"waves-effect waves-light btn blue\"><i class=\"material-icons\">favorite</i> Favorite</a>\n            </div>\n        </div>\n        <li>\n            <div class=\"tags\">\n                <h4 class=\"title\">\n                    <i class=\"material-icons green-text\">label</i> Tags\n                </h4>\n                <tag *ngFor=\"let tag of (tags | tagArtistFilter)\" [item]=\"tag.id\" [dark]=\"true\" (onClick)=\"navigateToTag($event)\" (onClose)=\"removeTag($event)\"></tag>\n                <autocomplete (onSelect)=\"addTag($event)\"></autocomplete>\n            </div>\n        </li>\n    </ul>\n    <div id=\"selection_actions\" [hidden]=\"!enabled\">\n        <!--\n        <a id=\"remove_button\" (click)=\"removePrompt()\" class=\"btn-floating waves-effect waves-light red modal-trigger\"><i class=\"material-icons\">delete</i></a>\n        <a id=\"selection_button\" (click)=\"visible = 'show'\" class=\"btn-floating waves-effect waves-light green\"><i class=\"material-icons\">menu</i></a>\n        -->\n        <div class=\"fixed-action-btn horizontal\">\n            <a class=\"btn-floating btn-large cyan\">\n                <i class=\"large material-icons\">more_horiz</i>\n            </a>\n            <ul>\n                <li><a (click)=\"removePrompt()\" class=\"btn-floating red\"><i class=\"material-icons\">delete</i></a></li>\n                <li><a (click)=\"visible='show'\" class=\"btn-floating yellow darken-1\"><i class=\"material-icons\">info_outline</i></a></li>\n                <!--<li><a class=\"btn-floating green\"><i class=\"material-icons\">content_copy</i></a></li>\n                <li><a class=\"btn-floating blue\"><i class=\"material-icons\">content_cut</i></a></li>-->\n            </ul>\n        </div>\n    </div>\n    <div id=\"remove_prompt\" class=\"modal\">\n        <div class=\"modal-content\">\n            <h4>Remove Items From Gallery?</h4>\n            <p>Are you sure you wish to remove ({{items.length || 0}}) from the current gallery?</p>\n            <small>This does not delete anything, it simply removes the items</small>\n        </div>\n        <div class=\"modal-footer\">\n            <a (click)=\"removeItems()\" class=\" modal-action modal-close waves-effect waves-green btn-flat\">Ok</a>\n            <a (click)=\"cancelPrompt()\" class=\" modal-action modal-close waves-effect waves-red btn-flat\">Cancel</a>\n        </div>\n    </div>\n    ",
+            template: "\n    <ul [@panelState]=\"visible\" id=\"selection_sidenav\" class=\"side-nav grey darken-4 grey-text text-lighten-1\">\n        <div>\n            <i (click)=\"toggle()\" class=\"material-icons right\">close</i>\n        </div>\n        <li class=\"stack\">\n            <img *ngFor=\"let item of items | slice:0:10; let i = index\" [style.left.px]=\"offset(i)\" [style.top.px]=\"offset(i)\" class=\"z-depth-1\" src=\"{{item.thumbnail}}\">\n        </li>\n        <h4 class=\"title\">\n            <i class=\"material-icons green-text\">photo_size_select_large</i> {{items.length}} Selected Items\n        </h4>\n        <div class=\"row\">\n            <div class=\"col s6\">\n                <a href=\"/frog/download?guids={{guids}}\" class=\"waves-effect waves-light btn blue\"><i class=\"material-icons\">cloud_download</i> Download</a>\n            </div>\n            <div class=\"col s6\">\n                <a (click)=\"favorite()\" class=\"waves-effect waves-light btn blue\"><i class=\"material-icons\">favorite</i> Favorite</a>\n            </div>\n        </div>\n        <li>\n            <div class=\"tags\">\n                <h4 class=\"title\">\n                    <i class=\"material-icons green-text\">label</i> Tags\n                </h4>\n                <tag *ngFor=\"let tag of (tags | tagArtistFilter)\" [item]=\"tag.id\" [dark]=\"true\" (onClick)=\"navigateToTag($event)\" (onClose)=\"removeTag($event)\"></tag>\n                <autocomplete (onSelect)=\"addTag($event)\"></autocomplete>\n            </div>\n        </li>\n    </ul>\n    <div id=\"selection_actions\" [hidden]=\"!enabled\">\n        <!--\n        <a id=\"remove_button\" (click)=\"removePrompt()\" class=\"btn-floating waves-effect waves-light red modal-trigger\"><i class=\"material-icons\">delete</i></a>\n        <a id=\"selection_button\" (click)=\"visible = 'show'\" class=\"btn-floating waves-effect waves-light green\"><i class=\"material-icons\">menu</i></a>\n        -->\n        <div class=\"fixed-action-btn horizontal\">\n            <a class=\"btn-floating btn-large cyan\">\n                <i class=\"large material-icons\">more_horiz</i>\n            </a>\n            <ul>\n                <li><a (click)=\"removePrompt()\" class=\"btn-floating red\"><i class=\"material-icons\">delete</i></a></li>\n                <li><a (click)=\"visible='show'\" class=\"btn-floating yellow darken-1\"><i class=\"material-icons\">info_outline</i></a></li>\n                <!--<li><a class=\"btn-floating green\"><i class=\"material-icons\">content_copy</i></a></li>\n                <li><a class=\"btn-floating blue\"><i class=\"material-icons\">content_cut</i></a></li>-->\n            </ul>\n        </div>\n    </div>\n    <div id=\"remove_prompt\" class=\"modal\">\n        <div class=\"modal-content\">\n            <h4>Remove Items From Gallery?</h4>\n            <p>Are you sure you wish to remove ({{items.length || 0}}) from the current gallery?</p>\n            <small>This does not delete anything, it simply removes the items</small>\n        </div>\n        <div class=\"modal-footer\">\n            <a (click)=\"removeItems()\" class=\" modal-action modal-close waves-effect waves-green btn-flat\">Ok</a>\n            <a (click)=\"cancelPrompt()\" class=\" modal-action modal-close waves-effect waves-red btn-flat\">Cancel</a>\n        </div>\n    </div>\n    ",
             styles: [
-                // '#selection_actions { position: fixed; top: 80px; right: 0; }',
-                // '#selection_actions a { margin-left: 12px; }',
                 '.fixed-action-btn { top: 82px; right: 24px; height: 55px; }',
                 '#remove_prompt { z-index: 1000; }',
                 '#selection_sidenav { padding: 20px 25px 20px 20px; width: 360px; }',
@@ -62901,7 +62908,7 @@ var WorksThumbnailComponent = (function () {
                 'div > small { vertical-align: middle; }',
                 '.actions { position: absolute; right: 0; bottom: 4px; cursor: pointer; }',
                 '.tiny { font-size: 1.2rem; }',
-                '.author { position: absolute; left: 0; bottom: 0; font-size: 1rem; }'
+                '.author { position: absolute; left: 4px; bottom: 6px; font-size: 0.8rem; }',
             ]
         }), 
         __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ElementRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ElementRef */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__shared_selection_service__["a" /* SelectionService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__shared_selection_service__["a" /* SelectionService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__works_service__["a" /* WorksService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__works_service__["a" /* WorksService */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__shared_tags_service__["a" /* TagsService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__shared_tags_service__["a" /* TagsService */]) === 'function' && _e) || Object])
