@@ -63,11 +63,15 @@ export class TagsService {
         let options = new RequestOptions();
         options.body = {name: name};
         options.withCredentials = true;
-        let ob = this.http.post(url, options).map(this.extractValue);
-        ob.subscribe(tag => {
-            this._tags.push(tag);
-            this._ids.push(tag.id);
+        let ob = this.http.post(url, options);
+        ob.subscribe(res => {
+            let data = res.json();
+            if (!data.isError) {
+                this._tags.push(<Tag>data.value);
+                this._ids.push(data.value.id);
+            }
+            
         });
-        return ob;
+        return ob.map(this.extractValue);
     }
 }

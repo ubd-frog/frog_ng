@@ -49,6 +49,57 @@ export interface IItem {
     like_count: number;
 }
 
+
+export class CImage implements IItem {
+    hash: string;
+    tags: Tag[];
+    deleted: boolean;
+    image: string;
+    height: number;
+    guid: string;
+    id: number;
+    title: string;
+    author: User;
+    modified: Date;
+    created: Date;
+    width: number;
+    comment_count: number;
+    source: string;
+    small: string;
+    thumbnail: string;
+    comments: Comment[];
+    description: string;
+    selected: boolean;
+    like_count: number;
+}
+
+
+export class CVideo implements IItem {
+    hash: string;
+    tags: Tag[];
+    deleted: boolean;
+    video: string;
+    height: number;
+    guid: string;
+    id: number;
+    title: string;
+    author: User;
+    modified: Date;
+    created: Date;
+    width: number;
+    comment_count: number;
+    source: string;
+    small: string;
+    thumbnail: string;
+    poster: string;
+    comments: Comment[];
+    description: string;
+    selected: boolean;
+    framerate: number;
+    like_count: number;
+}
+
+
 export class Notification {
     public text: string;
     public icon: string;

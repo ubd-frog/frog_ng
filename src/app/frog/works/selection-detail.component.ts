@@ -55,7 +55,7 @@ declare var $:any;
             </a>
             <ul>
                 <li><a (click)="removePrompt()" class="btn-floating red"><i class="material-icons">delete</i></a></li>
-                <li><a (click)="visible='show'" class="btn-floating yellow darken-1"><i class="material-icons">info_outline</i></a></li>
+                <li><a (click)="visible='show'" class="btn-floating green darken-1"><i class="material-icons">info_outline</i></a></li>
                 <!--<li><a class="btn-floating green"><i class="material-icons">content_copy</i></a></li>
                 <li><a class="btn-floating blue"><i class="material-icons">content_cut</i></a></li>-->
             </ul>

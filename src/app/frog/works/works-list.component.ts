@@ -4,6 +4,7 @@ import { WorksService } from './works.service';
 import { WorksThumbnailComponent } from './works-thumbnail.component';
 
 import { IItem } from '../shared/models';
+import { SelectionService } from '../shared/selection.service';
 
 declare var $:any;
 
@@ -45,11 +46,12 @@ export class WorksListComponent implements OnDestroy, AfterViewChecked {
     private resultssub;
     private loadingsub;
 
-    constructor(private service:WorksService) {
+    constructor(private service:WorksService, private selectionservice: SelectionService) {
         this.resultssub = this.service.results.subscribe(items => {
             this.items = items;
         });
         this.loadingsub = this.service.loading.subscribe(loading => this.loading = loading);
+        this.selectionservice.clearDetailItem();
     }
     ngOnDestroy() {
         this.resultssub.unsubscribe();

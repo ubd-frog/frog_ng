@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { IItem } from '../shared/models';
+import { IItem, CImage, CVideo } from '../shared/models';
 import { Point, Matrix } from '../shared/euclid';
 import { SelectionService } from '../shared/selection.service';
 import { WorksService } from '../works/works.service';
@@ -180,9 +180,13 @@ export class ViewerComponent implements OnInit, OnDestroy {
     }
     close(event: Event) {
         event.preventDefault();
+        this.selectionservice.clearDetailItem();
         this.router.navigate([this.service.routecache || '/w/1']);
     }
     setIndex(index:number) {
+        if (this.objects[index].guid.charAt(0) === this.objects[this.index].guid.charAt(0)) {
+            this.selectionservice.clearDetailItem();
+        }
         this.index = index;
         if (this.objects.length) {
             switch(this.objects[index].guid.charAt(0)) {

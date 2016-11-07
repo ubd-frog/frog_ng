@@ -2,34 +2,11 @@ import { Component, Input, AfterViewInit, OnDestroy, HostListener, ViewChild, El
 
 import { Observable } from 'rxjs/Observable';
 
-import { IItem, Tag, User, Comment } from '../shared/models';
+import { IItem, CVideo, Tag, User, Comment } from '../shared/models';
 import { Point, Matrix, Rect } from '../shared/euclid';
 import { SelectionService } from '../shared/selection.service';
 
-class FVideo implements IItem {
-    hash: string;
-    tags: Tag[];
-    deleted: boolean;
-    video: string;
-    height: number;
-    guid: string;
-    id: number;
-    title: string;
-    author: User;
-    modified: Date;
-    created: Date;
-    width: number;
-    comment_count: number;
-    source: string;
-    small: string;
-    thumbnail: string;
-    poster: string;
-    comments: Comment[];
-    description: string;
-    selected: boolean;
-    framerate: number;
-    like_count: number;
-}
+
 
 @Component({
     selector: 'frog-video',
@@ -54,7 +31,7 @@ class FVideo implements IItem {
 export class VideoComponent implements OnDestroy {
     @ViewChild('vid') vid: ElementRef;
 
-    private object: FVideo;
+    private object: CVideo;
     private origin: Point = new Point();
     private xform: Matrix = Matrix.Identity();
     private main: Matrix = Matrix.Identity();
@@ -75,7 +52,7 @@ export class VideoComponent implements OnDestroy {
     constructor(private service: SelectionService, private changeDetectionRef : ChangeDetectorRef) {
         this.width = window.innerWidth;
         this.height = window.innerHeight;
-        this.object = new FVideo();
+        this.object = new CVideo();
         this.element = null;
     }
     ngAfterViewInit() {
@@ -100,7 +77,7 @@ export class VideoComponent implements OnDestroy {
         if (!this.alive) {
             return;
         }
-        this.object = <FVideo>image;
+        this.object = <CVideo>image;
         this.element.load();
         this.xform = Matrix.Identity();
         this.xform.elements[0][0] = this.object.width;

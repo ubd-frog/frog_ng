@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { IItem, Tag, User, Notification } from '../shared/models';
+import { IItem, CImage, CVideo, Tag, User, Notification } from '../shared/models';
 import { NotificationService } from '../notifications/notification.service';
 
 
@@ -61,7 +61,16 @@ export class WorksService {
                 }
                 
                 for (var item of items) {
-                    let obj = <IItem>item;
+                    let obj: IItem;
+                    switch(item.guid.charAt(0)) {
+                        case '1':
+                            obj = <CImage>item;
+                            break;
+                        case '2':
+                            obj = <CVideo>item;
+                            break;
+                    }
+                    
                     let author = <User>obj.author;
                     obj.author = author;
 

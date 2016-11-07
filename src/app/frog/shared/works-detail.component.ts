@@ -274,7 +274,9 @@ export class WorksDetailComponent implements OnDestroy {
         this.prompted = false;
     }
     removeTag(tag: Tag) {
-        this.works.editTags([this.item], [], [tag]).subscribe();
+        this.works.editTags([this.item], [], [tag]).subscribe(result => {;
+            this.item.tags = result[0].tags;
+        });
     }
     addTag(event: any) {
         let found = false;
