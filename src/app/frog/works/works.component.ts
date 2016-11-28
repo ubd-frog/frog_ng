@@ -5,10 +5,9 @@ import { WorksService } from './works.service';
 import { SelectionService } from '../shared/selection.service';
 import { StorageService } from '../shared/storage.service';
 import { Notification } from '../shared/models';
-
 import { UploaderService } from '../uploader/uploader.service';
-
 import { NotificationService } from '../notifications/notification.service';
+import { PreferencesComponent } from '../user/preferences.component';
 
 
 @Component({
@@ -19,6 +18,7 @@ import { NotificationService } from '../notifications/notification.service';
     <selection-marquee></selection-marquee>
     <uploader></uploader>
     <notification-list></notification-list>
+    <preferences></preferences>
     `,
     styles: [
         '#works_detail { z-index: 4000; }',

@@ -6,11 +6,11 @@ import { Tag } from './models';
 @Component({
     selector: 'autocomplete',
     template: `
-        <div>
-            <div class="input-field col s12">
+        <div id='root'>
+            <div class="input-field">
                 <input id="search" type="search" class="validate filter-input input autocomplete" [(ngModel)]=query (keyup)="filter($event)" (keyup.enter)="select()">
                 <label for="search"><i class="material-icons">search</i></label>
-                <i class="material-icons">close</i>
+                <i class="material-icons" (click)="filteredList = []">close</i>
             </div>
             <ul class='autocomplete-content dropdown-content'>
                 <li *ngFor="let item of filteredList; let idx = index" [class.complete-selected]="idx == selectedIndex"><a (click)="select($event, item)">{{item.name}}</a></li>
@@ -18,8 +18,11 @@ import { Tag } from './models';
         </div>`,
     styles: [
         '.input-field { height: 64px; }',
-        '.autocomplete-content { position: relative; }',
-        '.complete-selected { background-color: #eee; }'
+        '.input-field label.active { transform: translateY(0); }',
+        '.input-field input[type=search]+label { left: inherit; }',
+        '.autocomplete-content { position: absolute; width: 100%; }',
+        '.complete-selected { background-color: #eee; }',
+        '#root { position: relative; }'
     ],
     host: {
         '(document:click)': 'handleClick($event)'
@@ -27,6 +30,7 @@ import { Tag } from './models';
 })
 export class AutocompleteComponent implements OnInit {
     @Output() onSelect = new EventEmitter<any>();
+    @Input() placeholder: string;
     private tags: Tag[];
     private selectedIndex: number;
     public query: string;

@@ -5,6 +5,7 @@ import { Observer } from 'rxjs/Observer';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { Tag } from './models';
+import { WorksService } from '../works/works.service';
 
 @Injectable()
 export class TagsService {
@@ -14,7 +15,7 @@ export class TagsService {
     private _tags: Tag[];
     private _ids: number[];
     
-    constructor(private http:Http) {
+    constructor(private http:Http, private service: WorksService) {
         this._tags = [];
         this._ids = [];
         this.tags = new ReplaySubject<Tag[]>();
@@ -73,5 +74,8 @@ export class TagsService {
             
         });
         return ob.map(this.extractValue);
+    }
+    urlForTags(tags: Tag[]) {
+        return '/w/' + this.service.id + '/' + tags[0].id;
     }
 }

@@ -1,11 +1,14 @@
 import {Component, Input, OnInit, OnDestroy, ElementRef, AfterViewInit, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { Subscription } from 'rxjs';
+
 import { WorksService } from './works.service';
 import { IItem } from '../shared/models';
 import { CapitalizePipe } from '../shared/capitalize.pipe';
 import { TagsService } from '../shared/tags.service';
 import { SelectionService } from '../shared/selection.service';
+import { PreferencesService } from '../user/preferences.service';
 
 declare var $:any;
 
@@ -13,10 +16,10 @@ declare var $:any;
     selector: 'thumbnail',
     template: `
     <a href="/frog/image/{{item.guid}}" (click)="clickHandler($event)">
-        <img src='{{item.thumbnail}}'  style='width: 100%;' />
+        <img src='{{item.thumbnail}}' style='width: 100%;' [style.padding.px]="prefs.thumbnailPadding" />
     </a>
-    <div class='thumbnail-details light-green-text'>
-        <p>{{item.title}}</p>
+    <div class='thumbnail-details light-green-text' [class.semi]="prefs.semiTransparent">
+        <p class="truncate">{{item.title}}</p>
         <div class="actions text-green">
             <i (click)="like()" class="tiny material-icons">thumb_up</i> <small>{{item.like_count}}</small>
             <i (click)="setFocus($event)" class="tiny material-icons">comment</i> <small>{{item.comment_count}}</small>
@@ -25,20 +28,30 @@ declare var $:any;
         <small class="author" (click)="setAuthor(item.author.name)">{{item.author.name | capitalize:1}}</small>
     </div>`,
     styles: [
-        'p { position: absolute; bottom: 12px; width: 100%; font-size: 18px; color: #fff; font-weight: normal; overflow: hidden; cursor: pointer; text-overflow: ellipsis; }',
+        'p { position: absolute; bottom: 12px; width: 100%; font-size: 18px; color: #fff; font-weight: normal; overflow: hidden; cursor: pointer; line-height: initial; }',
         'div > i { vertical-align: middle; cursor: pointer; }',
         'div > small { vertical-align: middle; }',
-        '.actions { position: absolute; right: 0; bottom: 4px; cursor: pointer; }',
+        '.actions { position: absolute; right: 4px; bottom: 4px; cursor: pointer; }',
         '.tiny { font-size: 1.2rem; }',
-        '.author { position: absolute; left: 4px; bottom: 6px; font-size: 0.8rem; }',
+        '.author { position: absolute; left: 4px; bottom: 10px; font-size: 0.8rem; }',
+        '.semi { opacity: 0.5; }'
     ]
 })
-export class WorksThumbnailComponent implements OnInit, AfterViewInit {
+export class WorksThumbnailComponent implements OnDestroy {
     @Input() item;
     private selecteditems: IItem[] = [];
     private ctrlKey: boolean;
+    private sub: Subscription;
+    private prefs: Object = {};
 
-    constructor(private element: ElementRef, private router: Router, private service: SelectionService, private works: WorksService, private tags: TagsService) {
+    constructor(
+        private element: ElementRef,
+        private router: Router,
+        private service: SelectionService,
+        private works: WorksService,
+        private tags: TagsService,
+        private prefservice: PreferencesService
+        ) {
         this.service.selection.subscribe(items => {
             this.selecteditems = items
         });
@@ -56,12 +69,10 @@ export class WorksThumbnailComponent implements OnInit, AfterViewInit {
             //     //}
             // }
         });
+        this.sub = this.prefservice.preferences.subscribe(prefs => this.prefs = prefs);
     }
-    ngOnInit() {
-        
-    }
-    ngAfterViewInit() {
-        
+    ngOnDestroy() {
+        this.sub.unsubscribe();
     }
     clickHandler(event: MouseEvent) {
         event.preventDefault();

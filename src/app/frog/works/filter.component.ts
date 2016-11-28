@@ -3,10 +3,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { WorksService } from './works.service';
 import { NavigationComponent } from './navigation.component';
-import { Tag } from '../shared/models';
+import { Tag, Gallery } from '../shared/models';
 import { TagsComponent } from '../shared/tags.component';
 import { AutocompleteComponent } from '../shared/autocomplete.component';
 import { UploaderService } from '../uploader/uploader.service';
+import { PreferencesService } from '../user/preferences.service';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { UploaderService } from '../uploader/uploader.service';
     <div class="navbar-fixed">
         <nav class="light-green darken-2">
             <div class="nav-wrapper">
-                <a href="#" class="brand-logo right"><i class="material-icons">collections</i></a>
+                <!--<a href="#" class="brand-logo right"><i class="material-icons">collections</i></a>-->
                 <ul>
                     <li>
                         <a (click)="nav.toggle()" class="dropdown-button">
@@ -23,8 +24,13 @@ import { UploaderService } from '../uploader/uploader.service';
                         </a>
                     </li>
                     <li>
+                        <a (click)="preferencesService.show()" class="dropdown-button">
+                            <i class="small material-icons">settings</i>
+                        </a>
+                    </li>
+                    <li>
                         <div class="file-field input-field">
-                            <i class="material-icons left">cloud_upload</i>
+                            <i class="material-icons">cloud_upload</i>
                             <input type="file" multiple (change)="addFiles($event)" title="Upload files">
                         </div>
                     </li>
@@ -38,10 +44,10 @@ import { UploaderService } from '../uploader/uploader.service';
             </div>
         </nav>
     </div>
-    <works-nav></works-nav>
+    <works-nav (onSelect)="gallerySelectHandler($event)"></works-nav>
     `,
     styles: [
-        '#filtered_results { position: relative; display: inline-flex; height: 100%; }',
+        '#filtered_results { position: relative; display: inline-flex; height: 100%; margin: 0 10px; }',
         '.file-field { height: 64px; padding: 0 15px; }',
         '.file-field i { margin: 0; }'
     ]
@@ -57,7 +63,8 @@ export class FilterComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private router: Router,
         private service: WorksService,
-        private uploadservice: UploaderService
+        private uploadservice: UploaderService,
+        private preferencesService: PreferencesService
     ) {
         this.tags = [];
     }
@@ -109,5 +116,8 @@ export class FilterComponent implements OnInit, OnDestroy {
     addFiles(event: Event) {
         let element = <HTMLInputElement>event.target;
         this.uploadservice.addFiles(element.files);
+    }
+    gallerySelectHandler(gallery: Gallery) {
+        this.router.navigate(['w/' + gallery.id]);
     }
 }

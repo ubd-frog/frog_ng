@@ -28,6 +28,7 @@ declare var $:any;
             </div>
         </div>
     </div>
+    <h5 *ngIf="items.length === 0" class="light-green-text center-align">Nothing found</h5>
     <div class='row'>
         <thumbnail class='col m1 loaded' *ngFor="let item of items" [item]="item" [class.selected]="item.selected"></thumbnail>
     </div>`,

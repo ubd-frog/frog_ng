@@ -4,6 +4,7 @@ export class User {
     public name: string;
     public email: string;
     public username: string;
+    public prefs: Object;
 }
 
 export class Comment {
@@ -111,4 +112,17 @@ export class Notification {
         this.icon = icon;
         this.timeout = timeout;
     }
+}
+
+
+export class Gallery {
+    id: number;
+    title: string;
+    security: number;
+    image_count: number;
+    video_count: number;
+    owner: User;
+    description: string;
+    uploads: boolean;
+    parent: Gallery;
 }

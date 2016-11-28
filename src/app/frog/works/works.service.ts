@@ -197,8 +197,11 @@ export class WorksService {
         options.search.set('guids', guids.join(','));
         return this.http.get(url, options).map(this.extractData);
     }
-    copyItems(guids: string[], copyfrom: number = null) {
-        let url = '/frog/gallery/' + this.id;
+    /**
+     * Copy or Move items from one gallery to another
+     */
+    copyItems(guids: string[], copyfrom: number = null, copyTo: number = null) {
+        let url = '/frog/gallery/' + (copyTo || this.id);
         let options = new RequestOptions();
         
         options.body = {guids: guids.join(','), 'from': copyfrom};
@@ -207,16 +210,17 @@ export class WorksService {
         this.http.put(url, options).map(this.extractValue).subscribe(() => {
             this.resolveGuids(guids).subscribe(items => {
                 this.loading.next(false);
-                this.addItems(items);
+                if (copyfrom && copyTo) {
+                    this.remove(items);
+                }
+                else if (copyTo == null) {
+                    this.addItems(items);
+                }
             });
         });
     }
     upload(item: IItem, files: File[], reset: boolean = false) {
         let url: string = '/frog/piece/' + item.guid + '/';
-        // let options = new RequestOptions();
-        // options.withCredentials = true;
-        // options.body = files[0];
-        // return this.http.put(url, files[0]).map(this.extractData);
         return Observable.create(observer => {
             let fd: FormData = new FormData();
             let xhr: XMLHttpRequest = new XMLHttpRequest();

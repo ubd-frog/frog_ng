@@ -31,9 +31,11 @@ export class UserService {
         options.search.set('timestamp', new Date().getTime().toString());
 
         this.http.get(url, options)
-            .map(this.extractValue).subscribe(user => {
-                this.user = user;
-                this.results.next(user);
+            .map(this.extractValue).subscribe(data => {
+                this.user = <User>data.user;
+                this.user.prefs = data.prefs;
+
+                this.results.next(this.user);
             }, error => console.log('error loading items'));
     }
     extractValue(res: Response) {

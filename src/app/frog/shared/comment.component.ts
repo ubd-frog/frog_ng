@@ -20,7 +20,7 @@ import { CommentService } from './comment.service';
     </div>
     <div class="comment-body">
         <div class="commenter">
-            <a href="/artist/saintgenesis">{{comment.user?.name | capitalize:1}}</a>
+            <a class="light-green-text">{{comment.user?.name | capitalize:1}}</a>
         </div>
         <div class="commenter-headline grey-text text-darken-1">{{comment.user?.email}}</div>
         <i *ngIf="isOwner" (click)="edit()" class="material-icons tiny right" [class.light-green-text]="editing">{{(editing) ? "check_circle" : "edit"}}</i>
@@ -43,7 +43,7 @@ import { CommentService } from './comment.service';
     </div>`,
     styles: [
         '.comment-body { position: relative; width: 100%; overflow: visible; display: table-cell; vertical-align: top; line-height: initial; }',
-        '.comment-body .commenter a { font-size: 18px; font-weight: 300; }',
+        '.comment-body .commenter a { font-size: 16px; font-weight: 300; }',
         '.comment-body .commenter-headline { font-size: 12px; opacity: 0.6; margin-bottom: 5px; line-height: 1.25em; }',
         '.comment-text { word-break: break-word; }',
         '.social-actions { margin: 5px 0; padding: 0; list-style: none; }',

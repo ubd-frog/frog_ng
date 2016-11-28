@@ -33,7 +33,9 @@ import { viewerRouting } from './viewer/viewer.routing';
 
 import { LoginComponent } from './user/login.component';
 import { LogoutComponent } from './user/logout.component';
+import { PreferencesComponent } from './user/preferences.component';
 import { UserService } from './user/user.service';
+import { PreferencesService } from './user/preferences.service';
 import { userRouting } from './user/user.routing';
 
 import { UploaderComponent } from './uploader/uploader.component';
@@ -78,6 +80,8 @@ import { NotificationComponent } from './notifications/notification.component';
         NotificationListComponent,
         NotificationComponent,
 
+        PreferencesComponent,
+
         LoginComponent,
         LogoutComponent
     ],
@@ -90,7 +94,8 @@ import { NotificationComponent } from './notifications/notification.component';
         UploaderService,
         StorageService,
         NotificationService,
-        UserService
+        UserService,
+        PreferencesService
     ]
 })
 export class FrogModule {}
