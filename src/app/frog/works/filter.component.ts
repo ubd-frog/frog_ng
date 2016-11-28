@@ -23,7 +23,7 @@ import { PreferencesService } from '../user/preferences.service';
                             <i class="small material-icons left">collections</i>Galleries
                         </a>
                     </li>
-                    <li>
+                    <li class="right">
                         <a (click)="preferencesService.show()" class="dropdown-button">
                             <i class="small material-icons">settings</i>
                         </a>
