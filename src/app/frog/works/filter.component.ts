@@ -2,12 +2,14 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { WorksService } from './works.service';
+import { GalleryService } from './gallery.service';
 import { NavigationComponent } from './navigation.component';
-import { Tag, Gallery } from '../shared/models';
+import { Tag, Gallery, User } from '../shared/models';
 import { TagsComponent } from '../shared/tags.component';
 import { AutocompleteComponent } from '../shared/autocomplete.component';
 import { UploaderService } from '../uploader/uploader.service';
 import { PreferencesService } from '../user/preferences.service';
+import { UserService } from '../user/user.service';
 
 
 @Component({
@@ -16,16 +18,21 @@ import { PreferencesService } from '../user/preferences.service';
     <div class="navbar-fixed">
         <nav class="light-green darken-2">
             <div class="nav-wrapper">
-                <!--<a href="#" class="brand-logo right"><i class="material-icons">collections</i></a>-->
+                <!--<a href="#" class="brand-logo left"><img src="{{branding?.icon}}" /></a>-->
                 <ul>
                     <li>
                         <a (click)="nav.toggle()" class="dropdown-button">
-                            <i class="small material-icons left">collections</i>Galleries
+                            <i class="material-icons left">collections</i>Galleries
                         </a>
                     </li>
                     <li class="right">
-                        <a (click)="preferencesService.show()" class="dropdown-button">
-                            <i class="small material-icons">settings</i>
+                        <a href="{{branding?.link}}" target="_blank" rel="noopener noreferrer">
+                            <i class="material-icons">help_outline</i>
+                        </a>
+                    </li>
+                    <li class="right">
+                        <a (click)="preferencesService.show()">
+                            <i class="material-icons right">settings</i> {{user?.name}}
                         </a>
                     </li>
                     <li>
@@ -49,7 +56,8 @@ import { PreferencesService } from '../user/preferences.service';
     styles: [
         '#filtered_results { position: relative; display: inline-flex; height: 100%; margin: 0 10px; }',
         '.file-field { height: 64px; padding: 0 15px; }',
-        '.file-field i { margin: 0; }'
+        '.file-field i { margin: 0; }',
+        '.file-field:hover { background-color: rgba(0,0,0,0.1); }'
     ]
 })
 export class FilterComponent implements OnInit, OnDestroy {
@@ -57,6 +65,8 @@ export class FilterComponent implements OnInit, OnDestroy {
     private tags: string[];
     private galleryid: number;
     private query: string;
+    private branding: Object = {};
+    private user: User;
     private sub;
 
     constructor(
@@ -64,11 +74,17 @@ export class FilterComponent implements OnInit, OnDestroy {
         private router: Router,
         private service: WorksService,
         private uploadservice: UploaderService,
-        private preferencesService: PreferencesService
+        private preferencesService: PreferencesService,
+        private galleryservice: GalleryService,
+        private userservice: UserService
     ) {
         this.tags = [];
     }
     ngOnInit() {
+        this.galleryservice.branding().subscribe(data => {
+            this.branding = data
+        });
+        this.userservice.results.subscribe(user => this.user = user);
         this.sub = this.route.params.subscribe(params => {
             this.galleryid = +params['id'];
             this.service.reset();

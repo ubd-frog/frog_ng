@@ -11,7 +11,7 @@ import { UserService } from './user.service';
     template: `
     <ul [@panelState]="visible" class="side-nav grey darken-4 grey-text text-lighten-1">
         <div>
-            <i (click)="hide()" class="material-icons right grey-text">close</i>
+            <i (click)="service.hide()" class="material-icons right grey-text">close</i>
         </div>
         <div class="row grey-text text-lighten-1">
             <div class="artwork-info ps-container col s12">
@@ -58,6 +58,26 @@ import { UserService } from './user.service';
                     <p class="range-field">
                         <input type="range" id="test5" min="0" max="10" #thumbpad (change)="service.setValue('thumbnailPadding', thumbpad.value)" value="{{prefs.thumbnailPadding}}" />
                     </p>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="row">
+                <div class="col s12">
+                    <h6 class="grey-text text-lighten-1">Comment Notifications</h6>
+                    <div class="switch">
+                        <label>Off<input #comments type="checkbox" (change)="service.setValue('emailComments', comments.checked)" [(ngModel)]="prefs.emailComments"><span class="lever"></span>On</label>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="row">
+                <div class="col s12">
+                    <h6 class="grey-text text-lighten-1">Likes Notifications</h6>
+                    <div class="switch">
+                        <label>Off<input #likes type="checkbox" (change)="service.setValue('emailLikes', likes.checked)" [(ngModel)]="prefs.emailLikes"><span class="lever"></span>On</label>
+                    </div>
                 </div>
             </div>
         </li>

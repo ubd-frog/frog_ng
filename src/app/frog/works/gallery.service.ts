@@ -51,4 +51,7 @@ export class GalleryService {
         this._items.push(gallery);
         this.items.next(this._items);
     }
+    branding() {
+        return this.http.get('/frog/branding').map(this.extractValue);
+    }
 }

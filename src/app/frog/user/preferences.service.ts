@@ -13,16 +13,14 @@ export class PreferencesService {
     public preferences: BehaviorSubject<Object>;
     public visible: BehaviorSubject<boolean>;
 
-    constructor(private service: UserService, private http: Http) {
+    constructor(private http: Http) {
         this.prefs = {};
         this.preferences = new BehaviorSubject<Object>(this.prefs);
         this.visible = new BehaviorSubject<boolean>(false);
-        this.service.results.subscribe(user => {
-            if (user) {
-                this.prefs = user.prefs;
-                this.source = Object.assign({}, this.prefs);
-                this.preferences.next(this.prefs);
-            }
+        this.http.get('/frog/pref/').map(this.extractValue).subscribe(prefs => {
+            this.prefs = prefs;
+            this.source = Object.assign({}, this.prefs);
+            this.preferences.next(this.prefs);
         });
     }
     extractValue(res: Response) {
@@ -42,20 +40,6 @@ export class PreferencesService {
         this.http.post(url, options).map(this.extractValue).subscribe(data => {
             this.preferences.next(this.prefs);
         });;
-    }
-    save() {
-        // new Request.JSON({
-        //         url: '/frog/pref/',
-        //         noCache: true,
-        //         headers: {"X-CSRFToken": Cookie.read('csrftoken')},
-        //         onSuccess: function(res) {
-        //             Object.append(this, res.value);
-        //             if (callback) {
-        //                 callback();
-        //             }
-        //         }.bind(this)
-        //     }).POST({key: key, val: value});
-        
     }
     discard() {
         this.prefs = Object.assign({}, this.source);
