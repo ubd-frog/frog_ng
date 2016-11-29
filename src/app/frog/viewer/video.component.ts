@@ -17,7 +17,7 @@ import { SelectionService } from '../shared/selection.service';
         </video>
         <div class='info row'>
             <span class='white-text text-darken-2 col s2 left-align'>{{frame}}/{{frameCount}}</span>
-            <span class='white-text text-darken-2 col s8 center-align'>{{object.title}}/{{frameCount}}</span>
+            <span class='white-text text-darken-2 col s8 center-align'>{{object.title}}</span>
             <span class='white-text text-darken-2 col s2 right-align'>{{object.framerate}} fps</span>
         </div>
     </div>`,
