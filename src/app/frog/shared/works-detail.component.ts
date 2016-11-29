@@ -19,7 +19,7 @@ import { SelectionService } from '../shared/selection.service';
     <ul [@panelState]="visible" class="side-nav grey darken-4 grey-text text-lighten-1">
         <div *ngIf="item">
             <i (click)="toggle()" class="material-icons right">close</i>
-            <i *ngIf="!isOwner" (click)="edit()" class="material-icons right" [class.light-green-text]="editing">{{(editing) ? "check_circle" : "edit"}}</i>
+            <i *ngIf="isOwner" (click)="edit()" class="material-icons right" [class.light-green-text]="editing">{{(editing) ? "check_circle" : "edit"}}</i>
             <i *ngIf="editing" (click)="revert()" class="material-icons right red-text tooltipped" data-position="bottom" data-tooltip="Discard changed">delete_sweep</i>
             <!--<div *ngIf="editing && item.guid.charAt(0) === '2'">
                 <li class="stack">
@@ -56,7 +56,7 @@ import { SelectionService } from '../shared/selection.service';
                 </div>
             </div>
             <div class="row">
-                <h3 *ngIf="!editing" class="white-text col s12">{{item.title}}</h3>
+                <h3 *ngIf="!editing" class="white-text col s12 truncate" title="{{item.title}}">{{item.title}}</h3>
                 <div *ngIf="editing" class="col s12">
                     <div class="input-field">
                         <input id="title" type="text" [(ngModel)]="title" />
