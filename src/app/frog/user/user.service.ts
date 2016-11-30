@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import {Http, Request, RequestMethod, Response, RequestOptions, URLSearchParams, Headers } from '@angular/http';
+import { Http, Request, RequestMethod, Response, RequestOptions, URLSearchParams, Headers } from '@angular/http';
+import { Router } from '@angular/router';
 
 import {Observable} from 'rxjs/Observable';
 import {Observer} from 'rxjs/Observer';
@@ -13,17 +14,10 @@ export class UserService {
     private user: User;
     public results: BehaviorSubject<User>;
 
-    constructor(private http:Http) {
+    constructor(private http:Http, private router: Router) {
         this.results = new BehaviorSubject<User>(null);
     }
     get() {
-        // this.user = new User();
-        // this.user.id = 3;
-        // this.user.name = 'Brett Dixon';
-        // this.user.email = 'theiviaxx@gmail.com';
-        // this.user.username = 'theiviaxx';
-        
-        // this.results.next(this.user);
         let url = '/frog/getuser';
         let options = new RequestOptions();
         options.search = new URLSearchParams();
@@ -41,6 +35,17 @@ export class UserService {
     extractValue(res: Response) {
         let body = res.json();
         return body.value || null;
+    }
+    isAuthenticated() {
+        return this.http.get('/frog/getuser').map(res => {
+            if (res.json().isError) {
+                this.router.navigate(['/login']);
+            }
+            return true;
+        }).catch(() => {
+            this.router.navigate(['/login']);
+            return Observable.of(false)
+        });
     }
     login(email, first, last) {
         let url = '/frog/login';

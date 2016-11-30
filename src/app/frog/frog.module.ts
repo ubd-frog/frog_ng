@@ -36,6 +36,7 @@ import { LogoutComponent } from './user/logout.component';
 import { PreferencesComponent } from './user/preferences.component';
 import { UserService } from './user/user.service';
 import { PreferencesService } from './user/preferences.service';
+import { LoggedInGuard } from './user/loggedin.guard';
 import { userRouting } from './user/user.routing';
 
 import { UploaderComponent } from './uploader/uploader.component';
@@ -95,7 +96,8 @@ import { NotificationComponent } from './notifications/notification.component';
         StorageService,
         NotificationService,
         UserService,
-        PreferencesService
+        PreferencesService,
+        LoggedInGuard
     ]
 })
 export class FrogModule {}

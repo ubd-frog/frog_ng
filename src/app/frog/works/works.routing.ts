@@ -1,11 +1,13 @@
 import { Routes, RouterModule } from '@angular/router';
 
 import { WorksComponent } from './works.component';
+import { LoggedInGuard } from '../user/loggedin.guard';
 
 export const worksRoutes: Routes = [
-    { path: 'w/:id', component: WorksComponent },
-    { path: 'w/:id/:bucket1', component: WorksComponent },
-    { path: 'w/:id/:bucket1/:bucket2', component: WorksComponent }
+    { path: '', redirectTo: '/w/1', pathMatch: 'full' },
+    { path: 'w/:id', component: WorksComponent, canActivate: [LoggedInGuard] },
+    { path: 'w/:id/:bucket1', component: WorksComponent, canActivate: [LoggedInGuard] },
+    { path: 'w/:id/:bucket1/:bucket2', component: WorksComponent, canActivate: [LoggedInGuard] }
 ];
 
 export const worksRoutingProviders: any[] = [];
