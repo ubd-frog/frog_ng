@@ -37,7 +37,10 @@ export class UserService {
         return body.value || null;
     }
     isAuthenticated() {
-        return this.http.get('/frog/getuser').map(res => {
+        let options = new RequestOptions();
+        options.search = new URLSearchParams();
+        options.search.set('q', '1');
+        return this.http.get('/frog/getuser', options).map(res => {
             if (res.json().isError) {
                 this.router.navigate(['/login']);
             }

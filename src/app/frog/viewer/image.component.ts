@@ -171,8 +171,8 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         let rect = this.xform.rect;
         let scale = rect.width / this.object.width;
         let offset = new Point(
-            this.width - (this.object.width * 0.1) ,
-            this.height - (this.object.height * 0.1),
+            this.width - (this.object.width * 0.1) - 20,
+            this.height - (this.object.height * 0.1) - 20,
         );
         let x = Math.abs(Math.min(0, rect.x / scale));
         let y = Math.abs(Math.min(0, rect.y / scale));
@@ -207,7 +207,7 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         this.ctx.drawImage(
             this.element,
             sourcerect.x, sourcerect.y, sourcerect.width, sourcerect.height,
-            destrect.x, destrect.y, destrect.width, destrect.height
+            destrect.x, destrect.y, destrect.width, destrect.height,
             // x | 0, y | 0, width | 0, height | 0,
             // (offset.x + (x * 0.1)) | 0, (offset.y + (y * 0.1)) | 0, (width * 0.1) | 0, (height * 0.1) | 0,
         );

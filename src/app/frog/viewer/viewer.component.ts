@@ -1,12 +1,14 @@
 import { Component, Input, AfterViewInit, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { Location } from '@angular/common';
-
 import { Router, ActivatedRoute } from '@angular/router';
+
+import { Subscription } from 'rxjs';
 
 import { IItem, CImage, CVideo } from '../shared/models';
 import { Point, Matrix } from '../shared/euclid';
 import { SelectionService } from '../shared/selection.service';
 import { WorksService } from '../works/works.service';
+import { PreferencesService } from '../user/preferences.service';
 import { ImageComponent } from './image.component';
 import { VideoComponent } from './video.component';
 
@@ -33,13 +35,13 @@ declare var $:any;
         <a *ngIf="objects.length > 1" class="btn-flat disabled right">{{index + 1}}/{{objects.length}}</a>
         
     </div>
-    <div id='viewer' class="noselect">
+    <div id='viewer' class="noselect" [style.background]="prefs.backgroundColor">
         <frog-image *ngIf="itemtype === 'image'"></frog-image>
         <frog-video *ngIf="itemtype === 'video'"></frog-video>
     </div>
     `,
     styles: [
-        '#viewer { background: #000; position: absolute; width: 100%; height: 100%; top: 0; left: 0; }',
+        '#viewer { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }',
         '.actions { position: absolute; top: 16px; right: 16px; z-index: 3000; }',
         '.actions .btn-flat { font-size: 18px; font-family: Roboto Black; }',
         '.row { margin-bottom: 0; z-index: 3000; height: 100%; }',
@@ -68,9 +70,8 @@ export class ViewerComponent implements OnInit, OnDestroy {
     private viewall: boolean = false;
     private index: number = -1;
     private itemtype: string;
-    private sub;
-    private datasub;
-    private resultssub;
+    private prefs: Object = {};
+    private subs: Subscription[] = [];
     width: number = 0;
     height: number = 0;
     
@@ -79,13 +80,16 @@ export class ViewerComponent implements OnInit, OnDestroy {
         private router: Router,
         private service: WorksService,
         private selectionservice: SelectionService,
-        private location: Location
+        private location: Location,
+        private prefservice: PreferencesService
     ) {
         this.width = window.innerWidth;
         this.height = window.innerHeight;
+        let sub = this.prefservice.preferences.subscribe(prefs => this.prefs = prefs);
+        this.subs.push(sub);
     }
     ngOnInit() {
-        this.sub = this.route.params.subscribe(params => {
+        let sub = this.route.params.subscribe(params => {
             this.index = +params['focus'];
             let guids = params['guids'].split(',');
             this.service.resolveGuids(guids).subscribe(items => {
@@ -104,19 +108,22 @@ export class ViewerComponent implements OnInit, OnDestroy {
                 this.setIndex(this.index);
             });
         });
-        this.resultssub = this.service.results.subscribe(items => {
+        this.subs.push(sub);
+        sub = this.service.results.subscribe(items => {
             this.allitems = items;
         });
-        this.datasub = this.route.data.subscribe(data => {
+        this.subs.push(sub);
+        sub = this.route.data.subscribe(data => {
             if (data['all']) {
                 this.viewall = true;
             }
         });
+        this.subs.push(sub);
     }
     ngOnDestroy() {
-        this.sub.unsubscribe();
-        this.resultssub.unsubscribe();
-        this.datasub.unsubscribe();
+        this.subs.forEach(sub => {
+            sub.unsubscribe();
+        });
     }
     @HostListener('window:resize')
     resize() {
