@@ -106,7 +106,7 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
             let y:number = event.clientY - this.origin.y;
 
             if (event.shiftKey) {
-                if (this.axis == 'x') {
+                if (this.object.width / this.object.height > 1.0) {
                     y = 0
                 }
                 else {
@@ -171,8 +171,8 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         let rect = this.xform.rect;
         let scale = rect.width / this.object.width;
         let offset = new Point(
-            this.width - (this.object.width * 0.1) - 20,
-            this.height - (this.object.height * 0.1) - 20,
+            this.width - (this.object.width * 0.1) ,
+            this.height - (this.object.height * 0.1),
         );
         let x = Math.abs(Math.min(0, rect.x / scale));
         let y = Math.abs(Math.min(0, rect.y / scale));
