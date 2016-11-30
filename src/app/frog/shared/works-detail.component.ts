@@ -203,7 +203,7 @@ export class WorksDetailComponent implements OnDestroy {
         this.active = true;
 
         userservice.results.subscribe(user => {
-            this.user = user;
+            this.user = user as User;
         });
         userservice.get();
         this.sub = service.detail.subscribe(data => {
@@ -216,7 +216,7 @@ export class WorksDetailComponent implements OnDestroy {
                         break;
                     }
                 }
-                this.isOwner = item.author.id == this.user.id;
+                this.isOwner = item.author.id == this.user.id || this.user.isManager;
                 this.commentservice.get(item).subscribe(comments => this.comments = comments);
                 if (this.visible == 'show' && show && this.item == item) {
                     // -- Toggle off

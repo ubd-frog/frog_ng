@@ -5,6 +5,7 @@ export class User {
     public email: string;
     public username: string;
     public prefs: Object;
+    public isManager: boolean;
 }
 
 export class Comment {

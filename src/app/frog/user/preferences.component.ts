@@ -19,7 +19,7 @@ import { UserService } from './user.service';
                 <div class="artist">
                     <div class="artist-name-and-headline">
                         <div class="name">
-                            <a class="light-green-text">{{user?.name | capitalize:1}}</a>
+                            <a class="light-green-text">{{user?.name | capitalize:1}} <i *ngIf="user?.isManager" class="material-icons left">security</i></a>
                         </div>
                         <div class="headline">{{user?.email}}</div>
                     </div>
@@ -135,7 +135,7 @@ export class PreferencesComponent {
         this.keys = Object.keys(this.swatches);
         let sub = userservice.results.subscribe(user => {
             if (user) {
-                this.user = user;
+                this.user = user as User;
             }
         });
         this.subs.push(sub);
