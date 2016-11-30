@@ -145,6 +145,10 @@ export class ViewerComponent implements OnInit, OnDestroy {
             event.preventDefault();
             this.close(event);
         }
+        if (event.key === 'Tab') {
+            event.preventDefault();
+            this.setFocus();
+        }
     }
     next() {
         let index:number = this.index + 1;
