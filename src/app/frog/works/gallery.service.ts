@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import {Http, Request, RequestMethod, Response, RequestOptions, URLSearchParams } from '@angular/http';
+import { Title } from '@angular/platform-browser';
 
 import { Subject } from 'rxjs/Subject';
 
 import { User, Gallery } from '../shared/models';
+import { WorksService } from './works.service';
 
 
 @Injectable()
@@ -11,7 +13,7 @@ export class GalleryService {
     public items: Subject<Gallery[]>;
     private _items: Gallery[];
     
-    constructor(private http:Http) {
+    constructor(private http:Http, private title: Title, private service: WorksService) {
         this._items = [];
         this.items = new Subject<Gallery[]>();
     }
@@ -26,6 +28,13 @@ export class GalleryService {
             .map(this.extractData).subscribe(items => {
                 this._items = items;
                 this.items.next(this._items);
+                this.service.results.subscribe(items => {
+                    this._items.map(item => {
+                        if (item.id == this.service.id) {
+                            this.title.setTitle(item.title);
+                        }
+                    });
+                });
             }, error => console.log(`Could not query Gallery objects: ${error}`));
     }
     extractData(res: Response) {
