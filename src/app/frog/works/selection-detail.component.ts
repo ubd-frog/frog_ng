@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, trigger, state, style, tra
 import { Router } from '@angular/router';
 
 import { SelectionService } from '../shared/selection.service';
-import { IItem, Tag, Gallery } from '../shared/models';
+import { IItem, Tag, Gallery, User } from '../shared/models';
 import { TagsComponent } from '../shared/tags.component';
 import { TagsService } from '../shared/tags.service';
 import { TagArtistFilterPipe } from '../shared/tag-artist-filter.pipe';
@@ -58,6 +58,15 @@ declare var $:any;
                 </h4>
                 <tag *ngFor="let tag of (tags | tagArtistFilter)" [item]="tag.id" [dark]="true" (onClose)="removeTag($event)" (onClick)="navigateToTag(tag)"></tag>
                 <autocomplete (onSelect)="addTag($event)" [placeholder]="'Add Tags'"></autocomplete>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col s12">
+                <h4 class="title">
+                    <i class="material-icons light-green-text">person</i> Set Artist
+                </h4>
+                <userinput (onSelect)="selectArtistHandler($event)"></userinput>
             </div>
         </div>
     </ul>
@@ -122,6 +131,7 @@ export class SelectionDetailComponent {
     private items: IItem[];
     private tags: Tag[];
     private guids: string;
+    private artist: User;
     public enabled: boolean = false;
     public visible: string = 'hide';
 
@@ -214,5 +224,8 @@ export class SelectionDetailComponent {
         else {
             this.works.copyItems(guids, null, gallery.id);
         }
+    }
+    selectArtistHandler(user: User) {
+        this.works.setArtist(this.items, user);
     }
 }

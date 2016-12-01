@@ -129,6 +129,19 @@ export class WorksService {
         this.notify.add(new Notification('Item details updated', 'done'));
         return this.http.put(url, options).map(this.extractValue);
     }
+    setArtist(items: IItem[], user: User) {
+        let url = '/frog/switchartist';
+        let options = new RequestOptions();
+        
+        options.body = {
+            guids: items.map(function(_) { return _.guid; }).join(','),
+            artist: user.id
+        };
+        options.withCredentials = true;
+        this.http.post(url, options).map(this.extractData).subscribe(data => {
+            items.map(function(_) { _.author = user; });
+        });
+    }
     editTags(items: IItem[], add: Tag[], remove: Tag[]) {
         let url = '/frog/tag/manage';
         let options = new RequestOptions();
@@ -140,6 +153,7 @@ export class WorksService {
             rem: remove.map(function(_) { return _.id; }).join(',')
         };
         options.withCredentials = true;
+        this.notify.add(new Notification('New artist set', 'done'));
         return this.http.post(url, options).map(this.extractData);
     }
     download(items: IItem[]) {

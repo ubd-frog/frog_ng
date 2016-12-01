@@ -41,11 +41,14 @@ import { SelectionService } from '../shared/selection.service';
                 <div class="artwork-info ps-container col s12">
                     <div class="separator-sm"></div>
                     <div class="artist">
-                        <div class="artist-name-and-headline">
+                        <div *ngIf="!editing" class="artist-name-and-headline">
                             <div class="name">
                                 <a href="{{authorLink}}" class="light-green-text">{{item.author.name | capitalize:1}}</a>
                             </div>
                             <div class="headline">{{item.author.email}}</div>
+                        </div>
+                        <div *ngIf="editing">
+                            <userinput (onSelect)="selectArtistHandler($event)" [user]="item.author"></userinput>
                         </div>
                     </div>
                 </div>
@@ -184,6 +187,7 @@ export class WorksDetailComponent implements OnDestroy {
     private customThumbnail: File = null;
     private prompted: boolean;
     private user: User;
+    private artist: User;
     private authorLink: string;
     private isOwner: boolean;
     private active: boolean;
@@ -288,6 +292,9 @@ export class WorksDetailComponent implements OnDestroy {
             });
         }
     }
+    selectArtistHandler(user: User) {
+        this.artist = user;
+    }
     edit() {
         if (this.editing) {
             let element = <HTMLInputElement>event.srcElement;
@@ -299,6 +306,7 @@ export class WorksDetailComponent implements OnDestroy {
             this.item.title = this.title;
             this.item.description = this.description;
             this.works.update(this.item).subscribe(item => this.active = true);
+            this.works.setArtist([this.item], this.artist);
         }
         else {
             this.title = this.item.title;

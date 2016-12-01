@@ -34,6 +34,7 @@ import { viewerRouting } from './viewer/viewer.routing';
 import { LoginComponent } from './user/login.component';
 import { LogoutComponent } from './user/logout.component';
 import { PreferencesComponent } from './user/preferences.component';
+import { UserInputComponent } from './user/userinput.component';
 import { UserService } from './user/user.service';
 import { PreferencesService } from './user/preferences.service';
 import { LoggedInGuard } from './user/loggedin.guard';
@@ -82,6 +83,7 @@ import { NotificationComponent } from './notifications/notification.component';
         NotificationComponent,
 
         PreferencesComponent,
+        UserInputComponent,
 
         LoginComponent,
         LogoutComponent

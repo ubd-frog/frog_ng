@@ -12,20 +12,14 @@ import { UserService } from './user.service';
         {{ csrf_token }}
         <div class='row'>
             <div class='input-field col s12'>
-                <input type="email" name='email' [(ngModel)]="email">
+                <input type="email" name='email' [(ngModel)]="email" autocomplete="off">
                 <label>Email</label>
             </div>
         </div>
         <div class='row'>
             <div class='input-field col s12'>
-                <input type="text" name='first' [(ngModel)]="first">
-                <label>First Name</label>
-            </div>
-        </div>
-        <div class='row'>
-            <div class='input-field col s12'>
-                <input type="text" name='last' [(ngModel)]="last">
-                <label>Last Name</label>
+                <input type="password" name='password' [(ngModel)]="password" autocomplete="off">
+                <label>Password</label>
             </div>
         </div>
         <button type="submit" class="waves-effect waves-light btn light-green" (click)="clickHandler()">Login</button>
@@ -52,8 +46,7 @@ import { UserService } from './user.service';
 })
 export class LoginComponent implements OnInit {
     private email: string = '';
-    private first: string = '';
-    private last: string = '';
+    private password: string = '';
     private message: string = '';
     private csrf_token: string = '';
 
@@ -62,7 +55,7 @@ export class LoginComponent implements OnInit {
     }
     ngOnInit() { }
     clickHandler() {
-        this.service.login(this.email, this.first, this.last).subscribe(response => {
+        this.service.login(this.email, this.password).subscribe(response => {
             if (response.isError) {
                 this.message = response.message;
             }

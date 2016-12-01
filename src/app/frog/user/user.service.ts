@@ -12,10 +12,12 @@ import { User } from '../shared/models';
 @Injectable()
 export class UserService {
     private user: User;
+    public users: BehaviorSubject<User[]>;
     public results: BehaviorSubject<User>;
 
     constructor(private http:Http, private router: Router) {
         this.results = new BehaviorSubject<User>(null);
+        this.users = new BehaviorSubject<User[]>([]);
     }
     get() {
         let url = '/frog/getuser';
@@ -30,6 +32,11 @@ export class UserService {
                 this.user.prefs = data.prefs;
 
                 this.results.next(this.user);
+            }, error => console.log('error loading items'));
+            
+        this.http.get('/frog/userlist', options)
+            .map(res => {return res.json().values;}).subscribe(users => {
+                this.users.next(users);
             }, error => console.log('error loading items'));
     }
     extractValue(res: Response) {
@@ -50,14 +57,13 @@ export class UserService {
             return Observable.of(false)
         });
     }
-    login(email, first, last) {
+    login(email, password) {
         let url = '/frog/login';
         let options = new RequestOptions();
         
         options.body = {
             email: email,
-            first_name: first,
-            last_name: last
+            password: password
         };
         options.withCredentials = true;
 
