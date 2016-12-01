@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
 import { TagsService } from './tags.service';
 import { Tag } from './models';
@@ -26,7 +26,7 @@ export class TagsComponent implements OnInit, OnDestroy, AfterViewInit {
     @Output() onClick = new EventEmitter<Tag>();
     private tag: Tag;
 
-    constructor(private service: TagsService, private changeDetectionRef : ChangeDetectorRef) {
+    constructor(private service: TagsService) {
         this.tag = new Tag(0, '', false);
 
         this.service.tags.subscribe(tags => {
