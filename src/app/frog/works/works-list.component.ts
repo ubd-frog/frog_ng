@@ -30,7 +30,7 @@ declare var $:any;
     </div>
     <h5 *ngIf="items.length === 0" class="light-green-text center-align">Nothing found</h5>
     <div class='row'>
-        <thumbnail class='col m1 loaded' *ngFor="let item of items" [item]="item" [class.selected]="item.selected"></thumbnail>
+        <thumbnail class='col m1' *ngFor="let item of items" [item]="item" [class.selected]="item.selected"></thumbnail>
     </div>`,
     styles: [
         '.spinner { position: fixed; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%; color: #fff; font-size: 36px; text-align: center; padding-top: 50%; z-index: 3001; }',
@@ -67,6 +67,9 @@ export class WorksListComponent implements OnDestroy, AfterViewChecked {
     }
     @HostListener('window:scroll')
     scroll() {
+        if (this.loading) {
+            return;
+        }
         this.service.scrollpos = window.scrollY;
         let height = $('works-list').height();
         if (this.scrollcheck && height > this.minheight) {
