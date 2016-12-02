@@ -8,7 +8,7 @@ import { Tag } from '../shared/models';
     selector: 'uploader',
     template: `
     <div [@panelState]="visible" id='uploader' (drop)="drop($event)" (dragover)="false" (dragend)="false">
-        <div id="modal1" class="modal open">
+        <div id="modal1" class="modal open modal-fixed-footer">
             <div class="modal-content">
                 <h4>Upload Files</h4>
                 <div class="row">
@@ -18,7 +18,9 @@ import { Tag } from '../shared/models';
                     <autocomplete (onSelect)="addTag($event)"></autocomplete>
                     <tag *ngFor="let tag of tags" [item]="tag.name" (onClose)="removeTag($event)"></tag>
                 </div>
-                
+                <div class="progress">
+                    <div class="determinate" [style.width.%]="((total - files.length) / total) * 100"></div>
+                </div>
                 <table class="bordered">
                     <thead>
                         <tr>
@@ -69,6 +71,7 @@ export class UploaderComponent implements OnDestroy {
     private files: UploadFile[];
     private visible: string = 'hide';
     private tags: Tag[];
+    private total: number;
 
     constructor(private service: UploaderService) {
         this.sub = this.service.requested.subscribe(show => {
@@ -77,6 +80,7 @@ export class UploaderComponent implements OnDestroy {
         this.filesub = this.service.fileList.subscribe(files => this.files = files);
         this.files = [];
         this.tags = [];
+        this.total = 0;
     }
     ngOnDestroy() {
         this.sub.unsubscribe();
@@ -89,6 +93,7 @@ export class UploaderComponent implements OnDestroy {
         if (this.files.length === 0 || this.tags.length === 0) {
             return;
         }
+        this.total = this.files.length;
         this.service.upload(this.files, this.tags).subscribe(files => this.files = files, () => {}, () => this.visible = 'hide');
     }
     removeHandler(file: UploadFile) {
