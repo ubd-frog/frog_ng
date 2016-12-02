@@ -2,13 +2,15 @@ import { Component, OnInit, AfterViewInit, ViewChild, trigger, state, style, tra
 import { Router } from '@angular/router';
 
 import { SelectionService } from '../shared/selection.service';
-import { IItem, Tag, Gallery, User } from '../shared/models';
+import { IItem, Tag, Gallery, User, Notification } from '../shared/models';
 import { TagsComponent } from '../shared/tags.component';
 import { TagsService } from '../shared/tags.service';
 import { TagArtistFilterPipe } from '../shared/tag-artist-filter.pipe';
 import { AutocompleteComponent } from '../shared/autocomplete.component';
 import { NavigationComponent } from './navigation.component';
 import { UserService } from '../user/user.service';
+import { UserInputComponent } from '../user/userinput.component';
+import { NotificationService } from '../notifications/notification.service';
 
 import { WorksService } from './works.service';
 
@@ -106,7 +108,7 @@ declare var $:any;
         'ul > div > i { cursor: pointer; }',
         
         '.fixed-action-btn { top: 82px; right: 24px; height: 55px; }',
-        '#remove_prompt { z-index: 1000; }',
+        '#remove_prompt { z-index: 4000; }',
         '.stack { position: relative; height: 256px; }',
         '.stack img { position: absolute; width: 128px; border: 1px solid #ccc; border-bottom-width: 20px; }',
         '.side-nav { overflow-y: inherit; }'
@@ -124,9 +126,10 @@ declare var $:any;
         ])
     ]
 })
-export class SelectionDetailComponent {
+export class SelectionDetailComponent implements AfterViewInit {
     @ViewChild(NavigationComponent) copyNav: NavigationComponent;
     @ViewChild(NavigationComponent) moveNav: NavigationComponent;
+    @ViewChild(UserInputComponent) userinput: UserInputComponent;
 
     private items: IItem[];
     private tags: Tag[];
@@ -140,6 +143,7 @@ export class SelectionDetailComponent {
         private works: WorksService,
         private tagssservice: TagsService,
         private userservice: UserService,
+        private notify: NotificationService,
         private router: Router) {
         this.tags = [];
         this.items = [];
@@ -152,6 +156,9 @@ export class SelectionDetailComponent {
                 this.visible = 'hide';
             }
         });
+    }
+    ngAfterViewInit() {
+        this.userinput.query = '';
     }
     zIndex() {
         return (this.enabled) ? 950 : 0;
@@ -214,6 +221,7 @@ export class SelectionDetailComponent {
         this.router.navigate(['/w/' + this.works.id + '/' + tag.id]);
     }
     toggle() {
+        this.userinput.query = '';
         this.visible = (this.visible == 'hide') ? 'show': 'hide';
     }
     gallerySelectHandler(gallery: Gallery, move: boolean = false) {
@@ -227,5 +235,6 @@ export class SelectionDetailComponent {
     }
     selectArtistHandler(user: User) {
         this.works.setArtist(this.items, user);
+        this.notify.add(new Notification('Artists changed', 'done'));
     }
 }
