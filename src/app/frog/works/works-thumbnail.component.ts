@@ -1,7 +1,8 @@
-import {Component, Input, OnInit, OnDestroy, ElementRef, AfterViewInit, HostListener } from '@angular/core';
+import {Component, Input, OnInit, OnDestroy, ElementRef, AfterViewInit, HostListener, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { WorksService } from './works.service';
 import { IItem } from '../shared/models';
@@ -16,7 +17,7 @@ declare var $:any;
     selector: 'thumbnail',
     template: `
     <a href="/frog/image/{{item.guid}}" (click)="clickHandler($event)">
-        <img src='{{item.thumbnail}}' style='width: 100%;' [style.padding.px]="prefs.thumbnailPadding" />
+        <img #img src='{{item.thumbnail}}' [style.padding.px]="prefs.thumbnailPadding" />
     </a>
     <div class='thumbnail-details light-green-text' [class.semi]="prefs.semiTransparent">
         <p class="truncate">{{item.title}}</p>
@@ -28,17 +29,19 @@ declare var $:any;
         <small class="author" (click)="setAuthor(item.author.name)">{{item.author.name | capitalize:1}}</small>
     </div>`,
     styles: [
+        'img { width: 100%; height: auto; display: block; }',
         'p { position: absolute; bottom: 12px; width: 100%; font-size: 18px; color: #fff; font-weight: normal; overflow: hidden; cursor: pointer; line-height: initial; }',
         'div > i { vertical-align: middle; cursor: pointer; }',
         'div > small { vertical-align: middle; }',
         '.actions { position: absolute; right: 4px; bottom: 4px; cursor: pointer; }',
         '.tiny { font-size: 1.2rem; }',
-        '.author { position: absolute; left: 4px; bottom: 10px; font-size: 0.8rem; }',
+        '.author { position: absolute; left: 4px; bottom: 10px; font-size: 0.8rem; cursor: pointer; }',
         '.semi { opacity: 0.5; }'
     ]
 })
-export class WorksThumbnailComponent implements OnDestroy {
+export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
     @Input() item;
+    @ViewChild('img') img: ElementRef;
     private selecteditems: IItem[] = [];
     private ctrlKey: boolean;
     private sub: Subscription;
@@ -50,8 +53,7 @@ export class WorksThumbnailComponent implements OnDestroy {
         private service: SelectionService,
         private works: WorksService,
         private tags: TagsService,
-        private prefservice: PreferencesService
-        ) {
+        private prefservice: PreferencesService) {
         this.service.selection.subscribe(items => {
             this.selecteditems = items
         });
@@ -63,16 +65,21 @@ export class WorksThumbnailComponent implements OnDestroy {
             if (rect.intersects(r)) {
                 this.service.selectItem(this.item);
             }
-            // else {
-            //     //if (!this.ctrlKey) {
-            //         this.service.deselectItem(this.item);
-            //     //}
-            // }
         });
         this.sub = this.prefservice.preferences.subscribe(prefs => this.prefs = prefs);
     }
     ngOnDestroy() {
         this.sub.unsubscribe();
+    }
+    ngAfterViewInit() {
+        if (this.img.nativeElement.complete) {
+            this.element.nativeElement.classList.add('loaded');
+        }
+        else {
+            Observable.fromEvent(this.img.nativeElement, 'load').subscribe(() => {
+                this.element.nativeElement.classList.add('loaded');
+            });
+        }
     }
     clickHandler(event: MouseEvent) {
         event.preventDefault();
@@ -110,13 +117,4 @@ export class WorksThumbnailComponent implements OnDestroy {
             this.router.navigate(['/w/' + this.works.id + '/' + tag.id]);
         }
     }
-    // clearSelection(event) {
-    //     if (event.keyCode == 100 && event.ctrl) {
-    //         this.service.clear();
-    //     }
-    // }
-    // @HostListener('window:mousemove', ['$event'])
-    // isCtrlDown(event: MouseEvent) {
-    //     this.ctrlKey = event.ctrlKey;
-    // }
 }
