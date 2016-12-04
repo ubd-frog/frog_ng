@@ -95,6 +95,7 @@ import { UserService } from './user.service';
         '.separator { height: 1.8em; }',
         '.separator-sm { height: 0.9em; }',
         'ul > div > i { cursor: pointer; }',
+        'input[type="range"] { border: none; }',
 
         'div.name { display: block; min-height: 30px; }',
         'div.name a { line-height: 28px; font-size: 28px; padding: 0; height: inherit; }',
