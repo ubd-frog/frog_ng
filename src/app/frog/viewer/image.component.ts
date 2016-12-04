@@ -137,6 +137,24 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         this.main = this.xform;
         this.render();
     }
+    @HostListener('window:DOMMouseScroll', ['$event'])
+    zoomFF(event:WheelEvent) {
+        let scale:number = 1.0;
+        if (event.detail < 0) {
+            scale += 0.05;
+        }
+        else {
+            scale -= 0.05;
+        }
+        let x:number = event.clientX;
+        let y:number = event.clientY;
+        this.xform = Matrix.Identity().x(this.main);
+        this.translate(-x, -y);
+        this.scale(scale, scale);
+        this.translate(x, y);
+        this.main = this.xform;
+        this.render();
+    }
     @HostListener('window:resize')
     resize() {
         this.loading = false;
