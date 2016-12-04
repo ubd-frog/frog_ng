@@ -39,6 +39,9 @@ export class UserService {
                 this.users.next(users);
             }, error => console.log('error loading items'));
     }
+    csrf() {
+        return this.http.get('/frog/csrf').map(this.extractValue);
+    }
     extractValue(res: Response) {
         let body = res.json();
         return body.value || null;

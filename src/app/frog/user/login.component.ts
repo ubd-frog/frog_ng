@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
     private csrf_token: string = '';
 
     constructor(private service: UserService, private router: Router) {
-        
+        service.csrf().subscribe();
     }
     ngOnInit() { }
     clickHandler() {
