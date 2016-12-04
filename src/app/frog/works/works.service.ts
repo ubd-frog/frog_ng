@@ -44,6 +44,10 @@ export class WorksService {
             this.id = id;
         }
 
+        if (!append) {
+            this.scrollpos = 0;
+        }
+
         let url = '/frog/gallery/' + this.id + '/filter';
         let options = new RequestOptions();
         options.search = new URLSearchParams();
@@ -52,7 +56,6 @@ export class WorksService {
         options.search.set('timestamp', new Date().getTime().toString());
 
         this.loading.next(true);
-        this.scrollpos = 0;
 
         this.http.get(url, options)
             .map(this.extractData).subscribe(items => {
