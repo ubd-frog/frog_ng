@@ -35,10 +35,13 @@ export class SelectionComponent implements OnInit, AfterViewInit {
     @HostListener('window:mouseup')
     up() {
         this.isMouseDown = false;
+        document.body.classList.remove('noselect');
     }
     @HostListener('window:mousedown', ['$event'])
     down(event:MouseEvent) {
-        if (event.button == 0) {
+        if (event.button == 0 && event.shiftKey) {
+            event.preventDefault();
+            document.body.classList.add('noselect');
             this.isMouseDown = true;
             this.origin.x = event.clientX;
             this.origin.y = event.clientY;
@@ -84,13 +87,4 @@ export class SelectionComponent implements OnInit, AfterViewInit {
         style += 'height: ' + this.rect.height + 'px;';
         this.element.setAttribute('style', style);
     }
-    // private selectItems() {
-    //     let elements = $('thumbnail').each(function(index, element) {
-    //         let r = element.getBoundingClientRect();
-    //         let rect = new Rect(r.left, r.right, r.width, r.height);
-    //         if (this.rect.intersects(rect)) {
-    //             element.setAttribute('style', 'border: 1px solid #fff');
-    //         }
-    //     })
-    // }
 }
