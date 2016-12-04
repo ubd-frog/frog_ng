@@ -6,6 +6,7 @@ import { GalleryService } from './gallery.service';
 import { NavigationComponent } from './navigation.component';
 import { Tag, Gallery, User } from '../shared/models';
 import { TagsComponent } from '../shared/tags.component';
+import { TagsService } from '../shared/tags.service';
 import { AutocompleteComponent } from '../shared/autocomplete.component';
 import { UploaderService } from '../uploader/uploader.service';
 import { PreferencesService } from '../user/preferences.service';
@@ -76,13 +77,14 @@ export class FilterComponent implements OnInit, OnDestroy {
         private uploadservice: UploaderService,
         private preferencesService: PreferencesService,
         private galleryservice: GalleryService,
-        private userservice: UserService
+        private userservice: UserService,
+        private tagservice: TagsService
     ) {
         this.tags = [];
     }
     ngOnInit() {
         this.galleryservice.branding().subscribe(data => {
-            this.branding = data
+            this.branding = data;
         });
         this.userservice.results.subscribe(user => this.user = user);
         this.sub = this.route.params.subscribe(params => {
@@ -111,12 +113,15 @@ export class FilterComponent implements OnInit, OnDestroy {
         if (name === '0') {
             name = event.tag.name;
         }
-        if (event.shiftKey) {
-            this.addTagString(name, 1);
-        }
-        else {
-            this.addTagString(name);
-        }
+        this.tagservice.resolve(name).subscribe(tag => {
+            let tagid = (tag == null) ? name : tag.id;
+            if (event.shiftKey) {
+                this.addTagString(tagid, 1);
+            }
+            else {
+                this.addTagString(tagid);
+            }
+        });
     }
     addTagString(name: string, bucket: number=0) {
         if (bucket == 0 || this.service.terms[0].length == 0) {

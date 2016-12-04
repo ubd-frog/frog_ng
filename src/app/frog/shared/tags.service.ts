@@ -32,6 +32,9 @@ export class TagsService {
                 this.tags.next(this._tags);
             });
     }
+    resolve(name: string) {
+        return this.http.get('/frog/tag/resolve/' + name).map(this.extractValue);
+    }
     extractData(res: Response) {
         let body = res.json();
         
