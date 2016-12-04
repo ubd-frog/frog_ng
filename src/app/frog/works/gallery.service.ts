@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Http, Request, RequestMethod, Response, RequestOptions, URLSearchParams } from '@angular/http';
+import { Http, Request, RequestMethod, Response, RequestOptions, URLSearchParams } from '@angular/http';
 import { Title } from '@angular/platform-browser';
 
 import { Subject } from 'rxjs/Subject';
