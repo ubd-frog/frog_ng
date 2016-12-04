@@ -12,6 +12,7 @@ import { FilterComponent } from './works/filter.component';
 import { SelectionComponent } from './works/selection.component';
 import { WorksService } from './works/works.service';
 import { GalleryService } from './works/gallery.service';
+import { ViewportService } from './works/viewport.service';
 import { worksRouting } from './works/works.routing';
 
 import { CapitalizePipe } from './shared/capitalize.pipe';
@@ -91,6 +92,7 @@ import { NotificationComponent } from './notifications/notification.component';
     providers: [
         WorksService,
         GalleryService,
+        ViewportService,
         TagsService,
         SelectionService,
         CommentService,

@@ -5,7 +5,9 @@ import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
 
 import { WorksService } from './works.service';
+import { ViewportService } from './viewport.service';
 import { IItem } from '../shared/models';
+import { Rect } from '../shared/euclid';
 import { CapitalizePipe } from '../shared/capitalize.pipe';
 import { TagsService } from '../shared/tags.service';
 import { SelectionService } from '../shared/selection.service';
@@ -17,7 +19,7 @@ declare var $:any;
     selector: 'thumbnail',
     template: `
     <a href="/frog/image/{{item.guid}}" (click)="clickHandler($event)">
-        <img #img src='{{item.thumbnail}}' [style.padding.px]="prefs.thumbnailPadding" />
+        <img #img src='{{thumbnail}}' [style.padding.px]="prefs.thumbnailPadding" />
     </a>
     <div class='thumbnail-details light-green-text' [class.semi]="prefs.semiTransparent">
         <p class="truncate">{{item.title}}</p>
@@ -44,41 +46,57 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
     @ViewChild('img') img: ElementRef;
     private selecteditems: IItem[] = [];
     private ctrlKey: boolean;
-    private sub: Subscription;
+    private subs: Subscription[];
     private prefs: Object = {};
+    private thumbnail: string;
+    private viewportsub: Subscription;
 
     constructor(
         private element: ElementRef,
         private router: Router,
         private service: SelectionService,
-        private works: WorksService,
+        private worksservice: WorksService,
+        private viewportservice: ViewportService,
         private tags: TagsService,
         private prefservice: PreferencesService) {
         this.service.selection.subscribe(items => {
             this.selecteditems = items
         });
-        this.service.selectionRect.subscribe(rect => {
-            if (!this.item) {
-                return;
-            }
+        this.subs = [];
+        this.thumbnail = '/static/frog/i/pixel.png';
+        let sub = this.service.selectionRect.subscribe(rect => {
             let r = this.element.nativeElement.getBoundingClientRect();
             if (rect.intersects(r)) {
                 this.service.selectItem(this.item);
             }
         });
-        this.sub = this.prefservice.preferences.subscribe(prefs => this.prefs = prefs);
+        this.subs.push(sub);
+        sub = this.prefservice.preferences.subscribe(prefs => this.prefs = prefs);
+        this.subs.push(sub);
     }
     ngOnDestroy() {
-        this.sub.unsubscribe();
+        this.subs.forEach(sub => sub.unsubscribe());
     }
     ngAfterViewInit() {
         if (this.img.nativeElement.complete) {
-            this.element.nativeElement.classList.add('loaded');
         }
         else {
-            Observable.fromEvent(this.img.nativeElement, 'load').subscribe(() => {
-                this.element.nativeElement.classList.add('loaded');
+            let sub = Observable.fromEvent(this.img.nativeElement, 'load').subscribe(() => {
+                
             });
+            this.subs.push(sub);
+        }
+        this.viewportsub = this.viewportservice.guids.subscribe(guids => {
+            if (guids.indexOf(this.item.guid) != -1) {
+                this.load();
+            }
+        });
+    }
+    load() {
+        if (this.thumbnail != this.item.thumbnail) {
+            this.thumbnail = this.item.thumbnail;
+            this.item.loaded = true;
+            this.viewportsub.unsubscribe();
         }
     }
     clickHandler(event: MouseEvent) {
@@ -106,7 +124,7 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
         }
     }
     like() {
-        this.works.likeItem(this.item);
+        this.worksservice.likeItem(this.item);
     }
     setFocus(event) {
         this.service.setDetailItem(this.item);
@@ -114,7 +132,7 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
     setAuthor(name: string) {
         let tag = this.tags.getTagByName(name);
         if (tag != null) {
-            this.router.navigate(['/w/' + this.works.id + '/' + tag.id]);
+            this.router.navigate(['/w/' + this.worksservice.id + '/' + tag.id]);
         }
     }
 }

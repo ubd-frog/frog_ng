@@ -49,6 +49,7 @@ export interface IItem {
     description: string;
     selected: boolean;
     like_count: number;
+    loaded: boolean;
 }
 
 
@@ -73,6 +74,7 @@ export class CImage implements IItem {
     description: string;
     selected: boolean;
     like_count: number;
+    loaded: boolean;
 }
 
 
@@ -99,6 +101,7 @@ export class CVideo implements IItem {
     selected: boolean;
     framerate: number;
     like_count: number;
+    loaded: boolean;
 }
 
 

@@ -64,7 +64,7 @@ export class Size {
 }
 
 export class Rect {
-    constructor(private _x: number, private _y: number, private _width:number, private _height: number) {
+    constructor(private _x: number = 0, private _y: number = 0, private _width:number = 0, private _height: number = 0) {
 
     }
     get x(): number { return this._x; }
