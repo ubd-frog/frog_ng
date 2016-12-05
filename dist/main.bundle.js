@@ -49193,17 +49193,19 @@ var ViewportService = (function () {
     }
     ViewportService.prototype.visibleGuids = function () {
         var guids = [];
+        // -- Should fix this, guessing at best here
+        var width = 200;
         var thumbs = document.getElementsByTagName('thumbnail');
         if (thumbs.length > 0) {
-            var width = thumbs[0].clientWidth;
-            var cols = Math.floor(window.innerWidth / width);
-            var rows = Math.ceil(window.innerHeight / width) + 1;
-            var start = Math.floor(window.scrollY / width) * cols;
-            var length = rows * cols;
-            length = Math.min(this.items.length, start + length);
-            for (var i = start; i < length; ++i) {
-                guids.push(this.items[i].guid);
-            }
+            width = thumbs[0].clientWidth;
+        }
+        var cols = Math.floor(window.innerWidth / width);
+        var rows = Math.ceil(window.innerHeight / width) + 1;
+        var start = Math.floor(window.scrollY / width) * cols;
+        var length = rows * cols;
+        length = Math.min(this.items.length, start + length);
+        for (var i = start; i < length; ++i) {
+            guids.push(this.items[i].guid);
         }
         return guids;
     };
@@ -66944,7 +66946,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var WorksThumbnailComponent = (function () {
-    function WorksThumbnailComponent(element, router, service, worksservice, viewportservice, tags, prefservice) {
+    function WorksThumbnailComponent(element, router, service, worksservice, viewportservice, tags, prefservice, ref) {
         var _this = this;
         this.element = element;
         this.router = router;
@@ -66953,6 +66955,7 @@ var WorksThumbnailComponent = (function () {
         this.viewportservice = viewportservice;
         this.tags = tags;
         this.prefservice = prefservice;
+        this.ref = ref;
         this.selecteditems = [];
         this.prefs = {};
         this.service.selection.subscribe(function (items) {
@@ -66979,6 +66982,7 @@ var WorksThumbnailComponent = (function () {
         }
         else {
             var sub = __WEBPACK_IMPORTED_MODULE_2_rxjs__["Observable"].fromEvent(this.img.nativeElement, 'load').subscribe(function () {
+                console.log('loaded ' + _this.item.guid);
             });
             this.subs.push(sub);
         }
@@ -66992,7 +66996,8 @@ var WorksThumbnailComponent = (function () {
         if (this.thumbnail != this.item.thumbnail) {
             this.thumbnail = this.item.thumbnail;
             this.item.loaded = true;
-            this.viewportsub.unsubscribe();
+            this.element.nativeElement.classList.add('loaded');
+            this.ref.detectChanges();
         }
     };
     WorksThumbnailComponent.prototype.clickHandler = function (event) {
@@ -67054,10 +67059,10 @@ var WorksThumbnailComponent = (function () {
                 '.semi { opacity: 0.5; }'
             ]
         }), 
-        __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ElementRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ElementRef */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__shared_selection_service__["a" /* SelectionService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_6__shared_selection_service__["a" /* SelectionService */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__works_service__["a" /* WorksService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__works_service__["a" /* WorksService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__viewport_service__["a" /* ViewportService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__viewport_service__["a" /* ViewportService */]) === 'function' && _f) || Object, (typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_5__shared_tags_service__["a" /* TagsService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__shared_tags_service__["a" /* TagsService */]) === 'function' && _g) || Object, (typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_7__user_preferences_service__["a" /* PreferencesService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_7__user_preferences_service__["a" /* PreferencesService */]) === 'function' && _h) || Object])
+        __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ElementRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ElementRef */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__shared_selection_service__["a" /* SelectionService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_6__shared_selection_service__["a" /* SelectionService */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__works_service__["a" /* WorksService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__works_service__["a" /* WorksService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__viewport_service__["a" /* ViewportService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__viewport_service__["a" /* ViewportService */]) === 'function' && _f) || Object, (typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_5__shared_tags_service__["a" /* TagsService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__shared_tags_service__["a" /* TagsService */]) === 'function' && _g) || Object, (typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_7__user_preferences_service__["a" /* PreferencesService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_7__user_preferences_service__["a" /* PreferencesService */]) === 'function' && _h) || Object, (typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* ChangeDetectorRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* ChangeDetectorRef */]) === 'function' && _j) || Object])
     ], WorksThumbnailComponent);
     return WorksThumbnailComponent;
-    var _a, _b, _c, _d, _e, _f, _g, _h;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
 }());
 
 
