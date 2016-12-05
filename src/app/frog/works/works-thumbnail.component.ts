@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnDestroy, ElementRef, AfterViewInit, HostListener, ViewChild } from '@angular/core';
+import {Component, Input, OnInit, OnDestroy, ElementRef, AfterViewInit, HostListener, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
@@ -58,7 +58,9 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
         private worksservice: WorksService,
         private viewportservice: ViewportService,
         private tags: TagsService,
-        private prefservice: PreferencesService) {
+        private prefservice: PreferencesService,
+        private ref: ChangeDetectorRef
+        ) {
         this.service.selection.subscribe(items => {
             this.selecteditems = items
         });
@@ -82,7 +84,7 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
         }
         else {
             let sub = Observable.fromEvent(this.img.nativeElement, 'load').subscribe(() => {
-                
+                console.log('loaded ' + this.item.guid);
             });
             this.subs.push(sub);
         }
@@ -96,7 +98,8 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
         if (this.thumbnail != this.item.thumbnail) {
             this.thumbnail = this.item.thumbnail;
             this.item.loaded = true;
-            this.viewportsub.unsubscribe();
+            this.element.nativeElement.classList.add('loaded');
+            this.ref.detectChanges();
         }
     }
     clickHandler(event: MouseEvent) {

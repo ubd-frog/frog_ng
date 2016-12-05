@@ -28,18 +28,21 @@ export class ViewportService {
     }
     private visibleGuids(): string[] {
         let guids = [];
+        // -- Should fix this, guessing at best here
+        let width = 200;
         let thumbs = document.getElementsByTagName('thumbnail');
         if (thumbs.length > 0) {
-            let width = thumbs[0].clientWidth;
-            let cols = Math.floor(window.innerWidth / width);
-            let rows = Math.ceil(window.innerHeight / width) + 1;
-            let start = Math.floor(window.scrollY / width) * cols;
-            let length = rows * cols;
-            length = Math.min(this.items.length, start + length);
-            for (let i=start;i<length;++i) {
-                guids.push(this.items[i].guid);
-            }
+            width = thumbs[0].clientWidth;
         }
+        let cols = Math.floor(window.innerWidth / width);
+        let rows = Math.ceil(window.innerHeight / width) + 1;
+        let start = Math.floor(window.scrollY / width) * cols;
+        let length = rows * cols;
+        length = Math.min(this.items.length, start + length);
+        for (let i=start;i<length;++i) {
+            guids.push(this.items[i].guid);
+        }
+
         return guids;
     }
 }
