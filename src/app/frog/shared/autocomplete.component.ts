@@ -9,7 +9,7 @@ import { Tag } from './models';
         <div id='root'>
             <div class="input-field">
                 <input id="search" type="search" class="validate filter-input input autocomplete" [(ngModel)]=query (keyup)="filter($event)" (keyup.enter)="select()">
-                <label for="search"><i class="material-icons">search</i></label>
+                <label for="search"><i class="material-icons">{{icon}}</i></label>
                 <i class="material-icons" (click)="filteredList = []">close</i>
             </div>
             <ul class='autocomplete-content dropdown-content'>
@@ -31,6 +31,7 @@ import { Tag } from './models';
 export class AutocompleteComponent implements OnInit {
     @Output() onSelect = new EventEmitter<any>();
     @Input() placeholder: string;
+    @Input() icon: string = "search";
     private tags: Tag[];
     private selectedIndex: number;
     public query: string;

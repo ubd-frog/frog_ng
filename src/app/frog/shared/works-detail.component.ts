@@ -96,7 +96,7 @@ import { SelectionService } from '../shared/selection.service';
                         <i class="material-icons light-green-text">label</i> Tags
                     </h4>
                     <tag *ngFor="let tag of item.tags | tagArtistFilter" [item]="tag.id" [dark]="true" (onClose)="removeTag($event)" (onClick)="navigateToTag(tag)"></tag>
-                    <autocomplete (onSelect)="addTag($event)" [placeholder]="'Add Tags'"></autocomplete>
+                    <autocomplete (onSelect)="addTag($event)" [placeholder]="'Add Tags'" [icon]="'add'"></autocomplete>
                 </div>
             </div>
             <hr />
