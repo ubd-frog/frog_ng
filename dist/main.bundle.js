@@ -66867,6 +66867,7 @@ var WorksListComponent = (function () {
         this.scrollcheck = false;
         this.minheight = 0;
         this.buffer = 300;
+        this.minitems = 300;
         this.subs = [];
         var sub = this.service.results.subscribe(function (items) {
             _this.items = items;
@@ -66886,7 +66887,7 @@ var WorksListComponent = (function () {
         if (this.loading) {
             return;
         }
-        if (this.items.length > 0 && this.length != this.items.length) {
+        if (this.items.length > 0 && this.length != this.items.length && this.items.length >= this.minitems) {
             this.length = this.items.length;
             this.scrollcheck = true;
         }
@@ -66952,7 +66953,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var WorksThumbnailComponent = (function () {
-    function WorksThumbnailComponent(element, router, service, worksservice, viewportservice, tags, prefservice, ref) {
+    function WorksThumbnailComponent(element, router, service, worksservice, viewportservice, tags, prefservice) {
         var _this = this;
         this.element = element;
         this.router = router;
@@ -66961,7 +66962,6 @@ var WorksThumbnailComponent = (function () {
         this.viewportservice = viewportservice;
         this.tags = tags;
         this.prefservice = prefservice;
-        this.ref = ref;
         this.selecteditems = [];
         this.prefs = {};
         this.service.selection.subscribe(function (items) {
@@ -66986,7 +66986,7 @@ var WorksThumbnailComponent = (function () {
         var _this = this;
         this.viewportsub = this.viewportservice.guids.subscribe(function (guids) {
             if (guids.indexOf(_this.item.guid) != -1) {
-                _this.load();
+                setTimeout(function () { _this.load(); });
             }
         });
     };
@@ -66995,7 +66995,6 @@ var WorksThumbnailComponent = (function () {
             this.thumbnail = this.item.thumbnail;
             this.item.loaded = true;
             this.element.nativeElement.classList.add('loaded');
-            this.ref.detectChanges();
         }
     };
     WorksThumbnailComponent.prototype.clickHandler = function (event) {
@@ -67057,10 +67056,10 @@ var WorksThumbnailComponent = (function () {
                 '.semi { opacity: 0.5; }'
             ]
         }), 
-        __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ElementRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ElementRef */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_5__shared_selection_service__["a" /* SelectionService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__shared_selection_service__["a" /* SelectionService */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__works_service__["a" /* WorksService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__works_service__["a" /* WorksService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__viewport_service__["a" /* ViewportService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__viewport_service__["a" /* ViewportService */]) === 'function' && _f) || Object, (typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_4__shared_tags_service__["a" /* TagsService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__shared_tags_service__["a" /* TagsService */]) === 'function' && _g) || Object, (typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_6__user_preferences_service__["a" /* PreferencesService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_6__user_preferences_service__["a" /* PreferencesService */]) === 'function' && _h) || Object, (typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* ChangeDetectorRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* ChangeDetectorRef */]) === 'function' && _j) || Object])
+        __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ElementRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ElementRef */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_5__shared_selection_service__["a" /* SelectionService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__shared_selection_service__["a" /* SelectionService */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__works_service__["a" /* WorksService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__works_service__["a" /* WorksService */]) === 'function' && _e) || Object, (typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__viewport_service__["a" /* ViewportService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__viewport_service__["a" /* ViewportService */]) === 'function' && _f) || Object, (typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_4__shared_tags_service__["a" /* TagsService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__shared_tags_service__["a" /* TagsService */]) === 'function' && _g) || Object, (typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_6__user_preferences_service__["a" /* PreferencesService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_6__user_preferences_service__["a" /* PreferencesService */]) === 'function' && _h) || Object])
     ], WorksThumbnailComponent);
     return WorksThumbnailComponent;
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
 }());
 
 
