@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnDestroy, ElementRef, AfterViewInit, HostListener, ViewChild, ChangeDetectorRef } from '@angular/core';
+import {Component, Input, OnInit, OnDestroy, ElementRef, AfterViewInit, HostListener, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
@@ -58,8 +58,7 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
         private worksservice: WorksService,
         private viewportservice: ViewportService,
         private tags: TagsService,
-        private prefservice: PreferencesService,
-        private ref: ChangeDetectorRef
+        private prefservice: PreferencesService
         ) {
         this.service.selection.subscribe(items => {
             this.selecteditems = items
@@ -82,7 +81,7 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
     ngAfterViewInit() {
         this.viewportsub = this.viewportservice.guids.subscribe(guids => {
             if (guids.indexOf(this.item.guid) != -1) {
-                this.load();
+                setTimeout(() => {this.load();});
             }
         });
     }
@@ -91,7 +90,6 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
             this.thumbnail = this.item.thumbnail;
             this.item.loaded = true;
             this.element.nativeElement.classList.add('loaded');
-            this.ref.detectChanges();
         }
     }
     clickHandler(event: MouseEvent) {
