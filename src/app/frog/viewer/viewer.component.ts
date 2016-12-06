@@ -132,11 +132,11 @@ export class ViewerComponent implements OnInit, OnDestroy {
     }
     @HostListener('window:keydown', ['$event'])
     keyDownEvent(event: KeyboardEvent) {
-        if (event.key === 'ArrowLeft') {
+        if (event.key === 'ArrowLeft' || event.key === 'Left') {
             event.preventDefault();
             this.previous();
         }
-        if (event.key === 'ArrowRight') {
+        if (event.key === 'ArrowRight' || event.key === 'Right') {
             event.preventDefault();
             this.next();
         }
