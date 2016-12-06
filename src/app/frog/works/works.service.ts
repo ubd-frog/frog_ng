@@ -144,6 +144,7 @@ export class WorksService {
         options.withCredentials = true;
         this.http.post(url, options).map(this.extractData).subscribe(data => {
             items.map(function(_) { _.author = user; });
+            this.notify.add(new Notification('New artist set', 'done'));
         });
     }
     editTags(items: IItem[], add: Tag[], remove: Tag[]) {
@@ -157,7 +158,6 @@ export class WorksService {
             rem: remove.map(function(_) { return _.id; }).join(',')
         };
         options.withCredentials = true;
-        this.notify.add(new Notification('New artist set', 'done'));
         return this.http.post(url, options).map(this.extractData);
     }
     download(items: IItem[]) {

@@ -6095,6 +6095,7 @@ var WorksService = (function () {
         return this.http.put(url, options).map(this.extractValue);
     };
     WorksService.prototype.setArtist = function (items, user) {
+        var _this = this;
         var url = '/frog/switchartist';
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* RequestOptions */]();
         options.body = {
@@ -6104,6 +6105,7 @@ var WorksService = (function () {
         options.withCredentials = true;
         this.http.post(url, options).map(this.extractData).subscribe(function (data) {
             items.map(function (_) { _.author = user; });
+            _this.notify.add(new __WEBPACK_IMPORTED_MODULE_5__shared_models__["a" /* Notification */]('New artist set', 'done'));
         });
     };
     WorksService.prototype.editTags = function (items, add, remove) {
@@ -6116,7 +6118,6 @@ var WorksService = (function () {
             rem: remove.map(function (_) { return _.id; }).join(',')
         };
         options.withCredentials = true;
-        this.notify.add(new __WEBPACK_IMPORTED_MODULE_5__shared_models__["a" /* Notification */]('New artist set', 'done'));
         return this.http.post(url, options).map(this.extractData);
     };
     WorksService.prototype.download = function (items) {
