@@ -80,14 +80,6 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
         this.subs.forEach(sub => sub.unsubscribe());
     }
     ngAfterViewInit() {
-        if (this.img.nativeElement.complete) {
-        }
-        else {
-            let sub = Observable.fromEvent(this.img.nativeElement, 'load').subscribe(() => {
-                console.log('loaded ' + this.item.guid);
-            });
-            this.subs.push(sub);
-        }
         this.viewportsub = this.viewportservice.guids.subscribe(guids => {
             if (guids.indexOf(this.item.guid) != -1) {
                 this.load();
