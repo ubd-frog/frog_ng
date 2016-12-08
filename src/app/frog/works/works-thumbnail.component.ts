@@ -80,17 +80,15 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
     }
     ngAfterViewInit() {
         this.viewportsub = this.viewportservice.guids.subscribe(guids => {
-            if (guids.indexOf(this.item.guid) != -1) {
+            if (guids.indexOf(this.item.guid) != -1 && this.thumbnail != this.item.thumbnail) {
                 setTimeout(() => {this.load();});
             }
         });
     }
     load() {
-        if (this.thumbnail != this.item.thumbnail) {
-            this.thumbnail = this.item.thumbnail;
-            this.item.loaded = true;
-            this.element.nativeElement.classList.add('loaded');
-        }
+        this.thumbnail = this.item.thumbnail;
+        this.item.loaded = true;
+        this.element.nativeElement.classList.add('loaded');
     }
     clickHandler(event: MouseEvent) {
         event.preventDefault();
