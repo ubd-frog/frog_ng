@@ -1,6 +1,8 @@
 import { Component, Input, OnInit, OnDestroy, AfterContentInit, HostListener, trigger, state, style, transition, animate } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { Subscription } from 'rxjs';
+
 import { UserService } from '../user/user.service';
 import { WorksService } from '../works/works.service';
 import { IItem, Tag, User } from '../shared/models';
@@ -193,7 +195,7 @@ export class WorksDetailComponent implements OnDestroy {
     private active: boolean;
     private editing: boolean = false;
     private visible: string = 'hide';
-    private sub;
+    private subs: Subscription[];
 
     constructor(
         private service: SelectionService,
@@ -203,44 +205,45 @@ export class WorksDetailComponent implements OnDestroy {
         private commentservice: CommentService,
         private router: Router) {
         this.comments = [];
+        this.subs = [];
         this.prompted = false;
         this.active = true;
 
-        userservice.results.subscribe(user => {
+        let sub = userservice.results.filter(user => user !== null).subscribe(user => {
             this.user = user as User;
-        });
-        userservice.get();
-        this.sub = service.detail.subscribe(data => {
-            let item = data.item;
-            let show = data.showComponent;
-            if (item) {
-                for(let i=0;i<item.tags.length;++i) {
-                    if (item.tags[i].artist) {
-                        this.authorLink = '/w/' + this.works.id + '/' + item.tags[i].id;
-                        break;
+
+            let sub = service.detail.subscribe(data => {
+                let item = data.item;
+                let show = data.showComponent;
+                if (item) {
+                    for(let i=0;i<item.tags.length;++i) {
+                        if (item.tags[i].artist) {
+                            this.authorLink = '/w/' + this.works.id + '/' + item.tags[i].id;
+                            break;
+                        }
                     }
-                }
-                this.isOwner = item.author.id == this.user.id || this.user.isManager;
-                this.commentservice.get(item).subscribe(comments => this.comments = comments);
-                if (this.visible == 'show' && show && this.item == item) {
-                    // -- Toggle off
-                    this.visible = 'hide';
+                    this.isOwner = item.author.id == this.user.id || this.user.isManager;
+                    this.commentservice.get(item).subscribe(comments => this.comments = comments);
+                    if (this.visible == 'show' && show && this.item == item) {
+                        // -- Toggle off
+                        this.visible = 'hide';
+                    }
+                    else {
+                        this.visible = (show) ? 'show' : 'hide';
+                    }
+                    this.item = item;
                 }
                 else {
                     this.visible = (show) ? 'show' : 'hide';
                 }
-                this.item = item;
-            }
-            else {
-                this.visible = (show) ? 'show' : 'hide';
-            }
+            });
+            this.subs.push(sub);
         });
-        
+        this.subs.push(sub);
+        userservice.get();
     }
     ngOnDestroy() {
-        if (this.sub) {
-            this.sub.unsubscribe();
-        }
+        this.subs.forEach(sub => sub.unsubscribe());
     }
     @HostListener('window:keydown', ['$event'])
     keyDownEvent(event: KeyboardEvent) {
