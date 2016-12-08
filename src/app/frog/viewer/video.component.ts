@@ -1,11 +1,10 @@
 import { Component, Input, AfterViewInit, OnDestroy, HostListener, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subscription } from 'rxjs';
 
 import { IItem, CVideo, Tag, User, Comment } from '../shared/models';
 import { Point, Matrix, Rect } from '../shared/euclid';
 import { SelectionService } from '../shared/selection.service';
-
 
 
 @Component({
@@ -37,6 +36,7 @@ export class VideoComponent implements OnDestroy {
     private main: Matrix = Matrix.Identity();
     private scaleValue: number = 1.0;
     private time: number;
+    private wasPaused: boolean;
     private frame: number;
     private frameCount: number;
     private alive: boolean = true;
@@ -45,7 +45,7 @@ export class VideoComponent implements OnDestroy {
     private element: HTMLVideoElement;
     private hasMoved: boolean = false;
     private infoPadding: number = 28;
-    private sub;
+    private subs: Subscription[];
     width: number;
     height: number;
 
@@ -54,24 +54,28 @@ export class VideoComponent implements OnDestroy {
         this.height = window.innerHeight;
         this.object = new CVideo();
         this.element = null;
+        this.wasPaused = false;
+        this.frame = 0;
+        this.subs = [];
     }
     ngAfterViewInit() {
         this.element = this.vid.nativeElement;
-        let sub = Observable.fromEvent(<any>this.element, 'timeupdate');
-        sub.subscribe(event => {
+        let sub = Observable.fromEvent(<any>this.element, 'timeupdate').subscribe(event => {
             this.frame = Math.floor(this.object.framerate * this.element.currentTime);
             this.frameCount = Math.floor(this.object.framerate * this.element.duration);
         });
-        this.sub = this.service.detail.subscribe(data => {
+        this.subs.push(sub);
+        sub = this.service.detail.subscribe(data => {
             if (data.item && data.item != this.object) {
                 setTimeout(() => this.setImage(data.item), 0);
             }
         });
+        this.subs.push(sub);
     }
     ngOnDestroy() {
         this.element.pause();
         this.alive = false;
-        this.sub.unsubscribe();
+        this.subs.forEach(sub => sub.unsubscribe());
     }
     setImage(image: IItem) {
         if (!this.alive) {
@@ -84,37 +88,35 @@ export class VideoComponent implements OnDestroy {
         this.xform.elements[1][1] = this.object.height;
         this.fitToWindow();
     }
-    setFrame(frame: number) {
-        let delta = (frame > 0) ? 0.07 : -0.07;
-        this.element.currentTime += delta;
-    }
     // -- Events
-    //@HostListener('window:mouseup', ['$event'])
     up(event: MouseEvent) {
         this.isMouseDown = false;
         this.main = this.xform;
-        if (!this.hasMoved && this.element.paused && event.button == 0) {
-            this.element.play();
+        if (!this.hasMoved && event.button == 0) {
+            if (this.wasPaused) {
+                this.element.play();
+            }
+            else {
+                this.element.pause();
+            }
         }
     }
-    //@HostListener('window:mousedown', ['$event'])
     down(event:MouseEvent) {
         if (event.button == 0) {
             this.hasMoved = false;
             this.isMouseDown = true;
+            this.wasPaused = this.element.paused;
             this.origin.x = event.clientX;
             this.origin.y = event.clientY;
             this.element.pause();
             this.time = this.element.currentTime;
         }
     }
-    //@HostListener('window:mousemove', ['$event'])
     move(event:MouseEvent) {
         if (this.isMouseDown) {
             let x:number = event.clientX - this.origin.x;
             
-            this.setFrame(x);
-            this.origin.x = event.clientX;
+            this.element.currentTime = this.time + (x / this.object.framerate);
             this.hasMoved = true;
         }
     }
@@ -148,7 +150,6 @@ export class VideoComponent implements OnDestroy {
     fitToWindow() {
         let size = this.xform.rect.fit(window.innerWidth, window.innerHeight - this.infoPadding);
         let scale = size.width / this.object.width;
-        //scale = Math.min(1.0, scale);
         this.center(scale);
 
         this.margin = (window.innerHeight / 2) - ((this.xform.elements[1][1] + this.infoPadding) / 2);
