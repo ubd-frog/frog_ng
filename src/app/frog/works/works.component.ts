@@ -43,7 +43,7 @@ export class WorksComponent {
     }
     @HostListener('window:keydown', ['$event'])
     keyDownEvent(event: KeyboardEvent) {
-        if (event.ctrlKey && event.key === 'd') {
+        if (event.ctrlKey && event.key === 'd' || event.key == 'Esc' || event.key == 'Escape') {
             event.preventDefault();
             this.service.clear();
         }

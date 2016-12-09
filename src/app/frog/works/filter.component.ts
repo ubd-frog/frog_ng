@@ -86,7 +86,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.galleryservice.branding().subscribe(data => {
             this.branding = data;
         });
-        this.userservice.results.subscribe(user => this.user = user);
+        this.userservice.user.subscribe(user => this.user = user);
         this.sub = this.route.params.subscribe(params => {
             this.galleryid = +params['id'];
             this.service.reset();

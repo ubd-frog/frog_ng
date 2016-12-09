@@ -208,8 +208,12 @@ export class WorksDetailComponent implements OnDestroy {
         this.subs = [];
         this.prompted = false;
         this.active = true;
+        this.user = new User();
 
-        let sub = userservice.results.filter(user => user !== null).subscribe(user => {
+        let sub = userservice.user.subscribe(user => {
+            if (user.id == this.user.id) {
+                return;
+            }
             this.user = user as User;
 
             let sub = service.detail.subscribe(data => {

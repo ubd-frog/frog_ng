@@ -134,7 +134,7 @@ export class PreferencesComponent {
             'white': '#ffffff'
         }
         this.keys = Object.keys(this.swatches);
-        let sub = userservice.results.subscribe(user => {
+        let sub = userservice.user.subscribe(user => {
             if (user) {
                 this.user = user as User;
             }

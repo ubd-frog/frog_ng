@@ -47,7 +47,7 @@ export class UserInputComponent implements OnInit, AfterViewInit {
         service.users.subscribe(users => this.users = users);
     }
     ngOnInit() {
-        this.service.get();
+        this.service.getList();
     }
     ngAfterViewInit() {
         setTimeout(() => {

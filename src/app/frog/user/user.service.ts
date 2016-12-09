@@ -11,12 +11,13 @@ import { User } from '../shared/models';
 
 @Injectable()
 export class UserService {
-    private user: User;
+    private results: BehaviorSubject<User>;
+    public user: Observable<User>;
     public users: BehaviorSubject<User[]>;
-    public results: BehaviorSubject<User>;
 
     constructor(private http:Http, private router: Router) {
         this.results = new BehaviorSubject<User>(null);
+        this.user = this.results.filter(user => user != null);
         this.users = new BehaviorSubject<User[]>([]);
     }
     get() {
@@ -28,13 +29,20 @@ export class UserService {
 
         this.http.get(url, options)
             .map(this.extractValue).subscribe(data => {
-                this.user = <User>data.user;
-                this.user.prefs = data.prefs;
+                let user = <User>data.user;
+                user.prefs = data.prefs;
 
-                this.results.next(this.user);
+                this.results.next(user);
             }, error => console.log('error loading items'));
-            
-        this.http.get('/frog/userlist', options)
+    }
+    getList() {
+        let url = '/frog/userlist';
+        let options = new RequestOptions();
+        options.search = new URLSearchParams();
+        options.search.set('json', '1');
+        options.search.set('timestamp', new Date().getTime().toString());
+        
+        this.http.get(url, options)
             .map(res => {return res.json().values;}).subscribe(users => {
                 this.users.next(users);
             }, error => console.log('error loading items'));

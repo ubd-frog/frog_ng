@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, trigger, state, style, transition, animate } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, HostListener, trigger, state, style, transition, animate } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { SelectionService } from '../shared/selection.service';
@@ -59,7 +59,7 @@ declare var $:any;
                     <i class="material-icons light-green-text">label</i> Tags
                 </h4>
                 <tag *ngFor="let tag of (tags | tagArtistFilter)" [item]="tag.id" [dark]="true" (onClose)="removeTag($event)" (onClick)="navigateToTag(tag)"></tag>
-                <autocomplete (onSelect)="addTag($event)" [placeholder]="'Add Tags'"></autocomplete>
+                <autocomplete (onSelect)="addTag($event)" [placeholder]="'Add Tags'" [icon]="'add'"></autocomplete>
             </div>
         </div>
         <hr />
@@ -159,6 +159,13 @@ export class SelectionDetailComponent implements AfterViewInit {
     }
     ngAfterViewInit() {
         this.userinput.query = '';
+    }
+    @HostListener('window:keydown', ['$event'])
+    keyDownEvent(event: KeyboardEvent) {
+        if (event.key == 'Tab' && this.items.length > 0) {
+            event.preventDefault();
+            this.visible = 'show';
+        }
     }
     zIndex() {
         return (this.enabled) ? 950 : 0;

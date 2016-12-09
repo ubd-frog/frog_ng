@@ -69,7 +69,7 @@ export class CommentComponent implements AfterContentInit {
         
     }
     ngAfterContentInit() {
-        this.userservice.results.subscribe(user => {
+        this.userservice.user.subscribe(user => {
             this.user = user;
             this.isOwner = user.id == this.comment.user.id;
         });
