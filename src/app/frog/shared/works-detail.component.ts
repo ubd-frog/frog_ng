@@ -21,7 +21,7 @@ import { SelectionService } from '../shared/selection.service';
     <ul [@panelState]="visible" class="side-nav grey darken-4 grey-text text-lighten-1">
         <div *ngIf="item">
             <i (click)="toggle()" class="material-icons right">close</i>
-            <i *ngIf="isOwner" (click)="edit()" class="material-icons right" [class.light-green-text]="editing">{{(editing) ? "check_circle" : "edit"}}</i>
+            <i (click)="edit()" class="material-icons right" [class.light-green-text]="editing">{{(editing) ? "check_circle" : "edit"}}</i>
             <i *ngIf="editing" (click)="revert()" class="material-icons right red-text tooltipped" data-position="bottom" data-tooltip="Discard changed">delete_sweep</i>
             <!--<div *ngIf="editing && item.guid.charAt(0) === '2'">
                 <li class="stack">
@@ -61,17 +61,17 @@ import { SelectionService } from '../shared/selection.service';
                 </div>
             </div>
             <div class="row">
-                <h3 *ngIf="!editing" class="white-text col s12 truncate" title="{{item.title}}">{{item.title}}</h3>
-                <div *ngIf="editing" class="col s12">
+                <h3 *ngIf="!editing || !isOwner" class="white-text col s12 truncate" title="{{item.title}}">{{item.title}}</h3>
+                <div *ngIf="editing && isOwner" class="col s12">
                     <div class="input-field">
                         <input id="title" type="text" [(ngModel)]="title" />
                         <label class="active" for="title">Title</label>
                     </div>
                 </div>
-                <div *ngIf="!editing" class="description col s12" id="project-description" style="max-height: none;">
+                <div *ngIf="!editing || !isOwner" class="description col s12" id="project-description" style="max-height: none;">
                     <p>{{item.description}}</p>
                 </div>
-                <div *ngIf="editing">
+                <div *ngIf="editing && isOwner">
                     <div class="col s12">
                         <div class="input-field">
                             <textarea id="description" class="materialize-textarea1 expanded" [(ngModel)]="description" placeholder="Description"></textarea>
@@ -209,6 +209,7 @@ export class WorksDetailComponent implements OnDestroy {
         this.prompted = false;
         this.active = true;
         this.user = new User();
+        this.artist = null;
 
         let sub = userservice.user.subscribe(user => {
             if (user.id == this.user.id) {
@@ -304,16 +305,22 @@ export class WorksDetailComponent implements OnDestroy {
     }
     edit() {
         if (this.editing) {
-            let element = <HTMLInputElement>event.srcElement;
-            if (this.customThumbnail) {
-                this.works.upload(this.item, [this.customThumbnail]).subscribe(item => {
-                    this.item.thumbnail = item.thumbnail;
-                });
+            if (this.isOwner) {
+                let element = <HTMLInputElement>event.srcElement;
+                if (this.customThumbnail) {
+                    this.works.upload(this.item, [this.customThumbnail]).subscribe(item => {
+                        this.item.thumbnail = item.thumbnail;
+                    });
+                }
+                this.item.title = this.title;
+                this.item.description = this.description;
+                this.works.update(this.item).subscribe(item => this.active = true);
             }
-            this.item.title = this.title;
-            this.item.description = this.description;
-            this.works.update(this.item).subscribe(item => this.active = true);
-            this.works.setArtist([this.item], this.artist);
+            if (this.artist) {
+                this.works.setArtist([this.item], this.artist);
+                this.isOwner = this.artist.id == this.user.id || this.user.isManager;
+                this.artist = null;
+            }
         }
         else {
             this.title = this.item.title;
