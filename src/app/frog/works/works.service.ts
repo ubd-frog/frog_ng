@@ -268,4 +268,12 @@ export class WorksService {
             xhr.send(fd);
         });
     }
+    cropItem(item: IItem, x: number, y: number, width: number, height: number) {
+        let url = '/frog/piece/' + item.guid + '/';
+        let options = new RequestOptions();
+        
+        options.body = {crop: [x, y, width, height]};
+        options.withCredentials = true;
+        return this.http.post(url, options).map(this.extractValue);
+    }
 }

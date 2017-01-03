@@ -45,6 +45,7 @@ export interface IItem {
     source: string;
     small: string;
     thumbnail: string;
+    custom_thumbnail: boolean;
     comments?: Comment[];
     description: string;
     selected: boolean;
@@ -70,6 +71,7 @@ export class CImage implements IItem {
     source: string;
     small: string;
     thumbnail: string;
+    custom_thumbnail: boolean;
     comments: Comment[];
     description: string;
     selected: boolean;
@@ -95,6 +97,7 @@ export class CVideo implements IItem {
     source: string;
     small: string;
     thumbnail: string;
+    custom_thumbnail: boolean;
     poster: string;
     comments: Comment[];
     description: string;

@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, OnDestroy, AfterContentInit, HostListener, trigger, state, style, transition, animate } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, OnDestroy, AfterContentInit, HostListener, trigger, state, style, transition, animate } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
 import { UserService } from '../user/user.service';
 import { WorksService } from '../works/works.service';
+import { CropperComponent } from '../works/cropper.component';
 import { IItem, Tag, User } from '../shared/models';
 import { CapitalizePipe } from '../shared/capitalize.pipe';
 import { TagArtistFilterPipe } from '../shared/tag-artist-filter.pipe';
@@ -23,21 +24,35 @@ import { SelectionService } from '../shared/selection.service';
             <i (click)="toggle()" class="material-icons right">close</i>
             <i (click)="edit()" class="material-icons right" [class.light-green-text]="editing">{{(editing) ? "check_circle" : "edit"}}</i>
             <i *ngIf="editing" (click)="revert()" class="material-icons right red-text tooltipped" data-position="bottom" data-tooltip="Discard changed">delete_sweep</i>
-            <!--<div *ngIf="editing && item.guid.charAt(0) === '2'">
-                <li class="stack">
-                    <img src="{{item.thumbnail}}" width="128" />
-                </li>
-                <div class="file-field input-field">
-                    <a class="waves-effect waves-light btn red darken-4"><i (click)="resetThumbnail()" class="material-icons">close</i></a>
-                    <div class="btn">
-                        <span>File</span>
-                        <input type="file" ([ngModel])="customThumbnail" >
+
+            <div *ngIf="editing" class="row">
+                <div class="col s12">
+                    <h4 class="title">
+                        <i class="material-icons light-green-text">image</i> Thumbnail
+                    </h4>
+                    <li class="center-align">
+                        <img src="{{item.thumbnail}}?foo={{cachebust}}" />
+                    </li>
+
+                    <div class="row">
+                        <div class="col s6">
+                            <div class="waves-effect waves-light btn light-green file-field">
+                                <i class="material-icons">cloud_upload</i> Upload
+                                <input type="file" (change)="upload($event)" />
+                            </div>
+                        </div>
+                        <div class="col s6">
+                            <a (click)="cropThumbnail()" class="waves-effect waves-light btn light-green"><i class="material-icons">crop</i> Crop</a>
+                        </div>
                     </div>
-                    <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text">
+                    <div *ngIf="item.custom_thumbnail" class="row">
+                        <div class="col s6">
+                            <a (click)="resetThumbnail()" class="waves-effect waves-light btn red darken-4"><i class="material-icons">close</i> Reset</a>
+                        </div>
                     </div>
                 </div>
-            </div>-->
+            </div>
+            <hr *ngIf="editing" />
             
             <div class="row grey-text text-lighten-1">
                 <div class="artwork-info ps-container col s12">
@@ -134,7 +149,8 @@ import { SelectionService } from '../shared/selection.service';
             </div>
         </div>
     </ul>
-    `,
+    
+    <cropper [item]="item" (onCrop)="reloadThumbnail()"></cropper>`,
     styles: [
         '.side-nav { padding: 6px .25rem 0 .25rem; width: 360px; z-index: 3010; }',
         '.side-nav li { line-height: inherit; }',
@@ -143,13 +159,15 @@ import { SelectionService } from '../shared/selection.service';
         'h5 { text-transform: uppercase; letter-spacing: 1px; margin-top: 0px; font-weight: 300; font-size: 14px; }',
         'a { color: inherit; transition: all 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53); font-weight: inherit; }',
         'a.btn { line-height: 36px !important; height: 36px !important; padding: inherit; margin: 0 !important; }',
-        '.btn { line-height: 28px !important; height: 28px !important; padding: 0 2rem; font-size: 12px; }',
+        '.btn { font-size: 12px; }',
         'i { vertical-align: middle; }',
         'ul > div:first-child { overflow: auto; }',
         'hr { margin: 8px 0; border-right-style: initial; border-bottom-style: initial; border-left-style: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initia l; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-width: 1px 0px 0px; border-top: 1px solid rgb(49, 49, 49); }',
         '.separator { height: 1.8em; }',
         '.separator-sm { height: 0.9em; }',
         'ul > div > i { cursor: pointer; }',
+        '.center-align img { width: 80%; }',
+        '.btn.file-field { width: 100%; padding: 0 12px; }',
 
         'td {font-size: 12px; padding: 6px 5px;}',
         'div.name { display: block; min-height: 30px; }',
@@ -181,12 +199,13 @@ import { SelectionService } from '../shared/selection.service';
     ]
 })
 export class WorksDetailComponent implements OnDestroy {
+    @ViewChild(CropperComponent) cropper: CropperComponent;
+
     private item: IItem;
     private title: string = '';
     private description: string = '';
     private comments: any[];
     private comment: string = '';
-    private customThumbnail: File = null;
     private prompted: boolean;
     private user: User;
     private artist: User;
@@ -195,6 +214,7 @@ export class WorksDetailComponent implements OnDestroy {
     private active: boolean;
     private editing: boolean = false;
     private visible: string = 'hide';
+    private cachebust: number = new Date().getTime();
     private subs: Subscription[];
 
     constructor(
@@ -306,12 +326,6 @@ export class WorksDetailComponent implements OnDestroy {
     edit() {
         if (this.editing) {
             if (this.isOwner) {
-                let element = <HTMLInputElement>event.srcElement;
-                if (this.customThumbnail) {
-                    this.works.upload(this.item, [this.customThumbnail]).subscribe(item => {
-                        this.item.thumbnail = item.thumbnail;
-                    });
-                }
                 this.item.title = this.title;
                 this.item.description = this.description;
                 this.works.update(this.item).subscribe(item => this.active = true);
@@ -331,14 +345,16 @@ export class WorksDetailComponent implements OnDestroy {
     revert() {
         this.title = '';
         this.description = '';
-        this.customThumbnail = null;
         this.editing = false;
     }
     resetThumbnail() {
         this.works.upload(this.item, null, true).subscribe(item => {
-            this.item.thumbnail = item.thumbnail;
-            this.customThumbnail = null;
+            this.item = item;
+            this.works.addItems([item]);
         });
+    }
+    cropThumbnail() {
+        this.cropper.show();
     }
     navigateToTag(tag: Tag) {
         this.router.navigate(['/w/' + this.works.id + '/' + tag.id]);
@@ -350,6 +366,18 @@ export class WorksDetailComponent implements OnDestroy {
         else {
             this.revert();
             this.hide();
+        }
+    }
+    reloadThumbnail() {
+        this.cachebust = new Date().getTime();
+    }
+    upload() {
+        let element = <HTMLInputElement>event.srcElement;
+        if (element.files.length) {
+            this.works.upload(this.item, [element.files[0]]).subscribe(item => {
+                this.item = item;
+                this.works.addItems([item]);
+            });
         }
     }
 }

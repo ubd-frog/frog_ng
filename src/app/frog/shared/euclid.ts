@@ -85,6 +85,9 @@ export class Rect {
     public toString = () : string => {
         return 'Rect [' + [this.x, this.y, this.width, this.height].join(',') + ']';
     }
+    toArray() {
+        return [this.x, this.y, this.width, this.height];
+    }
 
     zero() {
         this._x = this._y = this._width = this._height = 0;
@@ -114,5 +117,18 @@ export class Rect {
         }
 
         return new Size(this.width * scale, this.height * scale);
+    }
+    clamp(width: number, height: number) {
+        this.x = Math.max(0, this.x);
+        this.y = Math.max(0, this.y);
+        if (this.x + this.width > width) {
+            this.x = width - this.width;
+        }
+        if (this.y + this.height > height) {
+            this.y = height - this.height;
+        }
+    }
+    center(rect: Rect) {
+
     }
 }

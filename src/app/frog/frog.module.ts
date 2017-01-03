@@ -10,6 +10,7 @@ import { SelectionDetailComponent } from './works/selection-detail.component';
 import { NavigationComponent } from './works/navigation.component';
 import { FilterComponent } from './works/filter.component';
 import { SelectionComponent } from './works/selection.component';
+import { CropperComponent } from './works/cropper.component';
 import { WorksService } from './works/works.service';
 import { GalleryService } from './works/gallery.service';
 import { ViewportService } from './works/viewport.service';
@@ -65,6 +66,7 @@ import { NotificationComponent } from './notifications/notification.component';
         NavigationComponent,
         FilterComponent,
         SelectionComponent,
+        CropperComponent,
 
         TagsComponent,
         SelectionDetailComponent,
