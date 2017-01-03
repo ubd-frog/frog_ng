@@ -26,11 +26,12 @@ import { SelectionService } from '../shared/selection.service';
             </div>
         </div>
     </div>
-    <img #img src="{{object.image}}" style='display: none;' />
+    <img #img src="{{object.image}}" (mousedown)="down($event)" (mouseup)="up($event)" (mousemove)="move($event)" />
     <canvas #canvas width="{{width}}" height="{{height}}"></canvas>`,
     styles: [
         '.spinner { position: fixed; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%; color: #fff; font-size: 36px; text-align: center; padding-top: 50%; z-index: 3001; }',
-        'canvas { cursor: move; }'
+        'canvas { cursor: move; }',
+        'img { opacity: 0; width: 100%; height: 100%; position: absolute; }'
     ]
 })
 export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecked {
@@ -86,22 +87,21 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         this.loading = !this.element.complete;
     }
     // -- Events
-    @HostListener('window:mouseup')
     up() {
         this.isMouseDown = false;
         this.main = this.xform;
     }
-    @HostListener('window:mousedown', ['$event'])
     down(event:MouseEvent) {
         if (event.button == 0) {
+            event.preventDefault();
             this.isMouseDown = true;
             this.origin.x = event.clientX;
             this.origin.y = event.clientY;
         }
     }
-    @HostListener('window:mousemove', ['$event'])
     move(event:MouseEvent) {
         if (this.isMouseDown) {
+            event.preventDefault();
             let x:number = event.clientX - this.origin.x;
             let y:number = event.clientY - this.origin.y;
 
