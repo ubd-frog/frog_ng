@@ -137,7 +137,7 @@ export class CropperComponent implements AfterViewChecked {
             item.thumbnail += '?foo=' + new Date().getTime();
             this.service.addItems([item]);
             this.close();
-            this.onCrop.emit();
+            this.onCrop.emit(item);
         });
     }
     close() {

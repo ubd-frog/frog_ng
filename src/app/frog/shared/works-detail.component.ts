@@ -150,7 +150,7 @@ import { SelectionService } from '../shared/selection.service';
         </div>
     </ul>
     
-    <cropper [item]="item" (onCrop)="reloadThumbnail()"></cropper>`,
+    <cropper [item]="item" (onCrop)="reloadThumbnail($event)"></cropper>`,
     styles: [
         '.side-nav { padding: 6px .25rem 0 .25rem; width: 360px; z-index: 3010; }',
         '.side-nav li { line-height: inherit; }',
@@ -368,8 +368,9 @@ export class WorksDetailComponent implements OnDestroy {
             this.hide();
         }
     }
-    reloadThumbnail() {
+    reloadThumbnail(item: IItem) {
         this.cachebust = new Date().getTime();
+        this.item = item;
     }
     upload() {
         let element = <HTMLInputElement>event.srcElement;
