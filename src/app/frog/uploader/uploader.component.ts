@@ -1,5 +1,6 @@
 import { Component, OnDestroy, HostListener, trigger, state, style, transition, animate } from '@angular/core';
 
+import { BytesPipe } from './bytes.pipe';
 import { UploaderService } from './uploader.service';
 import { UploadFile } from './models';
 import { Tag } from '../shared/models';
@@ -35,7 +36,7 @@ import { Tag } from '../shared/models';
                     <tbody>
                         <tr *ngFor="let file of files" [class.red]="!file.unique" [class.lighten-5]="!file.unique">
                             <td>{{file.name}}</td>
-                            <td>{{file.size}}</td>
+                            <td>{{file.size | bytes}}</td>
                             <td>{{file.created | date:"short"}}</td>
                             <td>{{file.progress}}</td>
                             <td>{{file.status}}</td>
@@ -75,6 +76,11 @@ export class UploaderComponent implements OnDestroy {
 
     constructor(private service: UploaderService) {
         this.sub = this.service.requested.subscribe(show => {
+            if (show && this.visible == 'hide') {
+                this.files = [];
+                this.tags = [];
+                this.total = 0;
+            }
             this.visible = (show) ? 'show': 'hide';
         });
         this.filesub = this.service.fileList.subscribe(files => this.files = files);
