@@ -42,6 +42,7 @@ import { PreferencesService } from './user/preferences.service';
 import { LoggedInGuard } from './user/loggedin.guard';
 import { userRouting } from './user/user.routing';
 
+import { BytesPipe } from './uploader/bytes.pipe';
 import { UploaderComponent } from './uploader/uploader.component';
 import { UploaderService } from './uploader/uploader.service';
 
@@ -80,6 +81,7 @@ import { NotificationComponent } from './notifications/notification.component';
         ImageComponent,
         VideoComponent,
 
+        BytesPipe,
         UploaderComponent,
 
         NotificationListComponent,
