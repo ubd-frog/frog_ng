@@ -18,7 +18,7 @@ declare var $:any;
 @Component({
     selector: 'thumbnail',
     template: `
-    <a href="/frog/image/{{item.guid}}" (click)="clickHandler($event)">
+    <a href="/v/0/{{item.guid}}" (click)="clickHandler($event)">
         <img #img src='{{thumbnail}}' [style.padding.px]="prefs.thumbnailPadding" />
     </a>
     <div class='thumbnail-details light-green-text' [class.semi]="prefs.semiTransparent">
