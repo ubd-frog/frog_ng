@@ -77,7 +77,6 @@ export class UploaderComponent implements OnDestroy {
     constructor(private service: UploaderService) {
         this.sub = this.service.requested.subscribe(show => {
             if (show && this.visible == 'hide') {
-                this.files = [];
                 this.tags = [];
                 this.total = 0;
             }
