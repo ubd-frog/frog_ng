@@ -209,6 +209,7 @@ export class CropperComponent implements AfterViewChecked {
             }
             
             original.clamp(this.width, this.height);
+            original.width = original.height;
             this.rect = original;
         }
     }
