@@ -3,7 +3,7 @@ import { Component, Input, Output, ViewChild, ElementRef, EventEmitter, OnDestro
 import { WorksService } from './works.service';
 import { Point, Rect } from '../shared/euclid';
 
-//[style.width.px]="rect.width" [style.height.px]="rect.height" [style.top.px]="rect.y" [style.left.px]="rect.x"
+
 @Component({
     selector: 'cropper',
     template: `

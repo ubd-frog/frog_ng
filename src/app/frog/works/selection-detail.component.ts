@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 
 import { SelectionService } from '../shared/selection.service';
 import { IItem, Tag, Gallery, User, Notification } from '../shared/models';
-import { TagsComponent } from '../shared/tags.component';
-import { TagsService } from '../shared/tags.service';
+import { TagComponent } from '../tags/tag.component';
+import { TagsService } from '../tags/tags.service';
 import { TagArtistFilterPipe } from '../shared/tag-artist-filter.pipe';
 import { AutocompleteComponent } from '../shared/autocomplete.component';
 import { NavigationComponent } from './navigation.component';

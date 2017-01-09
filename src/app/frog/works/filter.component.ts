@@ -5,12 +5,13 @@ import { WorksService } from './works.service';
 import { GalleryService } from './gallery.service';
 import { NavigationComponent } from './navigation.component';
 import { Tag, Gallery, User } from '../shared/models';
-import { TagsComponent } from '../shared/tags.component';
-import { TagsService } from '../shared/tags.service';
+import { TagComponent } from '../tags/tag.component';
+import { TagsService } from '../tags/tags.service';
 import { AutocompleteComponent } from '../shared/autocomplete.component';
 import { UploaderService } from '../uploader/uploader.service';
 import { PreferencesService } from '../user/preferences.service';
 import { UserService } from '../user/user.service';
+import { TagsListComponent } from '../tags/tags-list.component';
 
 
 @Component({
@@ -29,6 +30,11 @@ import { UserService } from '../user/user.service';
                     <li class="right">
                         <a href="{{branding?.link}}" target="_blank" rel="noopener noreferrer">
                             <i class="material-icons">help_outline</i>
+                        </a>
+                    </li>
+                    <li class="right">
+                        <a (click)="tagslist.show()">
+                            <i class="material-icons">loyalty</i>
                         </a>
                     </li>
                     <li class="right">
@@ -53,6 +59,7 @@ import { UserService } from '../user/user.service';
         </nav>
     </div>
     <works-nav (onSelect)="gallerySelectHandler($event)"></works-nav>
+    <tags-list #tagslist></tags-list>
     `,
     styles: [
         '#filtered_results { position: relative; display: inline-flex; height: 100%; margin: 0 10px; }',
@@ -63,6 +70,7 @@ import { UserService } from '../user/user.service';
 })
 export class FilterComponent implements OnInit, OnDestroy {
     @ViewChild(NavigationComponent) nav: NavigationComponent;
+    @ViewChild(TagsListComponent) tagslist: TagsListComponent;
     private tags: string[];
     private galleryid: number;
     private query: string;

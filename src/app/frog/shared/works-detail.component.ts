@@ -10,10 +10,10 @@ import { IItem, Tag, User } from '../shared/models';
 import { CapitalizePipe } from '../shared/capitalize.pipe';
 import { TagArtistFilterPipe } from '../shared/tag-artist-filter.pipe';
 import { AutocompleteComponent } from '../shared/autocomplete.component';
-import { TagsComponent } from '../shared/tags.component';
+import { TagComponent } from '../tags/tag.component';
 import { CommentComponent } from '../shared/comment.component';
 import { CommentService } from '../shared/comment.service';
-import { TagsService } from '../shared/tags.service';
+import { TagsService } from '../tags/tags.service';
 import { SelectionService } from '../shared/selection.service';
 
 @Component({

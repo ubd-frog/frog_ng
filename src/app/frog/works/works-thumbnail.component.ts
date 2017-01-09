@@ -9,7 +9,7 @@ import { ViewportService } from './viewport.service';
 import { IItem } from '../shared/models';
 import { Rect } from '../shared/euclid';
 import { CapitalizePipe } from '../shared/capitalize.pipe';
-import { TagsService } from '../shared/tags.service';
+import { TagsService } from '../tags/tags.service';
 import { SelectionService } from '../shared/selection.service';
 import { PreferencesService } from '../user/preferences.service';
 

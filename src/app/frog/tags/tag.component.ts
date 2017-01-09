@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
 import { TagsService } from './tags.service';
-import { Tag } from './models';
+import { Tag } from '../shared/models';
 
 
 @Component({
@@ -18,7 +18,7 @@ import { Tag } from './models';
         'span { cursor: pointer; }'
     ]
 })
-export class TagsComponent implements OnInit, OnDestroy, AfterViewInit {
+export class TagComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() item: any;
     @Input() editable: boolean = true;
     @Input() dark: boolean = false;

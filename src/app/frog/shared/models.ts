@@ -20,12 +20,14 @@ export class Tag {
     public name: string;
     public artist: boolean;
     public type: string;
+    public count: number;
 
-    constructor(id: number, name: string, artist: boolean) {
+    constructor(id: number, name: string, artist: boolean, count: number=0) {
         this.id = id;
         this.name = name;
         this.artist = artist;
         this.type = (this.id === 0) ? 'search' : 'tag';
+        this.count = count;
     }
 }
 

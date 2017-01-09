@@ -19,11 +19,9 @@ import { worksRouting } from './works/works.routing';
 import { CapitalizePipe } from './shared/capitalize.pipe';
 import { TagArtistFilterPipe } from './shared/tag-artist-filter.pipe';
 import { CommentURLPipe } from './shared/comment-url.pipe';
-import { TagsComponent } from './shared/tags.component';
 import { WorksDetailComponent } from './shared/works-detail.component';
 import { AutocompleteComponent } from './shared/autocomplete.component';
 import { CommentComponent } from './shared/comment.component';
-import { TagsService } from './shared/tags.service';
 import { SelectionService } from './shared/selection.service';
 import { CommentService } from './shared/comment.service';
 import { StorageService } from './shared/storage.service';
@@ -50,6 +48,10 @@ import { NotificationService } from './notifications/notification.service';
 import { NotificationListComponent } from './notifications/notification-list.component';
 import { NotificationComponent } from './notifications/notification.component';
 
+import { TagsListComponent } from './tags/tags-list.component';
+import { TagComponent } from './tags/tag.component';
+import { TagsService } from './tags/tags.service';
+
 
 @NgModule({
     imports: [
@@ -69,7 +71,6 @@ import { NotificationComponent } from './notifications/notification.component';
         SelectionComponent,
         CropperComponent,
 
-        TagsComponent,
         SelectionDetailComponent,
         AutocompleteComponent, 
         CommentComponent,
@@ -91,7 +92,10 @@ import { NotificationComponent } from './notifications/notification.component';
         UserInputComponent,
 
         LoginComponent,
-        LogoutComponent
+        LogoutComponent,
+
+        TagsListComponent,
+        TagComponent,
     ],
     providers: [
         WorksService,

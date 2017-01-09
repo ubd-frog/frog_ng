@@ -4,14 +4,13 @@ import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
-import { Tag } from './models';
+import { Tag } from '../shared/models';
 import { WorksService } from '../works/works.service';
 
 @Injectable()
 export class TagsService {
-    results: Observable<Tag[]>;
-    tags: ReplaySubject<Tag[]>;
-    private _observer: Observer<Tag[]>;
+    public tags: ReplaySubject<Tag[]>;
+    public contentTags: Observable<Tag[]>;
     private _tags: Tag[];
     private _ids: number[];
     
@@ -19,10 +18,11 @@ export class TagsService {
         this._tags = [];
         this._ids = [];
         this.tags = new ReplaySubject<Tag[]>();
+        this.contentTags = this.tags.map(tags => { return tags.filter(tag => !tag.artist)});
         this.get();
     }
     get() {
-        this.http.get('/frog/tag/?cache=' + Date.now())
+        this.http.get('/frog/tag/?count=1&cache=' + Date.now())
             .map(this.extractData).subscribe(tags => {
                 this._tags = tags;
                 this._ids = [];
@@ -80,5 +80,13 @@ export class TagsService {
     }
     urlForTags(tags: Tag[]) {
         return '/w/' + this.service.id + '/' + tags[0].id;
+    }
+    merge (ids: number[]) {
+        let root = ids.shift();
+        let url = `/frog/tag/merge/${root}/`;
+        let options = new RequestOptions();
+        
+        options.body = {tags: ids}
+        this.http.post(url, options).subscribe(() => this.get());
     }
 }
