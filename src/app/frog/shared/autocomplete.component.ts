@@ -28,7 +28,7 @@ import { Tag } from './models';
         '(document:click)': 'handleClick($event)'
     }
 })
-export class AutocompleteComponent implements OnInit {
+export class AutocompleteComponent {
     @Output() onSelect = new EventEmitter<any>();
     @Input() placeholder: string;
     @Input() icon: string = "search";
@@ -50,9 +50,6 @@ export class AutocompleteComponent implements OnInit {
                 this.tags = items;
             }
         });
-    }
-    ngOnInit() {
-        this.service.get();
     }
     filter(event) {
         if (event.code === "ArrowDown" && this.selectedIndex < this.filteredList.length) {

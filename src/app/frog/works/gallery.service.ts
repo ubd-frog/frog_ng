@@ -16,6 +16,7 @@ export class GalleryService {
     constructor(private http:Http, private title: Title, private service: WorksService) {
         this._items = [];
         this.items = new Subject<Gallery[]>();
+        this.get();
     }
     get() {
         let url = '/frog/gallery';
