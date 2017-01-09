@@ -32,7 +32,7 @@ import { TagsListComponent } from '../tags/tags-list.component';
                             <i class="material-icons">help_outline</i>
                         </a>
                     </li>
-                    <li class="right">
+                    <li *ngIf="user?.isManager" class="right">
                         <a (click)="tagslist.show()">
                             <i class="material-icons">loyalty</i>
                         </a>
