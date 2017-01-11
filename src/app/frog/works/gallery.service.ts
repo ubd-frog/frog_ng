@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Request, RequestMethod, Response, RequestOptions, URLSearchParams } from '@angular/http';
 import { Title } from '@angular/platform-browser';
 
-import { Subject } from 'rxjs/Subject';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { User, Gallery } from '../shared/models';
 import { WorksService } from './works.service';
@@ -10,12 +10,12 @@ import { WorksService } from './works.service';
 
 @Injectable()
 export class GalleryService {
-    public items: Subject<Gallery[]>;
+    public items: ReplaySubject<Gallery[]>;
     private _items: Gallery[];
     
     constructor(private http:Http, private title: Title, private service: WorksService) {
         this._items = [];
-        this.items = new Subject<Gallery[]>();
+        this.items = new ReplaySubject<Gallery[]>();
         this.get();
     }
     get() {
