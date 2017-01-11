@@ -89,4 +89,20 @@ export class TagsService {
         options.body = {tags: ids}
         this.http.post(url, options).subscribe(() => this.get());
     }
+    rename(tag: Tag) {
+        let url = `/frog/tag/${tag.id}/`;
+        let options = new RequestOptions();
+        options.body = {
+            name: tag.name,
+            artist: tag.artist
+        }
+
+        return this.http.put(url, options);
+    }
+    remove(tag: Tag) {
+        let url = `/frog/tag/${tag.id}/`;
+        let options = new RequestOptions();
+
+        return this.http.delete(url, options);
+    }
 }
