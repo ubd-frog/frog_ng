@@ -108,7 +108,7 @@ declare var $:any;
         'ul > div > i { cursor: pointer; }',
         
         '.fixed-action-btn { top: 82px; right: 24px; height: 55px; }',
-        '#remove_prompt { z-index: 4000; }',
+        '#remove_prompt { z-index: 4000 !important; }',
         '.stack { position: relative; height: 256px; }',
         '.stack img { position: absolute; width: 128px; border: 1px solid #ccc; border-bottom-width: 20px; }',
         '.side-nav { overflow-y: inherit; }'
@@ -159,6 +159,7 @@ export class SelectionDetailComponent implements AfterViewInit {
     }
     ngAfterViewInit() {
         this.userinput.query = '';
+        $('#remove_prompt').modal();
     }
     @HostListener('window:keydown', ['$event'])
     keyDownEvent(event: KeyboardEvent) {
@@ -186,15 +187,15 @@ export class SelectionDetailComponent implements AfterViewInit {
         this.tags = tags;
     }
     removePrompt() {
-        $('#remove_prompt').openModal();
+        $('#remove_prompt').modal('open');
     }
     cancelPrompt() {
-        $('#remove_prompt').closeModal();
+        $('#remove_prompt').modal('close');
     }
     removeItems() {
-        this.cancelPrompt();
         this.works.remove(this.items);
         this.service.clear();
+        this.cancelPrompt();
     }
     addTag(event: any) {
         this.tagssservice.create(event.tag.name).subscribe(tag => {
