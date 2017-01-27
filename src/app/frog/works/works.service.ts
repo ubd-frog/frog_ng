@@ -109,6 +109,7 @@ export class WorksService {
         });
     }
     addTerm(term:any, bucket:number=0, append:boolean=false) {
+        term = (parseFloat(term) % 1 === 0) ? parseInt(term) : encodeURIComponent(term);
         if (!append) {
             this.terms[bucket].length = 0;
         }

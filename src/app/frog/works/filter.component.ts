@@ -100,13 +100,13 @@ export class FilterComponent implements OnInit, OnDestroy {
             this.service.reset();
             if (params['bucket1']) {
                 params['bucket1'].split('+').forEach(element => {
-                    this.service.addTerm(parseInt(element) || element, 0, true);
+                    this.service.addTerm(element, 0, true);
                 });
             }
             
             if (params['bucket2']) {
                 params['bucket2'].split('+').forEach(element => {
-                    this.service.addTerm(parseInt(element) || element, 1, true);
+                    this.service.addTerm(element, 1, true);
                 });
             }
 
