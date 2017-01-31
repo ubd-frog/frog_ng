@@ -50,6 +50,7 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
     private prefs: Object = {};
     private thumbnail: string;
     private viewportsub: Subscription;
+    private loaded: boolean;
 
     constructor(
         private element: ElementRef,
@@ -80,7 +81,8 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
     }
     ngAfterViewInit() {
         this.viewportsub = this.viewportservice.guids.subscribe(guids => {
-            if (guids.indexOf(this.item.guid) != -1 && this.thumbnail != this.item.thumbnail) {
+            if (guids.indexOf(this.item.guid) != -1 && !this.loaded) {
+                this.loaded = true;
                 setTimeout(() => {this.load();});
             }
         });
