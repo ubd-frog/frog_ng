@@ -124,10 +124,10 @@ export class TagsListComponent implements OnDestroy {
     }
     sortBy(attr: string) {
         this.tags.sort((a, b) => {
-            if (a[attr] > b[attr]) {
+            if (a[attr].toLowerCase() > b[attr].toLowerCase()) {
                 return 1;
             }
-            else if (b[attr] > a[attr]) {
+            else if (b[attr].toLowerCase() > a[attr].toLowerCase()) {
                 return -1;
             }
             return 0;
