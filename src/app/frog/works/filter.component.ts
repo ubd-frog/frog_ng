@@ -93,6 +93,8 @@ export class FilterComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.galleryservice.branding().subscribe(data => {
             this.branding = data;
+            // -- Set the favicon
+            document.getElementById('favicon').setAttribute('href', data.favicon);
         });
         this.userservice.user.subscribe(user => this.user = user);
         this.sub = this.route.params.subscribe(params => {
@@ -103,7 +105,7 @@ export class FilterComponent implements OnInit, OnDestroy {
                     this.service.addTerm(element, 0, true);
                 });
             }
-            
+
             if (params['bucket2']) {
                 params['bucket2'].split('+').forEach(element => {
                     this.service.addTerm(element, 1, true);
