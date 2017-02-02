@@ -44,7 +44,7 @@ export class AutocompleteComponent {
         this.query = '';
         this.selectedIndex = -1;
         this.elementRef = element;
-        
+
         service.tags.subscribe({
             next: (items) => {
                 this.tags = items;
@@ -52,10 +52,12 @@ export class AutocompleteComponent {
         });
     }
     filter(event) {
-        if (event.code === "ArrowDown" && this.selectedIndex < this.filteredList.length) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (event.code === "ArrowDown") {
             this.selectedIndex++;
         }
-        else if (event.code === "ArrowUp" && this.selectedIndex > 0) {
+        else if (event.code === "ArrowUp") {
             this.selectedIndex--;
         }
         else {
@@ -68,6 +70,7 @@ export class AutocompleteComponent {
                 this.filteredList = [];
             }
         }
+        this.selectedIndex = (this.filteredList.length + this.selectedIndex) % this.filteredList.length;
     }
     select(event: any, tag: Tag) {
         if (!tag) {
@@ -83,7 +86,7 @@ export class AutocompleteComponent {
         let obj = {
             tag: tag,
             event: event
-        }
+        };
         this.onSelect.emit(obj);
     }
     handleClick(event) {
