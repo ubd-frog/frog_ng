@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http, Request, RequestMethod, Response, RequestOptions, URLSearchParams } from '@angular/http';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Http, RequestOptions, URLSearchParams } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
+import { extractValues, extractValue } from '../shared/common';
 import { IItem, CImage, CVideo, Tag, User, Notification } from '../shared/models';
 import { NotificationService } from '../notifications/notification.service';
 
@@ -13,18 +13,16 @@ import { NotificationService } from '../notifications/notification.service';
 export class WorksService {
     private items: IItem[];
     private guids: string[];
-    private requested: number;
     private isLoading: boolean;
     public routecache: string;
     public results: BehaviorSubject<IItem[]>;
     public loading: BehaviorSubject<boolean>;
     public id: number;
     public selection: IItem[];
-    public focusItem: IItem;
     public terms: Array<Array<any>>;
     public scrollpos: number;
-    
-    constructor(private http:Http, private route: ActivatedRoute, private notify: NotificationService) {
+
+    constructor(private http:Http, private notify: NotificationService) {
         this.items = [];
         this.guids = [];
         this.terms = [[], []];
@@ -39,7 +37,7 @@ export class WorksService {
             return;
         }
         this.routecache = window.location.pathname;
-        
+
         if (id > 0) {
             this.id = id;
         }
@@ -58,13 +56,13 @@ export class WorksService {
         this.loading.next(true);
 
         this.http.get(url, options)
-            .map(this.extractData).subscribe(items => {
+            .map(extractValues).subscribe(items => {
                 if (!append) {
                     this.items.length = 0;
                     this.guids.length = 0;
                 }
-                
-                for (var item of items) {
+
+                for (let item of items) {
                     let obj: IItem;
                     switch(item.guid.charAt(0)) {
                         case '1':
@@ -74,9 +72,8 @@ export class WorksService {
                             obj = <CVideo>item;
                             break;
                     }
-                    
-                    let author = <User>obj.author;
-                    obj.author = author;
+
+                    obj.author = <User>obj.author;
 
                     this.items.push(obj);
                     this.guids.push(obj.guid);
@@ -90,14 +87,6 @@ export class WorksService {
         if (index > -1) {
             return this.items[index];
         }
-    }
-    extractData(res: Response) {
-        let body = res.json();
-        return body.values || [];
-    }
-    extractValue(res: Response) {
-        let body = res.json();
-        return body.value || null;
     }
     handleError(error: any) {
         console.error(error);
@@ -120,7 +109,7 @@ export class WorksService {
     likeItem(item:IItem) {
         let url = '/frog/like/' + item.guid;
         this.notify.add(new Notification('Liked', 'thumb_up'));
-        this.http.put(url, null).map(this.extractData).subscribe(items => {
+        this.http.put(url, null).map(extractValues).subscribe(items => {
             let index = this.guids.indexOf(items[0].guid);
             this.items[index].like_count = items[0].like_count;
         }, error => console.log('error loading items'));
@@ -128,22 +117,22 @@ export class WorksService {
     update(item: IItem) {
         let url = '/frog/piece/' + item.guid + '/';
         let options = new RequestOptions();
-        
+
         options.body = {title: item.title, description: item.description};
         options.withCredentials = true;
         this.notify.add(new Notification('Item details updated', 'done'));
-        return this.http.put(url, options).map(this.extractValue);
+        return this.http.put(url, options).map(extractValue);
     }
     setArtist(items: IItem[], user: User) {
         let url = '/frog/switchartist';
         let options = new RequestOptions();
-        
+
         options.body = {
             guids: items.map(function(_) { return _.guid; }).join(','),
             artist: user.id
         };
         options.withCredentials = true;
-        this.http.post(url, options).map(this.extractData).subscribe(data => {
+        this.http.post(url, options).map(extractValues).subscribe(() => {
             items.map(function(_) { _.author = user; });
             this.notify.add(new Notification('New artist set', 'done'));
         });
@@ -152,21 +141,21 @@ export class WorksService {
         let url = '/frog/tag/manage';
         let options = new RequestOptions();
         this.notify.add(new Notification('Tags modified', 'label'));
-        
+
         options.body = {
             guids: items.map(function(_) { return _.guid; }).join(','),
             add: add.map(function(_) { return _.id; }).join(','),
             rem: remove.map(function(_) { return _.id; }).join(',')
         };
         options.withCredentials = true;
-        return this.http.post(url, options).map(this.extractData);
+        return this.http.post(url, options).map(extractValues);
     }
     download(items: IItem[]) {
         let url = '/frog/download';
         let options = new RequestOptions();
         options.search = new URLSearchParams();
         options.search.set('guids', items.map(function(_) { return _.guid; }).join(','));
-        return this.http.get(url, options).map(this.extractData);
+        return this.http.get(url, options).map(extractValues);
     }
     addItems(items: IItem[]) {
         while (items.length > 0) {
@@ -207,14 +196,14 @@ export class WorksService {
             guids: items.map(function(_) { return _.guid; }).join(',')
         };
         options.withCredentials = true;
-        this.http.delete(url, options).map(this.extractData).subscribe();
+        this.http.delete(url, options).map(extractValues).subscribe();
     }
     resolveGuids(guids: string[]) {
         let url = '/frog/p';
         let options = new RequestOptions();
         options.search = new URLSearchParams();
         options.search.set('guids', guids.join(','));
-        return this.http.get(url, options).map(this.extractData);
+        return this.http.get(url, options).map(extractValues);
     }
     /**
      * Copy or Move items from one gallery to another
@@ -222,11 +211,11 @@ export class WorksService {
     copyItems(guids: string[], copyfrom: number = null, copyTo: number = null) {
         let url = '/frog/gallery/' + (copyTo || this.id);
         let options = new RequestOptions();
-        
+
         options.body = {guids: guids.join(','), 'from': copyfrom};
         options.withCredentials = true;
         this.loading.next(true);
-        this.http.put(url, options).map(this.extractValue).subscribe(() => {
+        this.http.put(url, options).map(extractValue).subscribe(() => {
             this.resolveGuids(guids).subscribe(items => {
                 this.loading.next(false);
                 if (copyfrom && copyTo) {
@@ -239,19 +228,18 @@ export class WorksService {
         });
     }
     upload(item: IItem, files: File[], reset: boolean = false) {
-        let url: string = '/frog/piece/' + item.guid + '/';
         return Observable.create(observer => {
             let fd: FormData = new FormData();
             let xhr: XMLHttpRequest = new XMLHttpRequest();
             let url: string = '/frog/piece/' + item.guid + '/';
-            
+
             if (reset) {
                 fd.append('reset-thumbnail', '1');
             }
             else {
                 fd.append('file', files[0], files[0].name);
             }
-            
+
             xhr.onreadystatechange = () => {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
@@ -262,7 +250,7 @@ export class WorksService {
                         observer.error(xhr.response);
                     }
                 }
-            }
+            };
 
             xhr.open('POST', url, true);
             xhr.withCredentials = true;
@@ -272,9 +260,9 @@ export class WorksService {
     cropItem(item: IItem, x: number, y: number, width: number, height: number) {
         let url = '/frog/piece/' + item.guid + '/';
         let options = new RequestOptions();
-        
+
         options.body = {crop: [x, y, width, height]};
         options.withCredentials = true;
-        return this.http.post(url, options).map(this.extractValue);
+        return this.http.post(url, options).map(extractValue);
     }
 }
