@@ -74,7 +74,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     width: number = 0;
     height: number = 0;
-    
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -130,31 +130,37 @@ export class ViewerComponent implements OnInit, OnDestroy {
         this.width = window.innerWidth;
         this.height = window.innerHeight;
     }
-    @HostListener('window:keydown', ['$event'])
+    @HostListener('window:keyup', ['$event'])
     keyDownEvent(event: KeyboardEvent) {
+        let triggered = false;
         if (event.key === 'ArrowLeft' || event.key === 'Left') {
-            event.preventDefault();
+            triggered = true;
             this.previous();
         }
         if (event.key === 'ArrowRight' || event.key === 'Right') {
-            event.preventDefault();
+            triggered = true;
             this.next();
         }
         if (event.key === '2') {
-            event.preventDefault();
+            triggered = true;
             this.fitToWindow();
         }
         if (event.key === '1') {
-            event.preventDefault();
+            triggered = true;
             this.original();
         }
         if (event.key === 'Escape' || event.key === 'Esc') {
-            event.preventDefault();
+            triggered = true;
             this.close(event);
         }
         if (event.key === 'Tab') {
-            event.preventDefault();
+            triggered = true;
             this.setFocus();
+        }
+
+        if (triggered) {
+            event.stopPropagation();
+            event.preventDefault();
         }
     }
     next() {
@@ -208,7 +214,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
                     this.itemtype = 'video';
                     break;
             }
-            
+
             this.selectionservice.setDetailItem(this.objects[index], false);
         }
     }

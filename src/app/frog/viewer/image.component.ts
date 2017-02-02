@@ -26,7 +26,7 @@ import { SelectionService } from '../shared/selection.service';
             </div>
         </div>
     </div>
-    <img #img src="{{object.image}}" (mousedown)="down($event)" (mouseup)="up($event)" (mousemove)="move($event)" />
+    <img #img src="{{object.image}}" (mousedown)="down($event)" (mouseup)="up($event)" (mousemove)="move($event)" (mousewheel)="zoom($event)" (DOMMouseScroll)="zoomFF($event)" />
     <canvas #canvas width="{{width}}" height="{{height}}"></canvas>`,
     styles: [
         '.spinner { position: fixed; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%; color: #fff; font-size: 36px; text-align: center; padding-top: 50%; z-index: 3001; }',
@@ -63,7 +63,7 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         this.ctx = this.canvas.nativeElement.getContext('2d');
         this.element = this.img.nativeElement;
         this.clear();
-        
+
         Observable.fromEvent(<any>this.element, 'load').subscribe(event => {
             this.resize();
         });
@@ -119,7 +119,6 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
             this.render();
         }
     }
-    @HostListener('window:mousewheel', ['$event'])
     zoom(event:WheelEvent) {
         let scale:number = 1.0;
         if (event.deltaY < 0) {
@@ -137,7 +136,6 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         this.main = this.xform;
         this.render();
     }
-    @HostListener('window:DOMMouseScroll', ['$event'])
     zoomFF(event:WheelEvent) {
         let scale:number = 1.0;
         if (event.detail < 0) {
