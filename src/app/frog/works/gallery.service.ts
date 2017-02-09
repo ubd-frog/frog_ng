@@ -57,4 +57,14 @@ export class GalleryService {
     branding() {
         return this.http.get('/frog/branding').map(extractValue);
     }
+    subscribe(id: number, frequency: number) {
+        let url = `/frog/gallery/${id}/subscribe`;
+        let options = new RequestOptions();
+        options.body = {
+            frequency: frequency
+        };
+
+        options.withCredentials = true;
+        this.http.post(url, options).map(extractValue).subscribe();
+    }
 }

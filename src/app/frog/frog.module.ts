@@ -35,6 +35,7 @@ import { LoginComponent } from './user/login.component';
 import { LogoutComponent } from './user/logout.component';
 import { PreferencesComponent } from './user/preferences.component';
 import { UserInputComponent } from './user/userinput.component';
+import { GallerySubscriptionComponent } from './user/gallery-subscription.component';
 import { UserService } from './user/user.service';
 import { PreferencesService } from './user/preferences.service';
 import { LoggedInGuard } from './user/loggedin.guard';
@@ -72,11 +73,11 @@ import { TagsService } from './tags/tags.service';
         CropperComponent,
 
         SelectionDetailComponent,
-        AutocompleteComponent, 
+        AutocompleteComponent,
         CommentComponent,
         CommentURLPipe,
-        CapitalizePipe, 
-        TagArtistFilterPipe, 
+        CapitalizePipe,
+        TagArtistFilterPipe,
 
         ViewerComponent,
         ImageComponent,
@@ -90,6 +91,7 @@ import { TagsService } from './tags/tags.service';
 
         PreferencesComponent,
         UserInputComponent,
+        GallerySubscriptionComponent,
 
         LoginComponent,
         LogoutComponent,
