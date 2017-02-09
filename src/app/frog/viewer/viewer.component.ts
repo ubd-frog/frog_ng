@@ -130,14 +130,14 @@ export class ViewerComponent implements OnInit, OnDestroy {
         this.width = window.innerWidth;
         this.height = window.innerHeight;
     }
-    @HostListener('window:keyup', ['$event'])
+    @HostListener('window:keydown', ['$event'])
     keyDownEvent(event: KeyboardEvent) {
         let triggered = false;
-        if (event.key === 'ArrowLeft' || event.key === 'Left') {
+        if (event.key === 'ArrowLeft' || event.key === 'Left' || event.key === 'a') {
             triggered = true;
             this.previous();
         }
-        if (event.key === 'ArrowRight' || event.key === 'Right') {
+        if (event.key === 'ArrowRight' || event.key === 'Right' || event.key === 'd') {
             triggered = true;
             this.next();
         }
@@ -153,7 +153,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
             triggered = true;
             this.close(event);
         }
-        if (event.key === 'Tab') {
+        if (event.key === 'Tab' || event.keyCode === 0 || event.keyCode === 9) {
             triggered = true;
             this.setFocus();
         }
