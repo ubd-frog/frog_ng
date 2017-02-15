@@ -70,7 +70,7 @@ export class AutocompleteComponent {
                 this.filteredList = [];
             }
         }
-        this.selectedIndex = (this.filteredList.length + this.selectedIndex) % this.filteredList.length;
+        this.selectedIndex = (this.filteredList.length + this.selectedIndex) % this.filteredList.length || -1;
     }
     select(event: any, tag: Tag) {
         if (!tag) {
