@@ -8,7 +8,7 @@ import { Tag } from './models';
     template: `
         <div id='root'>
             <div class="input-field">
-                <input id="search" type="search" class="validate filter-input input autocomplete" [(ngModel)]=query (keyup)="filter($event)" (keyup.enter)="select()">
+                <input id="search" type="search" class="validate filter-input input autocomplete" [(ngModel)]=query (keydown)="filter($event)" (keydown.enter)="select()">
                 <label for="search"><i class="material-icons">{{icon}}</i></label>
                 <i class="material-icons" (click)="filteredList = []">close</i>
             </div>
@@ -52,7 +52,6 @@ export class AutocompleteComponent {
         });
     }
     filter(event) {
-        event.preventDefault();
         event.stopPropagation();
         if (event.code === "ArrowDown") {
             this.selectedIndex++;
