@@ -218,12 +218,18 @@ export class WorksService {
         this.http.put(url, options).map(extractValue).subscribe(() => {
             this.resolveGuids(guids).subscribe(items => {
                 this.loading.next(false);
+                let verb: string;
                 if (copyfrom && copyTo) {
                     this.remove(items);
+                    verb = 'copied';
                 }
                 else if (copyTo == null) {
                     this.addItems(items);
+                    verb = 'moved';
                 }
+
+                let message = `Items ${verb} to <a href="/w/${copyTo}">FOO</a>`;
+                this.notify.add(new Notification(message));
             });
         });
     }
