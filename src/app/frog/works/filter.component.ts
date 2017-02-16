@@ -99,6 +99,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.userservice.user.subscribe(user => this.user = user);
         this.sub = this.route.params.subscribe(params => {
             this.galleryid = +params['id'];
+            this.galleryservice.setGalleryId(this.galleryid);
             this.service.reset();
             if (params['bucket1']) {
                 params['bucket1'].split('+').forEach(element => {

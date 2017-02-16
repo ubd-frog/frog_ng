@@ -106,7 +106,7 @@ declare var $:any;
         '.separator { height: 1.8em; }',
         '.separator-sm { height: 0.9em; }',
         'ul > div > i { cursor: pointer; }',
-        
+
         '.fixed-action-btn { top: 82px; right: 24px; height: 55px; }',
         '#remove_prompt { z-index: 4000 !important; }',
         '.stack { position: relative; height: 256px; }',
@@ -174,7 +174,7 @@ export class SelectionDetailComponent implements AfterViewInit {
     aggregateTags() {
         let tags = [];
         let ids = [];
-        
+
         for (let item of this.items) {
             for (let tag of item.tags) {
                 if (ids.indexOf(tag.id) == -1) {
@@ -202,7 +202,7 @@ export class SelectionDetailComponent implements AfterViewInit {
             this.works.editTags(this.items, [tag], []).subscribe(() => {
                 let found = false;
                 let tags = this.tags.slice(0);
-                
+
                 for (let t of this.tags) {
                     if (tag.id == t.id) {
                         found = true;

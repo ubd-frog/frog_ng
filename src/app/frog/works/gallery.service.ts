@@ -6,17 +6,20 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { extractValues, extractValue } from '../shared/common';
 import { Gallery } from '../shared/models';
-import { WorksService } from './works.service';
+import { ActivatedRoute} from "@angular/router";
 
 
 @Injectable()
 export class GalleryService {
     public items: ReplaySubject<Gallery[]>;
+    public gallery: ReplaySubject<Gallery>;
     private _items: Gallery[];
+    private id: number;
 
-    constructor(private http:Http, private title: Title, private service: WorksService) {
+    constructor(private http:Http, private title: Title) {
         this._items = [];
         this.items = new ReplaySubject<Gallery[]>();
+        this.gallery = new ReplaySubject<Gallery>();
         this.get();
     }
     get() {
@@ -26,18 +29,13 @@ export class GalleryService {
         options.search.set('json', '1');
         options.search.set('timestamp', new Date().getTime().toString());
 
-        this.http.get(url, options)
-            .map(extractValues).subscribe(items => {
-                this._items = items;
-                this.items.next(this._items);
-                this.service.results.subscribe(() => {
-                    this._items.map(item => {
-                        if (item.id == this.service.id) {
-                            this.title.setTitle(item.title);
-                        }
-                    });
-                });
-            }, error => console.log(`Could not query Gallery objects: ${error}`));
+        this.http.get(url, options).map(extractValues).subscribe(items => {
+            this._items = items;
+            this.items.next(this._items);
+            if (this.id) {
+                this.setGalleryId(this.id);
+            }
+        }, error => console.log(`Could not query Gallery objects: ${error}`));
     }
     create(title: string) {
         let url = '/frog/gallery';
@@ -66,5 +64,13 @@ export class GalleryService {
 
         options.withCredentials = true;
         this.http.post(url, options).map(extractValue).subscribe();
+    }
+    setGalleryId(id: number) {
+        this.id = id;
+        let gallery = this._items.find(g => g.id == id);
+        if (gallery) {
+            this.gallery.next(gallery);
+            this.title.setTitle(gallery.title);
+        }
     }
 }
