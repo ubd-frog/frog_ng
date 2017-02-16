@@ -5,8 +5,9 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { extractValues, extractValue } from '../shared/common';
-import { IItem, CImage, CVideo, Tag, User, Notification } from '../shared/models';
+import {IItem, CImage, CVideo, Tag, User, Notification, Gallery} from '../shared/models';
 import { NotificationService } from '../notifications/notification.service';
+import {GalleryService} from "./gallery.service";
 
 
 @Injectable()
@@ -14,6 +15,7 @@ export class WorksService {
     private items: IItem[];
     private guids: string[];
     private isLoading: boolean;
+    private gallery: Gallery;
     public routecache: string;
     public results: BehaviorSubject<IItem[]>;
     public loading: BehaviorSubject<boolean>;
@@ -22,7 +24,7 @@ export class WorksService {
     public terms: Array<Array<any>>;
     public scrollpos: number;
 
-    constructor(private http:Http, private notify: NotificationService) {
+    constructor(private http:Http, private notify: NotificationService, private galleryservice: GalleryService) {
         this.items = [];
         this.guids = [];
         this.terms = [[], []];
@@ -31,6 +33,7 @@ export class WorksService {
         this.isLoading = false;
         this.results = new BehaviorSubject<IItem[]>(this.items);
         this.loading = new BehaviorSubject<boolean>(this.isLoading);
+        galleryservice.gallery.subscribe(gallery => this.gallery = gallery);
     }
     get(id:number=0, append:boolean=false) {
         if (window.location.pathname == this.routecache && !append) {
@@ -228,7 +231,7 @@ export class WorksService {
                     verb = 'moved';
                 }
 
-                let message = `Items ${verb} to <a href="/w/${copyTo}">FOO</a>`;
+                let message = `Items ${verb} to <a href="/w/${copyTo}">${this.gallery.title}</a>`;
                 this.notify.add(new Notification(message));
             });
         });
