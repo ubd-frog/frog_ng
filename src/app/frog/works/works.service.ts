@@ -221,17 +221,16 @@ export class WorksService {
         this.http.put(url, options).map(extractValue).subscribe(() => {
             this.resolveGuids(guids).subscribe(items => {
                 this.loading.next(false);
-                let verb: string;
+                let verb = 'moved';
                 if (copyfrom && copyTo) {
                     this.remove(items);
                     verb = 'copied';
                 }
                 else if (copyTo == null) {
                     this.addItems(items);
-                    verb = 'moved';
                 }
 
-                let message = `Items ${verb} to <a href="/w/${copyTo}">${this.gallery.title}</a>`;
+                let message = `Items ${verb}! <a href="/w/${copyTo}">Go There</a>`;
                 this.notify.add(new Notification(message));
             });
         });
