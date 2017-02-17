@@ -1,4 +1,7 @@
-import { Component, Input, ViewChild, OnInit, OnDestroy, AfterContentInit, HostListener, trigger, state, style, transition, animate } from '@angular/core';
+import {
+    Component, Input, ViewChild, OnInit, OnDestroy, AfterContentInit, HostListener, trigger, state, style,
+    transition, animate, AfterViewInit
+} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
@@ -6,7 +9,7 @@ import { Subscription } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { WorksService } from '../works/works.service';
 import { CropperComponent } from '../works/cropper.component';
-import { IItem, Tag, User } from '../shared/models';
+import {IItem, Tag, User, Gallery} from '../shared/models';
 import { CapitalizePipe } from '../shared/capitalize.pipe';
 import { TagArtistFilterPipe } from '../shared/tag-artist-filter.pipe';
 import { AutocompleteComponent } from '../shared/autocomplete.component';
@@ -15,6 +18,9 @@ import { CommentComponent } from '../shared/comment.component';
 import { CommentService } from '../shared/comment.service';
 import { TagsService } from '../tags/tags.service';
 import { SelectionService } from '../shared/selection.service';
+import {GalleryService} from "../works/gallery.service";
+
+declare var $:any;
 
 @Component({
     selector: 'works-detail',
@@ -106,6 +112,24 @@ import { SelectionService } from '../shared/selection.service';
                     </ul>
                 </div>
             </div>
+            <div class="row">
+                <div class="col s6">
+                    <a href="/frog/download?guids={{item.guid}}" class="waves-effect waves-light btn light-green"><i class="material-icons left">cloud_download</i> Download</a>
+                </div>
+                <div *ngIf="gallery" class="col s6">
+                    <a (click)="copyNav.toggle()" class="waves-effect waves-light btn blue lighten-2"><i class="material-icons left">content_copy</i> Copy To</a>
+                    <works-nav #copyNav (onSelect)="gallerySelectHandler($event)"></works-nav>
+                </div>
+            </div>
+            <div *ngIf="gallery" class="row">
+                <div class="col s6">
+                    <a (click)="removePrompt()" class="waves-effect waves-light btn red darken-4"><i class="material-icons left">delete</i> Remove</a>
+                </div>
+                <div class="col s6">
+                    <a (click)="moveNav.toggle()" class="waves-effect waves-light btn blue"><i class="material-icons left">exit_to_app</i> Move To</a>
+                    <works-nav #moveNav (onSelect)="gallerySelectHandler($event, true)"></works-nav>
+                </div>
+            </div>
             <hr />
             <div class="row">
                 <div class="col s12">
@@ -150,6 +174,18 @@ import { SelectionService } from '../shared/selection.service';
         </div>
     </ul>
     
+    <div id="remove_prompt_single" class="modal">
+        <div class="modal-content">
+            <h4>Remove Item From Gallery?</h4>
+            <p>Are you sure you wish to remove this item from the current gallery?</p>
+            <small>This does not delete anything, it simply removes the item</small>
+        </div>
+        <div class="modal-footer">
+            <a (click)="removeItems()" class=" modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
+            <a (click)="cancelPrompt()" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
+        </div>
+    </div>
+    
     <cropper [item]="item" (onCrop)="reloadThumbnail($event)"></cropper>`,
     styles: [
         '.side-nav { padding: 6px .25rem 0 .25rem; width: 360px; z-index: 3010; }',
@@ -183,7 +219,9 @@ import { SelectionService } from '../shared/selection.service';
         '.file-field > a { margin: 0 12px 0 0; }',
         'textarea { border: none; border-left: 4px solid #4caf50; outline: none; transition: height 500ms; background-color: #1b1b1b; }',
         'textarea.expanded { height: 100px; }',
-        'textarea::-webkit-input-placeholder { color: #707070; }'
+        'textarea::-webkit-input-placeholder { color: #707070; }',
+        '.side-nav { overflow-y: inherit; }',
+        '#remove_prompt_single { z-index: 4000 !important; }',
     ],
     animations: [
         trigger('panelState', [
@@ -198,7 +236,7 @@ import { SelectionService } from '../shared/selection.service';
         ])
     ]
 })
-export class WorksDetailComponent implements OnDestroy {
+export class WorksDetailComponent implements OnDestroy, AfterViewInit {
     @ViewChild(CropperComponent) cropper: CropperComponent;
 
     private item: IItem;
@@ -215,6 +253,7 @@ export class WorksDetailComponent implements OnDestroy {
     private editing: boolean = false;
     private visible: string = 'hide';
     private cachebust: number = new Date().getTime();
+    private gallery: Gallery;
     private subs: Subscription[];
 
     constructor(
@@ -223,6 +262,7 @@ export class WorksDetailComponent implements OnDestroy {
         private userservice: UserService,
         private tagssservice: TagsService,
         private commentservice: CommentService,
+        private galleryservice: GalleryService,
         private router: Router) {
         this.comments = [];
         this.subs = [];
@@ -265,16 +305,21 @@ export class WorksDetailComponent implements OnDestroy {
             this.subs.push(sub);
         });
         this.subs.push(sub);
+        sub = this.galleryservice.gallery.subscribe(gallery => this.gallery = gallery);
+        this.subs.push(sub);
         userservice.get();
     }
     ngOnDestroy() {
         this.subs.forEach(sub => sub.unsubscribe());
     }
+    ngAfterViewInit() {
+        $('#remove_prompt_single').modal();
+    }
     @HostListener('window:keydown', ['$event'])
     keyDownEvent(event: KeyboardEvent) {
         if (event.key === 'Escape') {
             event.preventDefault();
-            this.visible == 'hide';
+            this.visible = 'hide';
         }
     }
     show() {
@@ -380,5 +425,25 @@ export class WorksDetailComponent implements OnDestroy {
                 this.works.addItems([item]);
             });
         }
+    }
+    gallerySelectHandler(gallery: Gallery, move: boolean = false) {
+        if (move) {
+            this.works.copyItems([this.item.guid], this.works.id, this.gallery.id);
+        }
+        else {
+            this.works.copyItems([this.item.guid], null, this.gallery.id);
+        }
+    }
+    removePrompt() {
+        $('#remove_prompt_single').modal('open');
+    }
+    cancelPrompt() {
+        $('#remove_prompt_single').modal('close');
+    }
+    removeItems() {
+        this.works.remove([this.item]);
+        this.service.clear();
+        this.cancelPrompt();
+        this.hide();
     }
 }
