@@ -428,10 +428,10 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
     }
     gallerySelectHandler(gallery: Gallery, move: boolean = false) {
         if (move) {
-            this.works.copyItems([this.item.guid], this.works.id, this.gallery.id);
+            this.works.copyItems([this.item.guid], this.works.id, gallery.id);
         }
         else {
-            this.works.copyItems([this.item.guid], null, this.gallery.id);
+            this.works.copyItems([this.item.guid], null, gallery.id);
         }
     }
     removePrompt() {
