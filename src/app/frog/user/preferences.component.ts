@@ -88,7 +88,7 @@ import { GalleryService } from '../works/gallery.service';
                     <h6 class="grey-text text-lighten-1">Gallery Subscriptions</h6>
                     <ul>
                         <li *ngFor="let gallery of galleries;">
-                            <gallery-subscription [gallery]="gallery" [subscriptions]="prefs.subscriptions" ></gallery-subscription>
+                            <gallery-subscription *ngIf="prefs.subscriptions" [gallery]="gallery" [subscriptions]="prefs.subscriptions" ></gallery-subscription>
                         </li>
                     </ul>
                 </div>
