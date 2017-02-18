@@ -220,7 +220,6 @@ declare var $:any;
         'textarea { border: none; border-left: 4px solid #4caf50; outline: none; transition: height 500ms; background-color: #1b1b1b; }',
         'textarea.expanded { height: 100px; }',
         'textarea::-webkit-input-placeholder { color: #707070; }',
-        '.side-nav { overflow-y: inherit; }',
         '#remove_prompt_single { z-index: 4000 !important; }',
     ],
     animations: [
