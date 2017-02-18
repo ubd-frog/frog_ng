@@ -76,6 +76,11 @@ export class WorksService {
                             break;
                     }
 
+                    if (!obj) {
+                        console.error(item);
+                        continue;
+                    }
+
                     obj.author = <User>obj.author;
 
                     this.items.push(obj);
