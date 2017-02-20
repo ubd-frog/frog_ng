@@ -52,9 +52,14 @@ import "rxjs/add/operator/mergeMap";
                     <li>
                         <autocomplete (onSelect)="addTag($event)"></autocomplete>
                     </li>
-                    <li id='filtered_results' *ngFor="let bucket of service.terms; let i = index;">
-                        <tag *ngFor="let item of bucket; let j = index;" [item]="item" (onClose)="removeTag($event, i, j)"></tag><span *ngIf="service.terms.length > 1"> &amp; </span>
-                    </li>
+                    <ng-container *ngFor="let bucket of service.terms; let i = index; let l = last;">
+                        <li>
+                            <tag *ngFor="let item of bucket; let j = index;" [item]="item" (onClose)="removeTag($event, i, j)"></tag>
+                        </li>
+                        <li *ngIf="!l">
+                            <i class="material-icons">add</i>
+                        </li>
+                    </ng-container>
                 </ul>
             </div>
         </nav>
@@ -140,7 +145,7 @@ export class FilterComponent implements OnInit, OnDestroy {
                 query.push(bucket.join('|'));
             }
         }
-        if (query[0].length > 0) {
+        if (query.length && query[0].length > 0) {
             this.router.navigate([`w/${this.galleryid}/${query.join('+')}`]);
         }
         else {
