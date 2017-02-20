@@ -6,8 +6,7 @@ import { LoggedInGuard } from '../user/loggedin.guard';
 export const worksRoutes: Routes = [
     { path: '', redirectTo: '/w/1', pathMatch: 'full' },
     { path: 'w/:id', component: WorksComponent, canActivate: [LoggedInGuard] },
-    { path: 'w/:id/:bucket1', component: WorksComponent, canActivate: [LoggedInGuard] },
-    { path: 'w/:id/:bucket1/:bucket2', component: WorksComponent, canActivate: [LoggedInGuard] }
+    { path: 'w/:id/:terms', component: WorksComponent, canActivate: [LoggedInGuard] },
 ];
 
 export const worksRoutingProviders: any[] = [];

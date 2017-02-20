@@ -5,13 +5,14 @@ import { WorksService } from './works.service';
 import { GalleryService } from './gallery.service';
 import { NavigationComponent } from './navigation.component';
 import { Tag, Gallery, User } from '../shared/models';
-import { TagComponent } from '../tags/tag.component';
 import { TagsService } from '../tags/tags.service';
-import { AutocompleteComponent } from '../shared/autocomplete.component';
 import { UploaderService } from '../uploader/uploader.service';
 import { PreferencesService } from '../user/preferences.service';
 import { UserService } from '../user/user.service';
 import { TagsListComponent } from '../tags/tags-list.component';
+
+import {Observable} from "rxjs";
+import "rxjs/add/operator/mergeMap";
 
 
 @Component({
@@ -51,8 +52,8 @@ import { TagsListComponent } from '../tags/tags-list.component';
                     <li>
                         <autocomplete (onSelect)="addTag($event)"></autocomplete>
                     </li>
-                    <li id='filtered_results' *ngFor="let bucket of service.terms">
-                        <tag *ngFor="let item of bucket" [item]="item" (onClose)="removeTag($event)"></tag>
+                    <li id='filtered_results' *ngFor="let bucket of service.terms; let i = index;">
+                        <tag *ngFor="let item of bucket; let j = index;" [item]="item" (onClose)="removeTag($event, i, j)"></tag><span *ngIf="service.terms.length > 1"> &amp; </span>
                     </li>
                 </ul>
             </div>
@@ -98,18 +99,10 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.sub = this.route.params.subscribe(params => {
             this.galleryid = +params['id'];
             this.service.reset();
-            if (params['bucket1']) {
-                params['bucket1'].split('+').forEach(element => {
-                    this.service.addTerm(parseInt(element) || element, 0, true);
-                });
+            if (params['terms']) {
+                let terms = this.dumps(params['terms']);
+                this.service.setTerms(terms);
             }
-            
-            if (params['bucket2']) {
-                params['bucket2'].split('+').forEach(element => {
-                    this.service.addTerm(parseInt(element) || element, 1, true);
-                });
-            }
-
             this.service.get(this.galleryid);
         });
     }
@@ -117,30 +110,39 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.sub.unsubscribe();
     }
     addTag(event: any) {
-        let name = event.tag.id.toString();
-        if (name === '0') {
-            name = event.tag.name;
-        }
-        this.tagservice.resolve(name).subscribe(tag => {
-            let tagid = (tag == null) ? name : tag.id;
-            if (event.shiftKey) {
-                this.addTagString(tagid, 1);
-            }
-            else {
-                this.addTagString(tagid);
-            }
-        });
-    }
-    addTagString(name: string, bucket: number=0) {
-        if (bucket == 0 || this.service.terms[0].length == 0) {
-            this.router.navigate(['w/' + this.galleryid + '/' + name]);
+        if (event.tag.id == 0) {
+            let query = this.parseUserInput(event.tag.name);
+            this.addTagString(query);
         }
         else {
-            this.router.navigate(['w/' + this.galleryid + '/' + this.service.terms[0].join('+') + '/' + name]);
+            this.tagservice.resolve(event.tag.id).subscribe(tag => {
+                let tagid = (tag == null) ? name : tag.id;
+                this.addTagString(tagid);
+            });
         }
     }
-    removeTag(tag:Tag) {
-        this.router.navigate(['w/' + this.galleryid]);
+    addTagString(name: string) {
+        this.router.navigate(['w/' + this.galleryid + '/' + name]);
+    }
+    removeTag(tag:Tag, row: number, col: number) {
+        let terms = this.service.terms.splice(0);
+        terms[row].splice(col, 1);
+        terms = terms.filter(row => row.length > 0);
+        if (terms.length < 2) {
+            terms.push([]);
+        }
+        let query = [];
+        for (let bucket of terms) {
+            if (bucket.length) {
+                query.push(bucket.join('|'));
+            }
+        }
+        if (query[0].length > 0) {
+            this.router.navigate([`w/${this.galleryid}/${query.join('+')}`]);
+        }
+        else {
+            this.router.navigate([`w/${this.galleryid}`]);
+        }
     }
     addFiles(event: Event) {
         let element = <HTMLInputElement>event.target;
@@ -148,5 +150,44 @@ export class FilterComponent implements OnInit, OnDestroy {
     }
     gallerySelectHandler(gallery: Gallery) {
         this.router.navigate(['w/' + gallery.id]);
+    }
+    private parseUserInput(input: string) {
+        input = input.toLocaleLowerCase();
+        let buckets = input.split(' and ');
+        let ors = [];
+        for (let bucket of buckets) {
+            let b = [];
+            for (let value of bucket.split(' or ')) {
+                let tag = this.tagservice.getTagByName(value);
+                if (tag == null) {
+                    b.push(value);
+                }
+                else {
+                    b.push(tag.id);
+                }
+            }
+
+            ors.push(b.join('|'));
+        }
+
+        return ors.join('+');
+    }
+    private dumps(url: string) {
+        let query = [];
+        let buckets = url.split('+');
+        for (let bucket of buckets) {
+            let b = [];
+            for (let value of bucket.split('|')) {
+                if (isNaN(Number(value))) {
+                    b.push(value);
+                }
+                else {
+                    b.push(Number(value));
+                }
+            }
+            query.push(b);
+        }
+
+        return query;
     }
 }

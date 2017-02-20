@@ -13,7 +13,7 @@ export class TagsService {
     public contentTags: Observable<Tag[]>;
     private _tags: Tag[];
     private _ids: number[];
-    
+
     constructor(private http:Http, private service: WorksService) {
         this._tags = [];
         this._ids = [];
@@ -37,15 +37,15 @@ export class TagsService {
     }
     extractData(res: Response) {
         let body = res.json();
-        
+
         return body.values || [];
     }
     extractValue(res: Response) {
         let body = res.json();
-        
+
         return body.value || null;
     }
-    getTagById(id: number) {
+    getTagById(id: number){
         let index = this._ids.indexOf(id);
         if (index !== -1) {
             return this._tags[index];
@@ -74,7 +74,7 @@ export class TagsService {
                 this._tags.push(<Tag>data.value);
                 this._ids.push(data.value.id);
             }
-            
+
         });
         return ob.map(this.extractValue);
     }
@@ -85,7 +85,7 @@ export class TagsService {
         let root = ids.shift();
         let url = `/frog/tag/merge/${root}/`;
         let options = new RequestOptions();
-        
+
         options.body = {tags: ids}
         this.http.post(url, options).subscribe(() => this.get());
     }

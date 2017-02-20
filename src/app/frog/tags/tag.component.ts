@@ -43,18 +43,20 @@ export class TagComponent implements OnInit, OnDestroy, AfterViewInit {
             else {
                 this.tag.id = this.item;
             }
-            
+
             this.resolveTag();
         });
     }
     ngOnInit() {}
     ngOnDestroy() {}
     private resolveTag() {
-        let tag = this.service.getTagById(this.tag.id);
-        if (tag !== null) {
-            this.tag.name = tag.name;
-            this.tag.artist = tag.artist;
-        }
+        this.service.tags.subscribe(tags => {
+            let tag = this.service.getTagById(this.tag.id) || this.service.getTagByName(this.tag.name);
+            if (tag !== null) {
+                this.tag.name = tag.name;
+                this.tag.artist = tag.artist;
+            }
+        });
     }
     clickHandler(event: MouseEvent) {
         event.preventDefault();

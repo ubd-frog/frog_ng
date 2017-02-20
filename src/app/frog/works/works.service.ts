@@ -23,11 +23,11 @@ export class WorksService {
     public focusItem: IItem;
     public terms: Array<Array<any>>;
     public scrollpos: number;
-    
+
     constructor(private http:Http, private route: ActivatedRoute, private notify: NotificationService) {
         this.items = [];
         this.guids = [];
-        this.terms = [[], []];
+        this.terms = [];
         this.id = 0;
         this.scrollpos = 0;
         this.isLoading = false;
@@ -39,7 +39,7 @@ export class WorksService {
             return;
         }
         this.routecache = window.location.pathname;
-        
+
         if (id > 0) {
             this.id = id;
         }
@@ -63,7 +63,7 @@ export class WorksService {
                     this.items.length = 0;
                     this.guids.length = 0;
                 }
-                
+
                 for (var item of items) {
                     let obj: IItem;
                     switch(item.guid.charAt(0)) {
@@ -74,7 +74,7 @@ export class WorksService {
                             obj = <CVideo>item;
                             break;
                     }
-                    
+
                     let author = <User>obj.author;
                     obj.author = author;
 
@@ -116,6 +116,9 @@ export class WorksService {
             this.terms[bucket].push(term);
         }
     }
+    setTerms(terms: any) {
+        this.terms = terms;
+    }
     likeItem(item:IItem) {
         let url = '/frog/like/' + item.guid;
         this.notify.add(new Notification('Liked', 'thumb_up'));
@@ -127,7 +130,7 @@ export class WorksService {
     update(item: IItem) {
         let url = '/frog/piece/' + item.guid + '/';
         let options = new RequestOptions();
-        
+
         options.body = {title: item.title, description: item.description};
         options.withCredentials = true;
         this.notify.add(new Notification('Item details updated', 'done'));
@@ -136,7 +139,7 @@ export class WorksService {
     setArtist(items: IItem[], user: User) {
         let url = '/frog/switchartist';
         let options = new RequestOptions();
-        
+
         options.body = {
             guids: items.map(function(_) { return _.guid; }).join(','),
             artist: user.id
@@ -151,7 +154,7 @@ export class WorksService {
         let url = '/frog/tag/manage';
         let options = new RequestOptions();
         this.notify.add(new Notification('Tags modified', 'label'));
-        
+
         options.body = {
             guids: items.map(function(_) { return _.guid; }).join(','),
             add: add.map(function(_) { return _.id; }).join(','),
@@ -221,7 +224,7 @@ export class WorksService {
     copyItems(guids: string[], copyfrom: number = null, copyTo: number = null) {
         let url = '/frog/gallery/' + (copyTo || this.id);
         let options = new RequestOptions();
-        
+
         options.body = {guids: guids.join(','), 'from': copyfrom};
         options.withCredentials = true;
         this.loading.next(true);
@@ -243,14 +246,14 @@ export class WorksService {
             let fd: FormData = new FormData();
             let xhr: XMLHttpRequest = new XMLHttpRequest();
             let url: string = '/frog/piece/' + item.guid + '/';
-            
+
             if (reset) {
                 fd.append('reset-thumbnail', '1');
             }
             else {
                 fd.append('file', files[0], files[0].name);
             }
-            
+
             xhr.onreadystatechange = () => {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
@@ -261,7 +264,7 @@ export class WorksService {
                         observer.error(xhr.response);
                     }
                 }
-            }
+            };
 
             xhr.open('POST', url, true);
             xhr.withCredentials = true;
@@ -271,7 +274,7 @@ export class WorksService {
     cropItem(item: IItem, x: number, y: number, width: number, height: number) {
         let url = '/frog/piece/' + item.guid + '/';
         let options = new RequestOptions();
-        
+
         options.body = {crop: [x, y, width, height]};
         options.withCredentials = true;
         return this.http.post(url, options).map(this.extractValue);
