@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, OnDestroy, AfterContentInit, HostListener, trigger, state, style, transition, animate } from '@angular/core';
+import { Component, trigger, state, style, transition, animate } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { User } from '../shared/models';
+import { User, Gallery } from '../shared/models';
 import { PreferencesService } from './preferences.service';
 import { UserService } from './user.service';
+import { GalleryService } from '../works/gallery.service';
 
 @Component({
     selector: 'preferences',
@@ -81,6 +82,18 @@ import { UserService } from './user.service';
                 </div>
             </div>
         </li>
+        <li>
+            <div class="row">
+                <div class="col s12">
+                    <h6 class="grey-text text-lighten-1">Gallery Subscriptions</h6>
+                    <ul>
+                        <li *ngFor="let gallery of galleries;">
+                            <gallery-subscription *ngIf="prefs.subscriptions" [gallery]="gallery" [subscriptions]="prefs.subscriptions" ></gallery-subscription>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </li>
     </ul>`,
     styles: [
         '.side-nav { padding: 6px .25rem 0 .25rem; width: 360px; z-index: 3010; }',
@@ -96,6 +109,7 @@ import { UserService } from './user.service';
         '.separator-sm { height: 0.9em; }',
         'ul > div > i { cursor: pointer; }',
         'input[type="range"] { border: none; }',
+        'h5 { font-size: 1.5rem; }',
 
         'div.name { display: block; min-height: 30px; }',
         'div.name a { line-height: 28px; font-size: 28px; padding: 0; height: inherit; }',
@@ -120,12 +134,13 @@ import { UserService } from './user.service';
 export class PreferencesComponent {
     private subs: Subscription[];
     private prefs: Object = {};
+    private galleries: Gallery[];
     private user: User;
     private visible: string = 'hide';
     private swatches: Object;
     private keys: string[];
 
-    constructor(private service: PreferencesService, private userservice: UserService) {
+    constructor(private service: PreferencesService, private userservice: UserService, private galleryservice: GalleryService) {
         this.subs = [];
         this.swatches = {
             'black': '#000000',
@@ -142,8 +157,16 @@ export class PreferencesComponent {
         this.subs.push(sub);
         sub = service.visible.subscribe(vis => (vis) ? this.show() : this.hide());
         this.subs.push(sub);
-        sub = service.preferences.subscribe(prefs => this.prefs = prefs);
+        sub = service.preferences.subscribe(prefs => {
+            this.prefs = prefs;
+            sub = galleryservice.items.subscribe(items => {
+                let personal = 2;
+                this.galleries = items.filter(gallery => gallery.security < personal);
+            });
+            this.subs.push(sub);
+        });
         this.subs.push(sub);
+
     }
     ngOnDestroy() {
         this.subs.forEach(sub => {

@@ -74,7 +74,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     width: number = 0;
     height: number = 0;
-    
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -132,29 +132,35 @@ export class ViewerComponent implements OnInit, OnDestroy {
     }
     @HostListener('window:keydown', ['$event'])
     keyDownEvent(event: KeyboardEvent) {
-        if (event.key === 'ArrowLeft' || event.key === 'Left') {
-            event.preventDefault();
+        let triggered = false;
+        if (event.key === 'ArrowLeft' || event.key === 'Left' || event.key === 'a') {
+            triggered = true;
             this.previous();
         }
-        if (event.key === 'ArrowRight' || event.key === 'Right') {
-            event.preventDefault();
+        if (event.key === 'ArrowRight' || event.key === 'Right' || event.key === 'd') {
+            triggered = true;
             this.next();
         }
         if (event.key === '2') {
-            event.preventDefault();
+            triggered = true;
             this.fitToWindow();
         }
         if (event.key === '1') {
-            event.preventDefault();
+            triggered = true;
             this.original();
         }
         if (event.key === 'Escape' || event.key === 'Esc') {
-            event.preventDefault();
+            triggered = true;
             this.close(event);
         }
-        if (event.key === 'Tab') {
-            event.preventDefault();
+        if (event.key === 'Tab' || event.keyCode === 0 || event.keyCode === 9) {
+            triggered = true;
             this.setFocus();
+        }
+
+        if (triggered) {
+            event.stopPropagation();
+            event.preventDefault();
         }
     }
     next() {
@@ -208,7 +214,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
                     this.itemtype = 'video';
                     break;
             }
-            
+
             this.selectionservice.setDetailItem(this.objects[index], false);
         }
     }

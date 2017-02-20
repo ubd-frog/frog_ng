@@ -11,6 +11,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/last';
 import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/mergeMap';
 
 if (environment.production) {
   enableProdMode();

@@ -8,7 +8,7 @@ import { Tag } from './models';
     template: `
         <div id='root'>
             <div class="input-field">
-                <input id="search" type="search" class="validate filter-input input autocomplete" [(ngModel)]=query (keyup)="filter($event)" (keyup.enter)="select()">
+                <input id="search" type="search" class="validate filter-input input autocomplete" [(ngModel)]=query (keydown)="filter($event)" (keydown.enter)="select()">
                 <label for="search"><i class="material-icons">{{icon}}</i></label>
                 <i class="material-icons" (click)="filteredList = []">close</i>
             </div>
@@ -28,7 +28,7 @@ import { Tag } from './models';
         '(document:click)': 'handleClick($event)'
     }
 })
-export class AutocompleteComponent implements OnInit {
+export class AutocompleteComponent {
     @Output() onSelect = new EventEmitter<any>();
     @Input() placeholder: string;
     @Input() icon: string = "search";
@@ -44,21 +44,19 @@ export class AutocompleteComponent implements OnInit {
         this.query = '';
         this.selectedIndex = -1;
         this.elementRef = element;
-        
+
         service.tags.subscribe({
             next: (items) => {
                 this.tags = items;
             }
         });
     }
-    ngOnInit() {
-        this.service.get();
-    }
     filter(event) {
-        if (event.code === "ArrowDown" && this.selectedIndex < this.filteredList.length) {
+        event.stopPropagation();
+        if (event.code === "ArrowDown") {
             this.selectedIndex++;
         }
-        else if (event.code === "ArrowUp" && this.selectedIndex > 0) {
+        else if (event.code === "ArrowUp") {
             this.selectedIndex--;
         }
         else {
@@ -71,6 +69,7 @@ export class AutocompleteComponent implements OnInit {
                 this.filteredList = [];
             }
         }
+        this.selectedIndex = (this.filteredList.length + this.selectedIndex) % this.filteredList.length || -1;
     }
     select(event: any, tag: Tag) {
         if (!tag) {
@@ -86,7 +85,7 @@ export class AutocompleteComponent implements OnInit {
         let obj = {
             tag: tag,
             event: event
-        }
+        };
         this.onSelect.emit(obj);
     }
     handleClick(event) {

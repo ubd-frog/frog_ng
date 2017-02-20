@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Http, Request, RequestMethod, Response, RequestOptions} from '@angular/http';
+import {Http, RequestOptions} from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
+import { extractValues, extractValue } from '../shared/common';
 import { Tag } from '../shared/models';
 import { WorksService } from '../works/works.service';
 
@@ -23,7 +23,7 @@ export class TagsService {
     }
     get() {
         this.http.get('/frog/tag/?count=1&cache=' + Date.now())
-            .map(this.extractData).subscribe(tags => {
+            .map(extractValues).subscribe(tags => {
                 this._tags = tags;
                 this._ids = [];
                 for (let tag of tags) {
@@ -33,17 +33,7 @@ export class TagsService {
             });
     }
     resolve(name: string) {
-        return this.http.get('/frog/tag/resolve/' + name).map(this.extractValue);
-    }
-    extractData(res: Response) {
-        let body = res.json();
-
-        return body.values || [];
-    }
-    extractValue(res: Response) {
-        let body = res.json();
-
-        return body.value || null;
+        return this.http.get('/frog/tag/resolve/' + name).map(extractValue);
     }
     getTagById(id: number){
         let index = this._ids.indexOf(id);
@@ -76,7 +66,7 @@ export class TagsService {
             }
 
         });
-        return ob.map(this.extractValue);
+        return ob.map(extractValue);
     }
     urlForTags(tags: Tag[]) {
         return '/w/' + this.service.id + '/' + tags[0].id;
@@ -86,7 +76,23 @@ export class TagsService {
         let url = `/frog/tag/merge/${root}/`;
         let options = new RequestOptions();
 
-        options.body = {tags: ids}
+        options.body = {tags: ids};
         this.http.post(url, options).subscribe(() => this.get());
+    }
+    rename(tag: Tag) {
+        let url = `/frog/tag/${tag.id}/`;
+        let options = new RequestOptions();
+        options.body = {
+            name: tag.name,
+            artist: tag.artist
+        };
+
+        return this.http.put(url, options);
+    }
+    remove(tag: Tag) {
+        let url = `/frog/tag/${tag.id}/`;
+        let options = new RequestOptions();
+
+        return this.http.delete(url, options);
     }
 }

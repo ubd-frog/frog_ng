@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Http, Request, RequestMethod, Response, RequestOptions, URLSearchParams, Headers } from '@angular/http';
+import { Http, RequestOptions, URLSearchParams } from '@angular/http';
 import { Router } from '@angular/router';
 
 import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
+import { extractValue } from '../shared/common';
 import { User } from '../shared/models';
 
 
@@ -28,7 +28,7 @@ export class UserService {
         options.search.set('timestamp', new Date().getTime().toString());
 
         this.http.get(url, options)
-            .map(this.extractValue).subscribe(data => {
+            .map(extractValue).subscribe(data => {
                 let user = <User>data.user;
                 user.prefs = data.prefs;
 
@@ -41,18 +41,14 @@ export class UserService {
         options.search = new URLSearchParams();
         options.search.set('json', '1');
         options.search.set('timestamp', new Date().getTime().toString());
-        
+
         this.http.get(url, options)
             .map(res => {return res.json().values;}).subscribe(users => {
                 this.users.next(users);
             }, error => console.log('error loading items'));
     }
     csrf() {
-        return this.http.get('/frog/csrf').map(this.extractValue);
-    }
-    extractValue(res: Response) {
-        let body = res.json();
-        return body.value || null;
+        return this.http.get('/frog/csrf').map(extractValue);
     }
     isAuthenticated() {
         let options = new RequestOptions();
@@ -71,7 +67,7 @@ export class UserService {
     login(email, password) {
         let url = '/frog/login';
         let options = new RequestOptions();
-        
+
         options.body = {
             email: email,
             password: password
@@ -83,6 +79,6 @@ export class UserService {
     logout() {
         let url = '/frog/logout';
 
-        return this.http.get(url).map(this.extractValue);
+        return this.http.get(url).map(extractValue);
     }
 }

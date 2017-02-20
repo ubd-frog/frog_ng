@@ -144,3 +144,5 @@ comment-item .comment-text a {
     line-height: initial;
     padding: 0;
 }
+
+.modal-overlay { z-index: 3010 !important; background: #000 !important; position: absolute; width: 100%; height: 100%; }

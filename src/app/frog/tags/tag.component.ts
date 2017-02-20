@@ -37,11 +37,11 @@ export class TagComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     ngAfterViewInit() {
         setTimeout(() => {
-            if (isNaN(Number(this.item))) {
-                this.tag.name = this.item;
+            if (parseFloat(this.item) % 1 === 0) {
+                this.tag.id = parseInt(this.item);
             }
             else {
-                this.tag.id = this.item;
+                this.tag.name = decodeURIComponent(this.item);
             }
 
             this.resolveTag();

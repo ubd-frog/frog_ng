@@ -116,7 +116,7 @@ export class Notification {
     public color: string;
     public timeout: number;
 
-    constructor(text: string, icon: string, timeout: number = 5000) {
+    constructor(text: string, icon: string = '', timeout: number = 5000) {
         this.text = text;
         this.icon = icon;
         this.timeout = timeout;

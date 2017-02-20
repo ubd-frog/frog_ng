@@ -83,7 +83,6 @@ export class NavigationComponent {
         service.items.subscribe(items => {
             this.galleries = items;
         });
-        service.get();
     }
     private securityIcon(gallery: Gallery) {
         switch(gallery.security) {

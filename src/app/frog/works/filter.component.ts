@@ -33,7 +33,7 @@ import "rxjs/add/operator/mergeMap";
                             <i class="material-icons">help_outline</i>
                         </a>
                     </li>
-                    <li class="right">
+                    <li *ngIf="user?.isManager" class="right">
                         <a (click)="tagslist.show()">
                             <i class="material-icons">loyalty</i>
                         </a>
@@ -94,10 +94,13 @@ export class FilterComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.galleryservice.branding().subscribe(data => {
             this.branding = data;
+            // -- Set the favicon
+            document.getElementById('favicon').setAttribute('href', data.favicon);
         });
         this.userservice.user.subscribe(user => this.user = user);
         this.sub = this.route.params.subscribe(params => {
             this.galleryid = +params['id'];
+            this.galleryservice.setGalleryId(this.galleryid);
             this.service.reset();
             if (params['terms']) {
                 let terms = this.dumps(params['terms']);
