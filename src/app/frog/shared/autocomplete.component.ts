@@ -29,9 +29,11 @@ import { Tag } from './models';
     }
 })
 export class AutocompleteComponent {
-    @Output() onSelect = new EventEmitter<any>();
     @Input() placeholder: string;
     @Input() icon: string = "search";
+    @Output() onSelect = new EventEmitter<any>();
+    @Output() onActivate = new EventEmitter<Tag>();
+
     private tags: Tag[];
     private selectedIndex: number;
     public query: string;
@@ -87,6 +89,9 @@ export class AutocompleteComponent {
             event: event
         };
         this.onSelect.emit(obj);
+    }
+    activate(event: Event) {
+
     }
     handleClick(event) {
         let clickedComponent = event.target;

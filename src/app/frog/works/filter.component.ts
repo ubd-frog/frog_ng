@@ -132,7 +132,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     addTagString(name: string) {
         this.router.navigate(['w/' + this.galleryid + '/' + name]);
     }
-    removeTag(tag:Tag, row: number, col: number) {
+    removeTag(tag: Tag, row: number, col: number) {
         let terms = this.service.terms.splice(0);
         terms[row].splice(col, 1);
         terms = terms.filter(row => row.length > 0);
