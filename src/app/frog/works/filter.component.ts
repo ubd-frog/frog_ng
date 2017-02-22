@@ -50,7 +50,7 @@ import "rxjs/add/operator/mergeMap";
                         </div>
                     </li>
                     <li>
-                        <autocomplete (onSelect)="addTag($event)"></autocomplete>
+                        <autocomplete (onSelect)="addTag($event)" [complex]="true"></autocomplete>
                     </li>
                     <ng-container *ngFor="let bucket of service.terms; let i = index; let l = last;">
                         <li>

@@ -8,9 +8,9 @@ import { Tag } from './models';
     template: `
         <div id='root'>
             <div class="input-field">
-                <input id="search" type="search" class="validate filter-input input autocomplete" [(ngModel)]=query (keydown)="filter($event)" (keydown.enter)="select()">
+                <input id="search" type="search" class="validate filter-input input autocomplete" [(ngModel)]=query (ngModelChange)="filter()" (keydown)="down($event)" (keydown.enter)="select()" (keydown.tab)="activate()">
                 <label for="search"><i class="material-icons">{{icon}}</i></label>
-                <i class="material-icons" (click)="filteredList = []">close</i>
+                <i class="material-icons" (click)="reset()">close</i>
             </div>
             <ul class='autocomplete-content dropdown-content'>
                 <li *ngFor="let item of filteredList; let idx = index" [class.complete-selected]="idx == selectedIndex"><a (click)="select($event, item)">{{item.name}}</a></li>
@@ -31,11 +31,13 @@ import { Tag } from './models';
 export class AutocompleteComponent {
     @Input() placeholder: string;
     @Input() icon: string = "search";
+    @Input() complex: boolean = false;
     @Output() onSelect = new EventEmitter<any>();
-    @Output() onActivate = new EventEmitter<Tag>();
 
     private tags: Tag[];
     private selectedIndex: number;
+    private cache: string = '';
+    private jointags: Tag[];
     public query: string;
     public filteredList: Tag[];
     public elementRef: ElementRef;
@@ -46,6 +48,7 @@ export class AutocompleteComponent {
         this.query = '';
         this.selectedIndex = -1;
         this.elementRef = element;
+        this.jointags = [new Tag(0, 'AND'), new Tag(0, 'OR')];
 
         service.tags.subscribe({
             next: (items) => {
@@ -53,7 +56,39 @@ export class AutocompleteComponent {
             }
         });
     }
-    filter(event) {
+    reset() {
+        this.query = '';
+        this.filteredList = [];
+        this.cache = '';
+    }
+    filter() {
+        if (this.query.length < this.cache.length) {
+            this.cache = this.query;
+        }
+        if (this.query !== '' && this.query.length > this.cache.length) {
+            let subquery = this.query.slice(this.cache.length).toLowerCase();
+            this.filteredList = this.tags.filter(function(tag) {
+                return tag.name.indexOf(subquery) > -1;
+            }.bind(this));
+            if (this.cache) {
+                let temp = this.filteredList.splice(0);
+                temp.splice(0, 0, this.jointags[0], this.jointags[1]);
+                this.filteredList = temp;
+                this.selectedIndex += 2;
+
+                if (this.query.slice(this.query.length - 5).toLocaleLowerCase() == ' and ') {
+                    this.activate(0);
+                }
+                else if (this.query.slice(this.query.length - 4).toLocaleLowerCase() == ' or ') {
+                    this.activate(1);
+                }
+            }
+        }
+        else {
+            this.filteredList = [];
+        }
+    }
+    down(event) {
         event.stopPropagation();
         if (event.code === "ArrowDown") {
             this.selectedIndex++;
@@ -61,37 +96,46 @@ export class AutocompleteComponent {
         else if (event.code === "ArrowUp") {
             this.selectedIndex--;
         }
-        else {
-            if (this.query !== '') {
-                this.filteredList = this.tags.filter(function(tag) {
-                    return tag.name.indexOf(this.query.toLowerCase()) > -1;
-                }.bind(this));
-            }
-            else {
-                this.filteredList = [];
-            }
+        else if (event.code === "Tab") {
+            //this.activate();
+            event.preventDefault();
         }
-        this.selectedIndex = (this.filteredList.length + this.selectedIndex) % this.filteredList.length || -1;
+        else if (event.code === "Space") {
+            this.activate(-1);
+        }
+        this.selectedIndex = (this.filteredList.length + this.selectedIndex) % this.filteredList.length;
+        this.selectedIndex = (isNaN(this.selectedIndex)) ? -1 : this.selectedIndex;
     }
     select(event: any, tag: Tag) {
         if (!tag) {
-            if (this.selectedIndex === -1) {
-                tag = new Tag(0, this.query, false);
+            if (this.selectedIndex === -1 || this.cache.length > 0) {
+                tag = new Tag(0, this.query.trim(), false);
             }
             else {
                 tag = this.filteredList[this.selectedIndex];
             }
         }
-        this.query = '';
-        this.filteredList = [];
         let obj = {
             tag: tag,
             event: event
         };
         this.onSelect.emit(obj);
+        this.reset();
     }
-    activate(event: Event) {
-
+    activate(index: number=null) {
+        if (this.complex) {
+            index = (index != null) ? index : this.selectedIndex;
+            if (index == -1) {
+                if (this.cache.length == 0) {
+                    this.cache = this.query;
+                }
+            }
+            else {
+                this.cache += ' ' + this.filteredList[index].name;
+                this.cache = this.cache.trim() + ' ';
+                this.query = this.cache;
+            }
+        }
     }
     handleClick(event) {
         let clickedComponent = event.target;
