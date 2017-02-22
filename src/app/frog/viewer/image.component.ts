@@ -31,7 +31,8 @@ import { SelectionService } from '../shared/selection.service';
     styles: [
         '.spinner { position: fixed; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%; color: #fff; font-size: 36px; text-align: center; padding-top: 50%; z-index: 3001; }',
         'canvas { cursor: move; }',
-        'img { opacity: 0; width: 100%; height: 100%; position: absolute; }'
+        'img { opacity: 0; width: 100%; height: 100%; position: absolute; cursor: url("//ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur") 7 5, default; }',
+        'img:active { cursor: url("//ssl.gstatic.com/ui/v1/icons/mail/images/2/closedhand.cur") 7 5, default; }'
     ]
 })
 export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecked {
