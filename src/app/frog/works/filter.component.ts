@@ -166,7 +166,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         for (let bucket of buckets) {
             let b = [];
             for (let value of bucket.split(' or ')) {
-                let tag = this.tagservice.getTagByName(value);
+                let tag = this.tagservice.getTagByName(value.trim());
                 if (tag == null) {
                     b.push(value);
                 }
