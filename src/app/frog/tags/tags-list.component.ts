@@ -26,18 +26,20 @@ import { Tag } from '../shared/models';
                                 </label>
                             </div>
                         </div>
-                        <ul class="collection">
-                            <li class="collection-item" *ngFor="let tag of tags; let i=index;" (click)="toggleSelection(tag)" [class.red-text]="tag.count == 0">
-                                <span *ngIf="edit != i">
-                                    <span (dblclick)="editTag(i)">{{tag.name}}</span>
-                                    <a (click)="remove(tag)" class="secondary-content">
-                                        <i class="material-icons" [class.red-text]="deleteCheck == i">close</i>
-                                    </a>
-                                    <span class="secondary-content badge">{{tag.count}}</span>
-                                </span>
-                                <input class="input-field" autofocus="autofocus" *ngIf="edit == i" type="text" [(ngModel)]="editfield" (keyup.enter)="saveEdit()" (keyup.esc)="edit = -1" (blur)="edit = -1" />
-                            </li>
-                        </ul>
+                        <div>
+                            <ul class="collection">
+                                <li class="collection-item" *ngFor="let tag of tags; let i=index;" (click)="toggleSelection(tag)" [class.red-text]="tag.count == 0">
+                                    <span *ngIf="edit != i">
+                                        <span (dblclick)="editTag(i)">{{tag.name}}</span>
+                                        <a (click)="remove(tag)" class="secondary-content">
+                                            <i class="material-icons" [class.red-text]="deleteCheck == i">close</i>
+                                        </a>
+                                        <span class="secondary-content badge">{{tag.count}}</span>
+                                    </span>
+                                    <input class="input-field" autofocus="autofocus" *ngIf="edit == i" type="text" [(ngModel)]="editfield" (keyup.enter)="saveEdit()" (keyup.esc)="edit = -1" (blur)="edit = -1" />
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="col s6">
                         <p>Select tags from the list on the left.  The first tag will be the root where the other selected tags will get merged into.</p>
@@ -65,7 +67,8 @@ import { Tag } from '../shared/models';
         '.root { font-weight: bold; }',
         '.modal-content { overflow: hidden; height: 100%; }',
         '.modal-content > div.row { height: 86%; }',
-        '.modal-content div.row .col:first-child { overflow-y: auto; height: 100%; }',
+        '.modal-content div.row .col:first-child { height: 100%; }',
+        '.modal-content div.row .col:first-child > div:last-child { overflow-y: auto; height: 100%; }',
         '.switch { display: inline; }',
         'span.badge { right: 64px; }',
         'a { cursor: pointer; }'
@@ -135,7 +138,7 @@ export class TagsListComponent implements OnDestroy {
         if (this.order) {
             this.tags.reverse();
         }
-        
+
         this.order = !this.order;
         this.edit = -1;
     }
