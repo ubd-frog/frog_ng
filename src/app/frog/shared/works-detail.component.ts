@@ -212,7 +212,7 @@ declare var $:any;
         '.headline { line-height: 20px; font-size: 14px; min-height: 20px; }',
         '.list-inline { padding-left: 0px; margin-left: -5px; list-style: none; }',
         '.list-inline > li { display: inline-block; padding-left: 5px; padding-right: 5px; line-height: inherit; }',
-        '.description p { white-space: pre; }',
+        '.description p { white-space: pre-wrap; }',
         'comment-item { display: inline-flex; width: 100%; }',
         '.editable:hover i { display: block; }',
         '.file-field .btn { padding: 0 12px; }',
