@@ -10,6 +10,8 @@ import { FrogModule } from './frog/frog.module';
 
 enableProdMode();
 
+const STRAT = new CookieXSRFStrategy('csrftoken', 'X-CSRFToken');
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -25,7 +27,7 @@ enableProdMode();
         appRoutingProviders,
         {
             provide: XSRFStrategy,
-            useValue: new CookieXSRFStrategy('csrftoken', 'X-CSRFToken')
+            useValue: STRAT
         }
     ],
     bootstrap: [ AppComponent ]
