@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, AfterViewIni
 
 import { TagsService } from './tags.service';
 import { Tag } from '../shared/models';
+import { isInt } from "../shared/common";
 
 
 @Component({
@@ -37,7 +38,7 @@ export class TagComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     ngAfterViewInit() {
         setTimeout(() => {
-            if (parseFloat(this.item) % 1 === 0) {
+            if (isInt(this.item)) {
                 this.tag.id = parseInt(this.item);
             }
             else {

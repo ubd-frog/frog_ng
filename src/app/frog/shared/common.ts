@@ -14,3 +14,10 @@ export function extractData(res: Response) {
   let body = res.json();
   return body || null;
 }
+
+export function isInt(value: any) {
+    if (typeof value === 'number') {
+        return true;
+    }
+    return parseFloat(value) % 1 === 0 && value.indexOf('.') === -1;
+}
