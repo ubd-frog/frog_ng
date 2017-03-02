@@ -356,7 +356,7 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
         if (!found) {
             let name = event.tag.name;
             this.tagssservice.create(name).subscribe(tag => {
-                this.works.editTags([this.item], [tag], []).subscribe(result => {;
+                this.works.editTags([this.item], [tag], []).subscribe(() => {
                     let tags = this.item.tags.splice(0);
                     tags.push(tag);
                     this.item.tags = tags;

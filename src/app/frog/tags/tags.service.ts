@@ -6,6 +6,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { extractValues, extractValue } from '../shared/common';
 import { Tag } from '../shared/models';
 import { WorksService } from '../works/works.service';
+import {Subject} from "rxjs";
 
 @Injectable()
 export class TagsService {
@@ -58,15 +59,18 @@ export class TagsService {
         options.body = {name: name};
         options.withCredentials = true;
         let ob = this.http.post(url, options);
+        let tagresult = new Subject<Tag>();
         ob.subscribe(res => {
             let data = res.json();
             if (!data.isError) {
                 this._tags.push(<Tag>data.value);
                 this._ids.push(data.value.id);
+                tagresult.next(data.value);
+                tagresult.complete();
             }
-
         });
-        return ob.map(extractValue);
+
+        return tagresult;
     }
     urlForTags(tags: Tag[]) {
         return '/w/' + this.service.id + '/' + tags[0].id;
