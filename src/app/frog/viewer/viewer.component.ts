@@ -35,6 +35,13 @@ declare var $:any;
         <a *ngIf="objects.length > 1" class="btn-flat disabled right">{{index + 1}}/{{objects.length}}</a>
         
     </div>
+    <div class="keyboard">
+        <div style="padding-left: 14px;"><kbd>w</kbd></div>
+        <kbd>a</kbd>
+        <kbd>s</kbd>
+        <kbd>d</kbd>
+        <kbd>TAB</kbd>
+    </div>
     <div id='viewer' class="noselect" [style.background]="prefs.backgroundColor">
         <frog-image *ngIf="itemtype === 'image'"></frog-image>
         <frog-video *ngIf="itemtype === 'video'"></frog-video>
@@ -58,7 +65,10 @@ declare var $:any;
         '.nav-arrow { position: absolute; width: 100px; height: 100%; z-index: 3000; opacity: 0; -webkit-transition: opacity 0.3s 0.0s; -moz-transition: opacity 0.3s 0.0s; -ms-transition: opacity 0.3s 0.0s; }',
         '.nav-arrow:hover { opacity: 1; -webkit-transition: opacity 0.3s 0.0s; -moz-transition: opacity 0.3s 0.0s; -ms-transition: opacity 0.3s 0.0s; }',
         '.nav-arrow a { height: 100%; position: fixed; }',
-        '.original { text-align: center; font-family: Roboto Black; }'
+        '.original { text-align: center; font-family: Roboto Black; }',
+
+        '.keyboard { position:absolute; z-index: 40; top: 64px; right: 16px; }',
+        'kbd { display: inline-block;padding: 3px 5px;font: 11px "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;line-height: 10px;color: #444d56;vertical-align: middle;background-color: #fcfcfc;border: solid 1px #c6cbd1;border-bottom-color: #959da5;border-radius: 3px;box-shadow: inset 0 -1px 0 #959da5;}'
     ]
 })
 export class ViewerComponent implements OnInit, OnDestroy {
@@ -141,11 +151,11 @@ export class ViewerComponent implements OnInit, OnDestroy {
             triggered = true;
             this.next();
         }
-        if (event.key === '2') {
+        if (event.key === '2' || event.key === 's') {
             triggered = true;
             this.fitToWindow();
         }
-        if (event.key === '1') {
+        if (event.key === '1' || event.key === 'w') {
             triggered = true;
             this.original();
         }
