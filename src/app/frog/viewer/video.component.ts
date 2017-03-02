@@ -23,7 +23,7 @@ import { SelectionService } from '../shared/selection.service';
     styles: [
         'video { width: 100%; height: 100%; cursor:ew-resize; }',
         '#video_player { display: block; margin: 0 auto; }',
-        '.info { font-family: Courier; }',
+        '.info { font-family: Courier; background-color: #000; }',
         '.row { margin: 0; padding: 0; }'
     ]
 })
@@ -115,7 +115,7 @@ export class VideoComponent implements OnDestroy {
     move(event:MouseEvent) {
         if (this.isMouseDown) {
             let x:number = event.clientX - this.origin.x;
-            
+
             this.element.currentTime = this.time + (x / this.object.framerate);
             this.hasMoved = true;
         }
