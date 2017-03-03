@@ -26,7 +26,7 @@ import { SelectionService } from '../shared/selection.service';
             </div>
         </div>
     </div>
-    <img #img src="{{object.image}}" (mousedown)="down($event)" (mouseup)="up($event)" (mousemove)="move($event)" (mousewheel)="zoom($event)" (DOMMouseScroll)="zoomFF($event)" />
+    <img #img src="{{object.image}}" (mousedown)="down($event)" (mousemove)="move($event)" (mousewheel)="zoom($event)" (DOMMouseScroll)="zoomFF($event)" />
     <canvas #canvas width="{{width}}" height="{{height}}"></canvas>`,
     styles: [
         '.spinner { position: fixed; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%; color: #fff; font-size: 36px; text-align: center; padding-top: 50%; z-index: 3001; }',
@@ -88,6 +88,7 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         this.loading = !this.element.complete;
     }
     // -- Events
+    @HostListener('window:mouseup')
     up() {
         this.isMouseDown = false;
         this.main = this.xform;
