@@ -65,9 +65,9 @@ export class TagsService {
             if (!data.isError) {
                 this._tags.push(<Tag>data.value);
                 this._ids.push(data.value.id);
-                tagresult.next(data.value);
-                tagresult.complete();
             }
+            tagresult.next(data.value);
+            tagresult.complete();
         });
 
         return tagresult;

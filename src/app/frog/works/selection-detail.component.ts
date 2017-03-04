@@ -58,7 +58,7 @@ declare var $:any;
                 <h4 class="title">
                     <i class="material-icons light-green-text">label</i> Tags
                 </h4>
-                <tag *ngFor="let tag of (tags | tagArtistFilter)" [item]="tag.id" [dark]="true" (onClose)="removeTag($event)" (onClick)="navigateToTag(tag)"></tag>
+                <tag *ngFor="let tag of (tags | tagArtistFilter)" [item]="tag.id" [dark]="!tag.added" (onClose)="removeTag($event)" (onClick)="navigateToTag(tag)"></tag>
                 <autocomplete (onSelect)="addTag($event)" [placeholder]="'Add Tags'" [icon]="'add'"></autocomplete>
             </div>
         </div>
@@ -203,19 +203,18 @@ export class SelectionDetailComponent implements AfterViewInit {
                 let found = false;
                 let tags = this.tags.slice(0);
 
-                for (let t of this.tags) {
+                for (let t of tags) {
                     if (tag.id == t.id) {
                         found = true;
+                        t.added = true;
                         break;
                     }
                 }
                 if (!found) {
                     tags.push(tag);
                 }
-
-                if (tags.length != this.tags.length) {
-                    this.tags = tags;
-                }
+                
+                this.tags = tags;
             });
         });
     }
@@ -230,6 +229,7 @@ export class SelectionDetailComponent implements AfterViewInit {
     }
     toggle() {
         this.userinput.query = '';
+        this.tags.map(tag => tag.added = false);
         this.visible = (this.visible == 'hide') ? 'show': 'hide';
     }
     gallerySelectHandler(gallery: Gallery, move: boolean = false) {

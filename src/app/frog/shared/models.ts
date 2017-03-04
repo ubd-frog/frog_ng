@@ -21,6 +21,7 @@ export class Tag {
     public artist: boolean;
     public type: string;
     public count: number;
+    public added: boolean;
 
     constructor(id: number, name: string, artist: boolean=false, count: number=0) {
         this.id = id;
