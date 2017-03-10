@@ -72,12 +72,17 @@ declare var $:any;
             </div>
         </div>
     </ul>
-    <div id="selection_actions" [hidden]="!enabled">
-        <div class="fixed-action-btn horizontal">
-            <a class="btn-floating btn-large purple accent-2" (click)="visible='show'">
-                <i class="large material-icons">filter_{{(items.length < 10) ? items.length : "9_plus"}}</i>
-            </a>
-        </div>
+    <div id="selection_bar" [hidden]="!enabled">
+        <nav>
+            <div class="nav-wrapper blue">
+                <a class="brand-logo"><i class="material-icons" (click)="service.clear()">close</i> {{items.length}} selected</a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a (click)="visible='show'"><i class="material-icons">info_outline</i></a></li>
+                    <li><a href="/frog/download?guids={{guids}}"><i class="material-icons">cloud_download</i></a></li>
+                    <li><a (click)="removePrompt()"><i class="material-icons">delete</i></a></li>
+                </ul>
+            </div>
+        </nav>
     </div>
     <div id="remove_prompt" class="modal">
         <div class="modal-content">
@@ -106,12 +111,14 @@ declare var $:any;
         '.separator { height: 1.8em; }',
         '.separator-sm { height: 0.9em; }',
         'ul > div > i { cursor: pointer; }',
+        '.brand-logo { font-size: 20px; font-weight: 500; }',
 
         '.fixed-action-btn { top: 82px; right: 24px; height: 55px; }',
         '#remove_prompt { z-index: 4000 !important; }',
         '.stack { position: relative; height: 256px; }',
         '.stack img { position: absolute; width: 128px; border: 1px solid #ccc; border-bottom-width: 20px; }',
-        '.side-nav { overflow-y: inherit; }'
+        '.side-nav { overflow-y: inherit; }',
+        '#selection_bar { position:fixed; width: 100%; z-index: 3000; }'
     ],
     animations: [
         trigger('panelState', [
@@ -213,7 +220,7 @@ export class SelectionDetailComponent implements AfterViewInit {
                 if (!found) {
                     tags.push(tag);
                 }
-                
+
                 this.tags = tags;
             });
         });
