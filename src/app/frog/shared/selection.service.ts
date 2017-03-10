@@ -29,7 +29,8 @@ export class SelectionService {
     private allItems: IItem[];
     private selected: IItem;
     private rect: Rect;
-    
+    private galleryid: number;
+
     constructor(private service: WorksService) {
         this.items = [];
         this.rect = new Rect(0, 0, 0, 0);
@@ -41,7 +42,10 @@ export class SelectionService {
 
         this.service.results.subscribe(items => {
             this.allItems = items;
-            this.clear();
+            if (this.galleryid != this.service.id) {
+                this.galleryid = this.service.id;
+                this.clear();
+            }
         });
     }
     setDetailItem(item:IItem, showComponent: boolean = true) {
@@ -78,7 +82,7 @@ export class SelectionService {
                 }
             }
         }
-        
+
         this.length = this.items.length;
         if (currentlength != this.length) {
             this.clearDetailItem();
