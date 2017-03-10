@@ -17,7 +17,7 @@ export class ViewportService {
         this.viewport = new BehaviorSubject<Rect>(new Rect());
         this.guids = new BehaviorSubject<string[]>([]);
         this.sub = this.service.results.subscribe(items => {
-            this.items = items;
+            this.items = items[0];
             this.guids.next(this.visibleGuids());
         });
         Observable.fromEvent(window, 'scroll').subscribe(() => {

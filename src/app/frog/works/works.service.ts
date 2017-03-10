@@ -17,7 +17,7 @@ export class WorksService {
     private isLoading: boolean;
     private gallery: Gallery;
     public routecache: string;
-    public results: BehaviorSubject<IItem[]>;
+    public results: BehaviorSubject<[IItem[], boolean]>;
     public loading: BehaviorSubject<boolean>;
     public id: number;
     public selection: IItem[];
@@ -31,7 +31,7 @@ export class WorksService {
         this.id = 0;
         this.scrollpos = 0;
         this.isLoading = false;
-        this.results = new BehaviorSubject<IItem[]>(this.items);
+        this.results = new BehaviorSubject<[IItem[], boolean]>([this.items, false]);
         this.loading = new BehaviorSubject<boolean>(this.isLoading);
         galleryservice.gallery.subscribe(gallery => this.gallery = gallery);
     }
@@ -85,7 +85,7 @@ export class WorksService {
                     this.items.push(obj);
                     this.guids.push(obj.guid);
                 }
-                this.results.next(this.items);
+                this.results.next([this.items, append]);
                 this.loading.next(false);
             }, error => console.log(error));
     }
@@ -188,7 +188,7 @@ export class WorksService {
                 return 0;
             });
         }
-        this.results.next(this.items);
+        this.results.next([this.items, false]);
     }
     remove(items: IItem[]) {
         items.forEach(item => {
@@ -197,7 +197,7 @@ export class WorksService {
                 this.items.splice(index, 1);
                 this.guids.splice(index, 1);
             }
-            this.results.next(this.items);
+            this.results.next([this.items, false]);
         });
 
         let url = '/frog/gallery/' + this.id;

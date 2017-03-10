@@ -120,7 +120,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
         });
         this.subs.push(sub);
         sub = this.service.results.subscribe(items => {
-            this.allitems = items;
+            this.allitems = items[0];
         });
         this.subs.push(sub);
         sub = this.route.data.subscribe(data => {

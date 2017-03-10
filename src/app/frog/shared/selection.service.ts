@@ -29,7 +29,6 @@ export class SelectionService {
     private allItems: IItem[];
     private selected: IItem;
     private rect: Rect;
-    private galleryid: number;
 
     constructor(private service: WorksService) {
         this.items = [];
@@ -41,9 +40,8 @@ export class SelectionService {
         this.selectionRect = new ReplaySubject<Rect>();
 
         this.service.results.subscribe(items => {
-            this.allItems = items;
-            if (this.galleryid != this.service.id) {
-                this.galleryid = this.service.id;
+            this.allItems = items[0];
+            if (!items[1]) {
                 this.clear();
             }
         });

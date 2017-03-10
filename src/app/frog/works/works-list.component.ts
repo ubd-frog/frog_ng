@@ -50,7 +50,7 @@ export class WorksListComponent implements OnDestroy, AfterViewInit {
     constructor(private element: ElementRef, private service:WorksService, private selectionservice: SelectionService) {
         this.subs = [];
         let sub = this.service.results.subscribe(items => {
-            this.items = items;
+            this.items = items[0];
         });
         this.subs.push(sub);
         sub = this.service.loading.subscribe(loading => this.loading = loading);
@@ -77,12 +77,12 @@ export class WorksListComponent implements OnDestroy, AfterViewInit {
         let height = this.element.nativeElement.clientHeight;
         if (this.scrollcheck && height > this.minheight) {
             let heightDelta = height - window.scrollY;
-            
+
             if (heightDelta < window.innerHeight + this.buffer) {
                 this.service.get(0, true);
                 this.minheight = height;
             }
         }
-        
+
     }
 }
