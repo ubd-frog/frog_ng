@@ -61,7 +61,7 @@ declare var $:any;
             <hr *ngIf="editing" />
             
             <div class="row grey-text text-lighten-1">
-                <div class="artwork-info ps-container col s12">
+                <div class="artwork-info col s12">
                     <div class="separator-sm"></div>
                     <div class="artist">
                         <div *ngIf="!editing" class="artist-name-and-headline">
@@ -318,6 +318,7 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
     keyDownEvent(event: KeyboardEvent) {
         if (event.key === 'Escape') {
             event.preventDefault();
+            this.revert();
             this.visible = 'hide';
         }
     }
