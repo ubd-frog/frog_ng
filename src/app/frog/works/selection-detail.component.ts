@@ -118,7 +118,8 @@ declare var $:any;
         '.stack { position: relative; height: 256px; }',
         '.stack img { position: absolute; width: 128px; border: 1px solid #ccc; border-bottom-width: 20px; }',
         '.side-nav { overflow-y: inherit; }',
-        '#selection_bar { position:fixed; width: 100%; z-index: 3000; }'
+        '#selection_bar { position:fixed; width: 100%; z-index: 3000; }',
+        '#selection_bar a { cursor: pointer; }'
     ],
     animations: [
         trigger('panelState', [
