@@ -1,3 +1,5 @@
+import { IItem } from "../shared/models";
+
 export class UploadFile{
     public file: File;
     public name: string;
@@ -6,6 +8,7 @@ export class UploadFile{
     public progress: number = 0;
     public status: string;
     public unique: boolean = true;
+    public data: IItem;
 
     constructor(file: File) {
         this.file = file;

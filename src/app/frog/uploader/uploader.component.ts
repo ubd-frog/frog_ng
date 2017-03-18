@@ -25,7 +25,7 @@ import { Tag } from '../shared/models';
                 <table class="bordered">
                     <thead>
                         <tr>
-                            <th>File</th>
+                            <th colspan="2">File</th>
                             <th>Size</th>
                             <th>Created</th>
                             <th>%</th>
@@ -35,6 +35,7 @@ import { Tag } from '../shared/models';
                     </thead>
                     <tbody>
                         <tr *ngFor="let file of files" [class.red]="!file.unique" [class.lighten-5]="!file.unique">
+                            <td class="thumb"><div><img class="responsive-img" src="{{file.data?.thumbnail}}" /></div></td>
                             <td>{{file.name}}</td>
                             <td>{{file.size | bytes}}</td>
                             <td>{{file.created | date:"short"}}</td>
@@ -53,7 +54,12 @@ import { Tag } from '../shared/models';
     </div>`,
     styles: [
         'div#uploader { position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.48); z-index: 4000; }',
-        '.modal { display: block; top: 10%; width: 80%; }'
+        '.modal { display: block; top: 10%; width: 80%; }',
+        '.modal-content { padding-bottom: 180px; }',
+        '.thumb { position: relative; padding-right: 12px; }',
+        '.thumb div { position: absolute; top: 25%; left: 10%; width: 24px; height: 24px; -webkit-transition: width 0.3s, height 0.3s; }',
+        '.thumb:hover div { width: 200px; height: 200px; }',
+        '.close { cursor: pointer; }'
     ],
     animations: [
         trigger('panelState', [
@@ -93,13 +99,20 @@ export class UploaderComponent implements OnDestroy {
     }
     toggle() {
         this.visible = (this.visible == 'hide') ? 'show': 'hide';
+        if (this.visible == 'hide') {
+            this.files.length = 0;
+        }
     }
     upload() {
         if (this.files.length === 0 || this.tags.length === 0) {
             return;
         }
         this.total = this.files.length;
-        this.service.upload(this.files, this.tags).subscribe(files => this.files = files, () => {}, () => this.visible = 'hide');
+        this.service.upload(this.files, this.tags).subscribe(files => {
+            this.files = files;
+            this.visible = 'hide';
+            this.total = 0;
+        });
     }
     removeHandler(file: UploadFile) {
         let index = this.files.indexOf(file);
@@ -113,16 +126,9 @@ export class UploaderComponent implements OnDestroy {
         this.tags.splice(index, 1);
     }
     drop(event: DragEvent) {
-        event.preventDefault();
-        for (let i=0;i<event.dataTransfer.files.length;i++) {
-            let file = new UploadFile(event.dataTransfer.files[i]);
-            this.service.isUnique(file.name).subscribe(item => {
-                if (item !== true) {
-                    file.unique = false;
-                    file.created = new Date(item.created);
-                }
-                this.files.push(file);
-            });
+        if (event.dataTransfer.files.length) {
+            event.preventDefault();
+            this.service.addFiles(event.dataTransfer.files);
         }
     }
 }

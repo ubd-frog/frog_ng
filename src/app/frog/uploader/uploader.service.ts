@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, URLSearchParams } from '@angular/http';
+import { Http, RequestOptions } from '@angular/http';
 
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
-import { extractValue } from '../shared/common';
+import { extractValues } from '../shared/common';
 import { IItem, Tag } from '../shared/models';
 import { UploadFile } from './models';
 import { WorksService } from '../works/works.service';
+import {forEach} from "@angular/router/src/utils/collection";
 
 @Injectable()
 export class UploaderService {
@@ -23,27 +24,43 @@ export class UploaderService {
         this.requested = new Subject<boolean>();
         this.fileList = new ReplaySubject<UploadFile[]>(1);
         this.items = [];
+        this.files = [];
     }
     show() {
         this.requested.next(true);
     }
-    isUnique(name: string) {
-        let url = '/frog/isunique';
+    isUnique(names: string[]) {
+        let url = '/frog/isunique/';
         let options = new RequestOptions();
-        options.search = new URLSearchParams();
-        options.search.set('path', name);
-        return this.http.get(url, options).map(extractValue);
+        options.body = {
+            paths: names
+        };
+        options.withCredentials = true;
+        return this.http.post(url, options).map(extractValues);
     }
     addFiles(files: FileList) {
         if (files.length === 0) {
             return;
         }
+
         let filelist = [];
         for (let i = 0; i < files.length; i++) {
             filelist.push(new UploadFile(files[i]));
         }
-        this.fileList.next(filelist);
-        this.requested.next(true);
+        this.isUnique(filelist.map(file => file.name)).subscribe(items => {
+            let uploadfiles = this.files.slice(0);
+            items.forEach((item, index) => {
+                if (item !== true) {
+                    filelist[index].unique = false;
+                    filelist[index].created = new Date(item.created);
+                    filelist[index].data = item;
+                }
+                uploadfiles.push(filelist[index]);
+            });
+            this.files = uploadfiles;
+            this.fileList.next(this.files);
+            this.requested.next(true);
+        });
     }
     upload(files: UploadFile[], tags: Tag[]) {
         this.files = files;
