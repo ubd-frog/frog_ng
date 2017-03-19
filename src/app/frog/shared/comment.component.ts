@@ -34,7 +34,7 @@ import { CommentService } from './comment.service';
             </div>
         </div>
         <div *ngIf="!editing" class="comment-text">
-            <p [outerHTML]="comment.comment | commentUrl"></p>
+            <p [outerHTML]="comment.comment | commentUrl | emojione"></p>
         </div>
         
         <ul class="social-actions">
@@ -66,7 +66,7 @@ export class CommentComponent implements AfterContentInit {
     private content: string = '';
 
     constructor(private service: CommentService, private userservice: UserService) {
-        
+
     }
     ngAfterContentInit() {
         this.userservice.user.subscribe(user => {

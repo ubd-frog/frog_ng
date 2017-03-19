@@ -17,6 +17,7 @@ import { ViewportService } from './works/viewport.service';
 import { worksRouting } from './works/works.routing';
 
 import { CapitalizePipe } from './shared/capitalize.pipe';
+import { EmojiOnePipe } from './shared/comment-emoji.pipe';
 import { TagArtistFilterPipe } from './shared/tag-artist-filter.pipe';
 import { CommentURLPipe } from './shared/comment-url.pipe';
 import { WorksDetailComponent } from './shared/works-detail.component';
@@ -77,6 +78,7 @@ import { TagsService } from './tags/tags.service';
         CommentComponent,
         CommentURLPipe,
         CapitalizePipe,
+        EmojiOnePipe,
         TagArtistFilterPipe,
 
         ViewerComponent,

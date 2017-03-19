@@ -1,6 +1,6 @@
 /* Master Styles */
 
-body { 
+body {
    background-color: #202020;
    font-weight: 300 !important;
 }
@@ -50,7 +50,7 @@ body {
     }
 }
 
-/* 
+/*
  * See https://github.com/angular/angular.io/blob/master/public/docs/_examples/styles.css
  * for the full set of master styles used by the documentation samples
  */
@@ -146,3 +146,4 @@ comment-item .comment-text a {
 }
 
 .modal-overlay { z-index: 3010 !important; background: #000 !important; position: absolute; width: 100%; height: 100%; }
+.emojione { width: 24px; }
