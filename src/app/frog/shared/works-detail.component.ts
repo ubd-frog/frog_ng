@@ -202,7 +202,7 @@ declare var $:any;
         'hr { margin: 8px 0; border-right-style: initial; border-bottom-style: initial; border-left-style: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initia l; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-width: 1px 0px 0px; border-top: 1px solid rgb(49, 49, 49); }',
         '.separator { height: 1.8em; }',
         '.separator-sm { height: 0.9em; }',
-        'ul > div > i { cursor: pointer; }',
+        'ul > div > i, #edit_actions i { cursor: pointer; }',
         '.center-align img { width: 80%; }',
         '.btn.file-field { width: 100%; padding: 0 12px; }',
 

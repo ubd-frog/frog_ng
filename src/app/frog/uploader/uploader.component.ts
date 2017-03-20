@@ -57,7 +57,7 @@ import { Tag } from '../shared/models';
         '.modal { display: block; top: 10%; width: 80%; }',
         '.modal-content { padding-bottom: 180px; }',
         '.thumb { position: relative; padding-right: 12px; }',
-        '.thumb div { position: absolute; top: 25%; left: 10%; width: 24px; height: 24px; -webkit-transition: width 0.3s, height 0.3s; }',
+        '.thumb div { position: absolute; top: 25%; left: 10%; width: 24px; height: 24px; -webkit-transition: width 0.3s, height 0.3s; -moz-transition: width 0.3s, height 0.3s; -ms-transition: width 0.3s, height 0.3s; transition: width 0.3s, height 0.3s; }',
         '.thumb:hover div { width: 200px; height: 200px; }',
         '.close { cursor: pointer; }'
     ],
