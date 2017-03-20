@@ -25,13 +25,14 @@ declare var $:any;
 @Component({
     selector: 'works-detail',
     template: `
+    <div [@panelState]="visible" *ngIf="item" id="edit_actions" class="row grey darken-4 grey-text text-lighten-1">
+        <i (click)="toggle()" class="material-icons right">close</i>
+        <i (click)="edit()" class="material-icons right" [class.light-green-text]="editing">{{(editing) ? "check_circle" : "edit"}}</i>
+        <i *ngIf="editing" (click)="revert()" class="material-icons right red-text tooltipped" data-position="bottom" data-tooltip="Discard changed">delete_sweep</i>
+    </div>
     <ul [@panelState]="visible" class="side-nav grey darken-4 grey-text text-lighten-1">
         <div *ngIf="item">
-            <i (click)="toggle()" class="material-icons right">close</i>
-            <i (click)="edit()" class="material-icons right" [class.light-green-text]="editing">{{(editing) ? "check_circle" : "edit"}}</i>
-            <i *ngIf="editing" (click)="revert()" class="material-icons right red-text tooltipped" data-position="bottom" data-tooltip="Discard changed">delete_sweep</i>
-
-            <div *ngIf="editing" class="row">
+            <div *ngIf="editing" class="row" style="padding-top: 20px;">
                 <div class="col s12">
                     <h4 class="title">
                         <i class="material-icons light-green-text">image</i> Thumbnail
@@ -157,7 +158,7 @@ declare var $:any;
                 </div>
             </div>
             <hr />
-            <div class="row">
+            <div class="row" style="margin-bottom: 64px;">
                 <div class="col s12">
                     <h4>
                         <i class="material-icons light-green-text">comment</i> {{item.comment_count}} Comments
@@ -221,6 +222,7 @@ declare var $:any;
         'textarea.expanded { height: 100px; }',
         'textarea::-webkit-input-placeholder { color: #707070; }',
         '#remove_prompt_single { z-index: 4000 !important; }',
+        '#edit_actions { position: fixed; top: 0; width: 340px; z-index: 4000; }'
     ],
     animations: [
         trigger('panelState', [
