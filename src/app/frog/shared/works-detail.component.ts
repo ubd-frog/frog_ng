@@ -193,7 +193,7 @@ declare var $:any;
     
     <cropper [item]="item" (onCrop)="reloadThumbnail($event)"></cropper>`,
     styles: [
-        '.side-nav { padding: 6px .25rem 0 .25rem; width: 360px; z-index: 3010; }',
+        '.side-nav { padding: 16px .25rem 0 .25rem; width: 360px; z-index: 3010; }',
         '.side-nav li { line-height: inherit; }',
         'h3 { font-size: 22px; margin-bottom: 10px; margin-top: 0; font-weight: 200; line-height: 1.2em; }',
         'h4 { margin-top: 0px; font-weight: 300; font-size: 18px; margin-bottom: 12.5px; line-height: 1.2em; }',
@@ -226,7 +226,7 @@ declare var $:any;
         'textarea.expanded { height: 100px; }',
         'textarea::-webkit-input-placeholder { color: #707070; }',
         '#remove_prompt_single { z-index: 4000 !important; }',
-        '#edit_actions { position: fixed; top: 0; width: 340px; z-index: 4000; }',
+        '#edit_actions { position: fixed; top: 0; width: 340px; z-index: 4000; padding-top: 6px; }',
         'b { cursor: pointer; text-decoration: underline; }'
     ],
     animations: [
