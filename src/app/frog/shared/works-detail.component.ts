@@ -166,6 +166,10 @@ declare var $:any;
                     <ul>
                         <li *ngFor="let comment of comments"><comment-item [comment]="comment"></comment-item></li>
                     </ul>
+                    <div *ngIf="isOwner && prompted" class="light-blue-text text-lighten-2">
+                        <i class="material-icons">info</i>
+                        <span>You can <b (click)="edit()">edit</b> the item and add a description instead of leaving a comment</span>
+                    </div>
                     <textarea [(ngModel)]=comment (focus)="true" (keydown)="$event.stopPropagation()" (focus)="prompted = true" placeholder="Add a comment..." [class.expanded]="prompted"></textarea>
                     <div *ngIf="prompted" class="col s6">
                         <a class="waves-effect waves-light light-green btn" (click)="postComment()"><i class="material-icons left">comment</i>Post Comment</a>
@@ -222,7 +226,8 @@ declare var $:any;
         'textarea.expanded { height: 100px; }',
         'textarea::-webkit-input-placeholder { color: #707070; }',
         '#remove_prompt_single { z-index: 4000 !important; }',
-        '#edit_actions { position: fixed; top: 0; width: 340px; z-index: 4000; }'
+        '#edit_actions { position: fixed; top: 0; width: 340px; z-index: 4000; }',
+        'b { cursor: pointer; text-decoration: underline; }'
     ],
     animations: [
         trigger('panelState', [
