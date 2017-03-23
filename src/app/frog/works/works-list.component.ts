@@ -34,7 +34,8 @@ import { SelectionService } from '../shared/selection.service';
     </div>`,
     styles: [
         '.spinner { position: fixed; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%; color: #fff; font-size: 36px; text-align: center; padding-top: 50%; z-index: 3001; }',
-        '.col {padding: 0;}'
+        '.col {padding: 0;}',
+        'works-detail { user-select: initial; }'
     ]
 })
 export class WorksListComponent implements OnDestroy, AfterViewInit {
