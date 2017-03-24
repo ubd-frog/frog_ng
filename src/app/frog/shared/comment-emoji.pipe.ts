@@ -8,6 +8,9 @@ import {PipeTransform, Pipe} from "@angular/core";
 })
 export class EmojiOnePipe implements PipeTransform {
     transform(value: string) {
+        if (!value) {
+            return value;
+        }
         let converted = shortnameToImage(value);
         return converted;
     }

@@ -91,7 +91,7 @@ declare var $:any;
                     </div>
                 </div>
                 <div *ngIf="!editing || !isOwner" class="description col s12" id="project-description" style="max-height: none;">
-                    <p>{{item.description}}</p>
+                    <p [innerHTML]="item?.description | commentUrl | emojione"></p>
                 </div>
                 <div *ngIf="editing && isOwner">
                     <div class="col s12">
