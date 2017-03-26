@@ -28,10 +28,10 @@ import { Tag } from '../shared/models';
                         </div>
                         <div>
                             <ul class="collection">
-                                <li class="collection-item" *ngFor="let tag of tags; let i=index;" (click)="toggleSelection(tag)" [class.red-text]="tag.count == 0">
+                                <li class="collection-item tag-item" *ngFor="let tag of tags; let i=index;" (click)="toggleSelection(tag)" [class.red-text]="tag.count == 0">
                                     <span *ngIf="edit != i">
                                         <span (dblclick)="editTag(i)">{{tag.name}}</span>
-                                        <a (click)="remove(tag)" class="secondary-content">
+                                        <a (click)="remove($event, tag)" class="secondary-content">
                                             <i class="material-icons" [class.red-text]="deleteCheck == i">close</i>
                                         </a>
                                         <span class="secondary-content badge">{{tag.count}}</span>
@@ -43,7 +43,7 @@ import { Tag } from '../shared/models';
                     </div>
                     <div class="col s6">
                         <p>Select tags from the list on the left.  The first tag will be the root where the other selected tags will get merged into.</p>
-                        <a class="waves-effect waves-light light-green btn" (click)="submit($event)">merge</a>
+                        <a class="waves-effect waves-light light-green btn" (click)="submit($event)" [class.disabled]="merge.length < 2">merge</a>
                         <ul *ngIf="merge.length > 0" class="collection">
                             <li class="collection-item" *ngFor="let tag of merge; let i=index;">
                                 <div [class.light-green-text]="i == 0" [class.root]="i == 0">
@@ -71,7 +71,8 @@ import { Tag } from '../shared/models';
         '.modal-content div.row .col:first-child > div:last-child { overflow-y: auto; height: 100%; }',
         '.switch { display: inline; }',
         'span.badge { right: 64px; }',
-        'a { cursor: pointer; }'
+        'a { cursor: pointer; }',
+        '.tag-item { cursor: pointer; }'
     ],
     animations: [
         trigger('panelState', [
@@ -113,6 +114,7 @@ export class TagsListComponent implements OnDestroy {
         this.visible = 'show';
     }
     toggleSelection(tag: Tag) {
+        this.deleteCheck = -1;
         let index = this.merge.indexOf(tag);
         if (index != -1) {
             this.merge.splice(index, 1);
@@ -123,7 +125,9 @@ export class TagsListComponent implements OnDestroy {
     }
     submit(event) {
         event.preventDefault();
-        this.service.merge(this.merge.map(tag => { return tag.id; }));
+        if (this.merge.length > 1) {
+            this.service.merge(this.merge.map(tag => { return tag.id; }));
+        }
     }
     sortBy(attr: string) {
         this.tags.sort((a, b) => {
@@ -162,7 +166,9 @@ export class TagsListComponent implements OnDestroy {
             this.edit = -1;
         });
     }
-    remove(tag: Tag) {
+    remove(event, tag: Tag) {
+        event.preventDefault();
+        event.stopPropagation();
         let index = this.tags.indexOf(tag);
         if (this.deleteCheck != index) {
             this.deleteCheck = index
