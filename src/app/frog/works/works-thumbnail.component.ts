@@ -21,6 +21,9 @@ declare var $:any;
     <a href="/v/0/{{item.guid}}" (click)="clickHandler($event)">
         <img #img src='{{thumbnail}}' [style.padding.px]="prefs.thumbnailPadding" />
     </a>
+    <div *ngIf="prefs.showTags" class="tags">
+        <span class="tag" *ngFor="let tag of item.tags | tagArtistFilter">{{tag.name}}</span>
+    </div>
     <div class='thumbnail-details light-green-text' [class.semi]="prefs.semiTransparent">
         <p class="truncate">{{item.title}}</p>
         <div class="actions text-green">
@@ -38,7 +41,9 @@ declare var $:any;
         '.actions { position: absolute; right: 4px; bottom: 4px; cursor: pointer; }',
         '.tiny { font-size: 1.2rem; }',
         '.author { position: absolute; left: 4px; bottom: 10px; font-size: 0.8rem; cursor: pointer; }',
-        '.semi { opacity: 0.5; }'
+        '.semi { opacity: 0.5; }',
+        '.tags { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }',
+        '.tag { line-height: 26px; background-color: #fff; color: #000; margin: 0 2px; padding: 2px; border: 1px solid #333; border-radius: 2px;}'
     ]
 })
 export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {

@@ -47,6 +47,16 @@ import { GalleryService } from '../works/gallery.service';
         </li>
         <li>
             <div class="row">
+                <div class="col s12">
+                    <h6 class="grey-text text-lighten-1">Always Show Tags</h6>
+                    <div class="switch">
+                        <label>Off<input #semi type="checkbox" (change)="service.setValue('showTags', semi.checked)" [(ngModel)]="prefs.showTags"><span class="lever"></span>On</label>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="row">
                 <div class="input-field col s12">
                     <h6 class="grey-text text-lighten-1">Viewer Background Color</h6>
                     <div *ngFor="let key of keys" class="swatch {{key}}" [class.active]="prefs.backgroundColor === swatches[key]" (click)="service.setValue('backgroundColor', swatches[key])"></div>
