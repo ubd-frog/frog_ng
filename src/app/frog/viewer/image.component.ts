@@ -26,13 +26,17 @@ import { SelectionService } from '../shared/selection.service';
             </div>
         </div>
     </div>
+    <div class="info grey-text text-darken-1 center">
+        <span>{{object?.title}} - {{object?.author?.name}}</span>
+    </div>
     <img #img src="{{object.image}}" (mousedown)="down($event)" (mousemove)="move($event)" (mousewheel)="zoom($event)" (DOMMouseScroll)="zoomFF($event)" />
     <canvas #canvas width="{{width}}" height="{{height}}"></canvas>`,
     styles: [
         '.spinner { position: fixed; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%; color: #fff; font-size: 36px; text-align: center; padding-top: 50%; z-index: 3001; }',
         'canvas { cursor: move; }',
         'img { opacity: 0; width: 100%; height: 100%; position: absolute; cursor: url("//ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur") 7 5, default; }',
-        'img:active { cursor: url("//ssl.gstatic.com/ui/v1/icons/mail/images/2/closedhand.cur") 7 5, default; }'
+        'img:active { cursor: url("//ssl.gstatic.com/ui/v1/icons/mail/images/2/closedhand.cur") 7 5, default; }',
+        '.info { position:absolute; width: 100%; font-family: monospace; font-weight: 500; }'
     ]
 })
 export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecked {
