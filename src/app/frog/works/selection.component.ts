@@ -7,7 +7,7 @@ import { SelectionService } from '../shared/selection.service';
 
 @Component({
     selector: 'selection-marquee',
-    template: `<div #canvas [ngStyle]="{'display': (isMouseDown) ? 'block':'none'}"></div>`,
+    template: `<div #canvas [style.display]="(isMouseDown && active) ? 'block' : 'none'"></div>`,
     styles: [
         'div { position: absolute; border: 1px solid rgb(51,153,255); background: rgba(51, 153, 255, 0.5); z-index: 1000; }'
     ]
@@ -27,7 +27,7 @@ export class SelectionComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        
+
     }
     ngAfterViewInit() {
         this.element = this.canvas.nativeElement;
@@ -35,6 +35,7 @@ export class SelectionComponent implements OnInit, AfterViewInit {
     @HostListener('window:mouseup')
     up() {
         this.isMouseDown = false;
+        this.active = false;
         document.body.classList.remove('noselect');
     }
     @HostListener('window:mousedown', ['$event'])
@@ -74,9 +75,14 @@ export class SelectionComponent implements OnInit, AfterViewInit {
                 this.rect.height = Math.abs(y);
                 this.rect.y = this.origin.y + y;
             }
-            this.service.setRect(this.rect);
 
-            this.render();
+            if (this.active) {
+                this.service.setRect(this.rect);
+                this.render();
+            }
+            else {
+                this.active = this.origin.distance(new Point(event.clientX, event.clientY)) > 10.0;
+            }
         }
     }
     render() {

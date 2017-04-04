@@ -1,22 +1,26 @@
 export class Point {
     constructor(private _x:number = 0, private _y:number = 0) {
-        
+
     }
     get x(): number { return this._x; }
     set x(value: number) { this._x = value; }
     get y(): number { return this._y; }
     set y(value: number) { this._y = value; }
+
+    public distance(other: Point) {
+        return Math.sqrt(Math.pow(other.x - this.x, 2) + Math.pow(other.y - this.y, 2));
+    }
 }
 
 
 export class Matrix {
     constructor(public elements:number[][]) {
-        
+
     }
     get rect(): Rect { return new Rect(this.elements[2][0], this.elements[2][1], this.elements[0][0], this.elements[1][1])}
     public toString = () : string => {
         return 'Matrix [' + this.elements[0].join(',') + ',' + this.elements[1].join(',') + ',' + this.elements[2].join(',') + ']';
-    }
+    };
     x(b:Matrix) {
         let i = this.elements.length;
         let nj = b.elements[0].length;
@@ -75,7 +79,7 @@ export class Rect {
     set width(value: number) { this._width = value; }
     get height(): number { return this._height; }
     set height(value: number) { this._height = value; }
-    
+
     get top(): number { return this._y; }
     get left(): number { return this.x; }
     get bottom(): number { return this._y + this.height; }

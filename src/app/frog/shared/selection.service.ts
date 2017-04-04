@@ -99,10 +99,7 @@ export class SelectionService {
         this.selectItems(this.allItems);
     }
     setRect(rect: Rect) {
-        this.rect.x = rect.x;
-        this.rect.y = rect.y;
-        this.rect.width = rect.width;
-        this.rect.height = rect.height;
+        this.rect = rect;
         this.selectionRect.next(this.rect);
     }
 }
