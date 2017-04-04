@@ -1,0 +1,21 @@
+<div *ngIf="loading" class='spinner'>
+    loading...
+    <div class="preloader-wrapper small active">
+        <div class="spinner-layer spinner-green-only">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+                <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="info grey-text text-darken-1 center">
+    <span>{{object?.title}} - {{object?.author?.name}}</span>
+</div>
+<img #img src="{{object.image}}" (mousedown)="down($event)" (mousemove)="move($event)" (mousewheel)="zoom($event)" (DOMMouseScroll)="zoomFF($event)" />
+<canvas #canvas width="{{width}}" height="{{height}}"></canvas>

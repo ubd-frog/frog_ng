@@ -9,17 +9,7 @@ import { SelectionService } from '../shared/selection.service';
 
 @Component({
     selector: 'frog-video',
-    template: `
-    <div id='video_player' [style.margin-top.px]="margin" [style.width.px]="xform.elements[0][0]">
-        <video #vid poster="{{object.poster}}" controls="controls" autoplay="autoplay" loop="loop" (mouseup)="up($event)" (mousedown)="down($event)" (mousemove)="move($event)">
-            <source type='video/mp4' src="{{object.video}}" />
-        </video>
-        <div class='info row'>
-            <span class='white-text text-darken-2 col s2 left-align'>{{frame}}/{{frameCount}}</span>
-            <span class='white-text text-darken-2 col s8 center-align'>{{object.title}}</span>
-            <span class='white-text text-darken-2 col s2 right-align'>{{object.framerate}} fps</span>
-        </div>
-    </div>`,
+    templateUrl: './html/video.html',
     styles: [
         'video { width: 100%; height: 100%; cursor:ew-resize; }',
         '#video_player { display: block; margin: 0 auto; }',

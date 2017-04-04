@@ -17,56 +17,7 @@ import "rxjs/add/operator/mergeMap";
 
 @Component({
     selector: 'works-filter',
-    template: `
-    <div class="navbar-fixed">
-        <nav class="light-green darken-2">
-            <div class="nav-wrapper">
-                <!--<a href="#" class="brand-logo left"><img src="{{branding?.icon}}" /></a>-->
-                <ul>
-                    <li>
-                        <a (click)="nav.toggle()" class="dropdown-button">
-                            <i class="material-icons left">collections</i>Galleries
-                        </a>
-                    </li>
-                    <li class="right">
-                        <a href="{{branding?.link}}" target="_blank" rel="noopener noreferrer">
-                            <i class="material-icons">help_outline</i>
-                        </a>
-                    </li>
-                    <li *ngIf="user?.isManager" class="right">
-                        <a (click)="tagslist.show()">
-                            <i class="material-icons">loyalty</i>
-                        </a>
-                    </li>
-                    <li class="right">
-                        <a (click)="preferencesService.show()">
-                            <i class="material-icons right">settings</i> {{user?.name}}
-                        </a>
-                    </li>
-                    <li>
-                        <div class="file-field input-field">
-                            <i class="material-icons">cloud_upload</i>
-                            <input type="file" multiple (change)="addFiles($event)" title="Upload files">
-                        </div>
-                    </li>
-                    <li>
-                        <autocomplete (onSelect)="addTag($event)" [complex]="true"></autocomplete>
-                    </li>
-                    <ng-container *ngFor="let bucket of service.terms; let i = index; let l = last;">
-                        <li>
-                            <tag *ngFor="let item of bucket; let j = index;" [item]="item" (onClose)="removeTag($event, i, j)"></tag>
-                        </li>
-                        <li *ngIf="!l">
-                            <i class="material-icons">add</i>
-                        </li>
-                    </ng-container>
-                </ul>
-            </div>
-        </nav>
-    </div>
-    <works-nav (onSelect)="gallerySelectHandler($event)"></works-nav>
-    <tags-list #tagslist></tags-list>
-    `,
+    templateUrl: './html/filter.html',
     styles: [
         '#filtered_results { position: relative; display: inline-flex; height: 100%; margin: 0 10px; }',
         '.file-field { height: 64px; padding: 0 15px; }',

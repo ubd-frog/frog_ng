@@ -9,38 +9,7 @@ import { CommentService } from './comment.service';
 
 @Component({
     selector: 'comment-item',
-    template: `
-    <div class="btn-toolbar" *ngIf="false">
-        <div class="btn-group">
-            <button class="dropdown-toggle btn btn-default btn-xs" data-toggle="dropdown" href="#" type="button"><i class="fa fa-chevron-down"></i></button>
-            <ul class="dropdown-menu dropdown-menu-right dropdown-menu-sm">
-                <li><a href="#">Edit</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="comment-body">
-        <div class="commenter">
-            <a class="light-green-text">{{comment.user?.name | capitalize:1}}</a>
-        </div>
-        <div class="commenter-headline grey-text text-darken-1">{{comment.user?.email}}</div>
-        <i *ngIf="isOwner" (click)="edit()" class="material-icons right pointer" [class.light-green-text]="editing">{{(editing) ? "check_circle" : "edit"}}</i>
-        <i *ngIf="editing" (click)="revert()" class="material-icons right red-text pointer">delete_sweep</i>
-        
-        <div *ngIf="editing">
-            <div class="row">
-                <div class="input-field">
-                    <textarea id="comment" class="materialize-textarea" [(ngModel)]="content"></textarea>
-                </div>
-            </div>
-        </div>
-        <div *ngIf="!editing" class="comment-text">
-            <p [outerHTML]="comment.comment | commentUrl | emojione"></p>
-        </div>
-        
-        <ul class="social-actions">
-            <li class="right-align"><i class="posted">{{comment.date | date}}</i></li>
-        </ul>
-    </div>`,
+    template: './html/comment.html',
     styles: [
         '.comment-body { position: relative; width: 100%; overflow: visible; vertical-align: top; line-height: initial; }',
         '.comment-body .commenter a { font-size: 16px; font-weight: 300; }',

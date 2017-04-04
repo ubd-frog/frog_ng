@@ -7,10 +7,7 @@ import { NotificationService } from './notification.service';
 
 @Component({
     selector: 'notification-list',
-    template: `
-    <ul>
-        <li *ngFor="let item of items"><notification [item]="item"></notification></li>
-    </ul>`,
+    templateUrl: './html/notification-list.html',
     styles: [
         'ul { position: fixed; top: 84px; right: 12px; width: 300px; }'
     ]

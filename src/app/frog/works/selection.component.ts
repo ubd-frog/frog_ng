@@ -7,7 +7,7 @@ import { SelectionService } from '../shared/selection.service';
 
 @Component({
     selector: 'selection-marquee',
-    template: `<div #canvas [style.display]="(isMouseDown && active) ? 'block' : 'none'"></div>`,
+    templateUrl: './html/selection.html',
     styles: [
         'div { position: absolute; border: 1px solid rgb(51,153,255); background: rgba(51, 153, 255, 0.5); z-index: 1000; }'
     ]

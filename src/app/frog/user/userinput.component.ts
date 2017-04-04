@@ -5,17 +5,7 @@ import { User } from '../shared/models';
 
 @Component({
     selector: 'userinput',
-    template: `
-        <div id='root'>
-            <div class="input-field">
-                <input id="search" type="search" class="validate filter-input input autocomplete" [(ngModel)]=query (keyup)="filter($event)" (keyup.enter)="select()">
-                <label for="search"><i class="material-icons">search</i></label>
-                <i class="material-icons" (click)="filteredList = []">close</i>
-            </div>
-            <ul class='autocomplete-content dropdown-content'>
-                <li *ngFor="let item of filteredList; let idx = index" [class.complete-selected]="idx == selectedIndex"><a (click)="select($event, item)">{{item.name}}</a></li>
-            </ul>
-        </div>`,
+    templateUrl: './html/userinput.html',
     styles: [
         '.input-field { height: 64px; }',
         '.input-field label.active { transform: translateY(0); }',
@@ -43,7 +33,7 @@ export class UserInputComponent implements OnInit, AfterViewInit {
         this.query = '';
         this.selectedIndex = -1;
         this.elementRef = element;
-        
+
         service.users.subscribe(users => this.users = users);
     }
     ngOnInit() {

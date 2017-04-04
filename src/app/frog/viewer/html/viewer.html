@@ -1,0 +1,28 @@
+<works-detail></works-detail>
+
+<div *ngIf="objects.length > 1" class='col s1 left nav-arrow noselect'>
+    <a (click)="previous()"><i class="material-icons large" [style.margin-top.px]="height / 2">navigate_before</i></a>
+</div>
+<div *ngIf="objects.length > 1" class='col s1 right nav-arrow noselect'>
+    <a (click)="next()"><i class="material-icons large" [style.margin-top.px]="height / 2">navigate_next</i></a>
+</div>
+
+<div *ngIf="objects.length > 0" class='actions noselect'>
+    <a (click)="close($event)" class="btn-floating right red darken-4"><i class="material-icons white-text">close</i></a>
+    <a (click)="original()" class="waves-effect waves-light btn-floating right grey darken-4 original" title="Zoom to the original size">1:1</a>
+    <a (click)="fitToWindow()" class="waves-effect waves-light btn-floating right grey darken-4" title="Zoom to fit the current window"><i class="material-icons">settings_overscan</i></a>
+    <a (click)="setFocus()" class="waves-effect waves-light btn-floating right grey darken-4" title="Show information panel"><i class="material-icons">info_outline</i></a>
+    <a *ngIf="objects.length > 1" class="btn-flat disabled right">{{index + 1}}/{{objects.length}}</a>
+
+</div>
+<div class="keyboard">
+    <div style="padding-left: 14px;"><kbd>w</kbd></div>
+    <kbd>a</kbd>
+    <kbd>s</kbd>
+    <kbd>d</kbd>
+    <kbd>TAB</kbd>
+</div>
+<div id='viewer' class="noselect" [style.background]="prefs.backgroundColor">
+    <frog-image *ngIf="itemtype === 'image'"></frog-image>
+    <frog-video *ngIf="itemtype === 'video'"></frog-video>
+</div>

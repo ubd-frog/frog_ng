@@ -5,17 +5,7 @@ import { Tag } from './models';
 
 @Component({
     selector: 'autocomplete',
-    template: `
-        <div id='root'>
-            <div class="input-field">
-                <input id="search" type="search" class="validate filter-input input autocomplete" [(ngModel)]=query (ngModelChange)="filter()" (keydown)="down($event)" (keydown.enter)="select()" (keydown.tab)="activate()">
-                <label for="search"><i class="material-icons">{{icon}}</i></label>
-                <i class="material-icons" (click)="reset()">close</i>
-            </div>
-            <ul class='autocomplete-content dropdown-content'>
-                <li *ngFor="let item of filteredList; let idx = index" [class.complete-selected]="idx == selectedIndex"><a (click)="select($event, item)">{{item.name}}</a></li>
-            </ul>
-        </div>`,
+    templateUrl: './html/autocomplete.html',
     styles: [
         '.input-field { height: 64px; }',
         '.input-field label.active { transform: translateY(0); }',

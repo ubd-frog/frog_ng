@@ -1,0 +1,95 @@
+<ul [@panelState]="visible" class="side-nav grey darken-4 grey-text text-lighten-1">
+    <div>
+        <i (click)="service.hide()" class="material-icons right grey-text">close</i>
+    </div>
+    <div class="row grey-text text-lighten-1">
+        <div class="artwork-info ps-container col s12">
+            <div class="separator-sm"></div>
+            <div class="artist">
+                <div class="artist-name-and-headline">
+                    <div class="name">
+                        <a class="light-green-text">{{user?.name | capitalize:1}} <i *ngIf="user?.isManager" class="material-icons left">security</i></a>
+                    </div>
+                    <div class="headline">{{user?.email}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <hr />
+            <h4 class="title grey-text text-lighten-1">
+                <i class="material-icons light-green-text">settings</i> Preferences
+            </h4>
+        </div>
+    </div>
+    <li>
+        <div class="row">
+            <div class="col s12">
+                <h6 class="grey-text text-lighten-1">Always Show Info</h6>
+                <div class="switch">
+                    <label>Off<input #semi type="checkbox" (change)="service.setValue('semiTransparent', semi.checked)" [(ngModel)]="prefs.semiTransparent"><span class="lever"></span>On</label>
+                </div>
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="row">
+            <div class="col s12">
+                <h6 class="grey-text text-lighten-1">Always Show Tags</h6>
+                <div class="switch">
+                    <label>Off<input #semi type="checkbox" (change)="service.setValue('showTags', semi.checked)" [(ngModel)]="prefs.showTags"><span class="lever"></span>On</label>
+                </div>
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="row">
+            <div class="input-field col s12">
+                <h6 class="grey-text text-lighten-1">Viewer Background Color</h6>
+                <div *ngFor="let key of keys" class="swatch {{key}}" [class.active]="prefs.backgroundColor === swatches[key]" (click)="service.setValue('backgroundColor', swatches[key])"></div>
+            </div>
+        </div>
+    <li>
+        <div class="row">
+            <div class="input-field col s12">
+                <h6 class="grey-text text-lighten-1">Thumbnail Padding</h6>
+                <p class="range-field">
+                    <input type="range" id="test5" min="0" max="10" #thumbpad (change)="service.setValue('thumbnailPadding', thumbpad.value)" value="{{prefs.thumbnailPadding}}" />
+                </p>
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="row">
+            <div class="col s12">
+                <h6 class="grey-text text-lighten-1">Comment Notifications</h6>
+                <div class="switch">
+                    <label>Off<input #comments type="checkbox" (change)="service.setValue('emailComments', comments.checked)" [(ngModel)]="prefs.emailComments"><span class="lever"></span>On</label>
+                </div>
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="row">
+            <div class="col s12">
+                <h6 class="grey-text text-lighten-1">Likes Notifications</h6>
+                <div class="switch">
+                    <label>Off<input #likes type="checkbox" (change)="service.setValue('emailLikes', likes.checked)" [(ngModel)]="prefs.emailLikes"><span class="lever"></span>On</label>
+                </div>
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="row">
+            <div class="col s12">
+                <h6 class="grey-text text-lighten-1">Gallery Subscriptions</h6>
+                <ul>
+                    <li *ngFor="let gallery of galleries;">
+                        <gallery-subscription *ngIf="prefs.subscriptions" [gallery]="gallery" [subscriptions]="prefs.subscriptions" ></gallery-subscription>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </li>
+</ul>

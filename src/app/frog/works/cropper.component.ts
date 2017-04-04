@@ -6,47 +6,7 @@ import { Point, Rect } from '../shared/euclid';
 
 @Component({
     selector: 'cropper',
-    template: `
-    <div [@panelState]="visible" id="modal" (drop)="drop($event)" (dragover)="false" (dragend)="false">
-        <div (mousemove)="move($event)" class="modal open modal-fixed-footer">
-            <div #content class="modal-content">
-                <h4>Create a Square Thumbnail</h4>
-                <div style="width: 100%; height: 90%;">
-                    <div #view (mousedown)="down($event)" class="cropper-container cropper-bg" [style.width.px]="width" [style.height.px]="height">
-                        <div class="cropper-wrap-box">
-                            <div class="cropper-canvas">
-                                <img src="{{item?.image}}">
-                            </div>
-                        </div>
-                        <div class="cropper-drag-box cropper-modal"></div>
-                        <div class="cropper-crop-box" [style.width.px]="rect.width" [style.height.px]="rect.height" [style.top.px]="rect.y" [style.left.px]="rect.x">
-                            <span class="cropper-view-box">
-                                <img src="{{item?.image}}" [style.width.px]="width" [style.height.px]="height" [style.margin-left.px]="-rect.x" [style.margin-top.px]="-rect.y">
-                            </span>
-                            <span class="cropper-dashed dashed-h"></span><span class="cropper-dashed dashed-v"></span>
-                            <span class="cropper-center"></span><span (mousedown)="handle='center'" class="cropper-face cropper-move"></span>
-                            <span class="cropper-line line-e" (mousedown)="handle='e'"></span>
-                            <span class="cropper-line line-n" (mousedown)="handle='n'"></span>
-                            <span class="cropper-line line-w" (mousedown)="handle='w'"></span>
-                            <span class="cropper-line line-s" (mousedown)="handle='s'"></span>
-                            <span class="cropper-point point-e" (mousedown)="handle='e'"></span>
-                            <span class="cropper-point point-n" (mousedown)="handle='n'"></span>
-                            <span class="cropper-point point-w" (mousedown)="handle='w'"></span>
-                            <span class="cropper-point point-s" (mousedown)="handle='s'"></span>
-                            <span class="cropper-point point-ne" (mousedown)="handle='ne'"></span>
-                            <span class="cropper-point point-nw" (mousedown)="handle='nw'"></span>
-                            <span class="cropper-point point-sw" (mousedown)="handle='sw'"></span>
-                            <span class="cropper-point point-se" (mousedown)="handle='se'"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a (click)="close()" class="waves-effect waves-red btn-flat">Cancel</a>
-                <a (click)="crop()" class="waves-effect waves-green btn">Crop</a>
-            </div>
-        </div>
-    </div>`,
+    templateUrl: './html/cropper.html',
     styles: [
         'div#modal { position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.48); z-index: 4000; }',
         '.modal { display: block; top: 10%; width: 80%; }',
@@ -207,7 +167,7 @@ export class CropperComponent implements AfterViewChecked {
                     original.height = this.source.height - delta.x;
                     break;
             }
-            
+
             original.clamp(this.width, this.height);
             original.width = original.height;
             this.rect = original;

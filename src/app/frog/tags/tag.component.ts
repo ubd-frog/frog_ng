@@ -7,12 +7,7 @@ import { isInt } from "../shared/common";
 
 @Component({
     selector: 'tag',
-    template: `
-    <div class="chip" [class.grey]="dark" [class.darken-3]="dark" [class.grey-text]="dark">
-        <i class="material-icons left">{{(tag.id == 0) ? "search" : "label"}}</i>
-        <span (click)="clickHandler($event)">{{tag.name}}</span>
-        <i *ngIf="editable" class="close material-icons" (click)="closeHandler($event)">close</i>
-    </div>`,
+    templateUrl: './html/tag.html',
     styles: [
         '.chip, .chip > i.material-icons { height: 24px; line-height: 24px; border-radius: 2px; }',
         '.chip > i.material-icons:first-child { margin-right: 8px; font-size: 16px; height: 24px; line-height: 24px; }',

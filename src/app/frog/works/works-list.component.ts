@@ -10,28 +10,7 @@ import { SelectionService } from '../shared/selection.service';
 
 @Component({
     selector: 'works-list',
-    template: `
-    <works-detail></works-detail>
-    <div *ngIf="loading" class='spinner'>
-        working...
-        <div class="preloader-wrapper small active">
-            <div class="spinner-layer spinner-green-only">
-                <div class="circle-clipper left">
-                    <div class="circle"></div>
-                </div>
-                <div class="gap-patch">
-                    <div class="circle"></div>
-                </div>
-                <div class="circle-clipper right">
-                    <div class="circle"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <h5 *ngIf="items.length === 0" class="light-green-text center-align">Nothing found</h5>
-    <div class='row'>
-        <thumbnail class='col m1' [class.loaded]="item.loaded" *ngFor="let item of items" [item]="item" [class.selected]="item.selected"></thumbnail>
-    </div>`,
+    templateUrl: './html/works-list.html',
     styles: [
         '.spinner { position: fixed; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%; color: #fff; font-size: 36px; text-align: center; padding-top: 50%; z-index: 3001; }',
         '.col {padding: 0;}',

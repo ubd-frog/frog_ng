@@ -17,22 +17,7 @@ declare var $:any;
 
 @Component({
     selector: 'thumbnail',
-    template: `
-    <a href="/v/0/{{item.guid}}" (click)="clickHandler($event)">
-        <img #img src='{{thumbnail}}' [style.padding.px]="prefs.thumbnailPadding" />
-    </a>
-    <div *ngIf="prefs.showTags" class="tags">
-        <span class="tag" *ngFor="let tag of item.tags | tagArtistFilter">{{tag.name}}</span>
-    </div>
-    <div class='thumbnail-details light-green-text' [class.semi]="prefs.semiTransparent">
-        <p class="truncate">{{item.title}}</p>
-        <div class="actions text-green">
-            <i (click)="like()" class="tiny material-icons">thumb_up</i> <small>{{item.like_count}}</small>
-            <i (click)="setFocus($event)" class="tiny material-icons">comment</i> <small>{{item.comment_count}}</small>
-            <i (click)="setFocus($event)" class="tiny material-icons">info</i>
-        </div>
-        <small class="author" (click)="setAuthor(item.author.name)">{{item.author.name | capitalize:1}}</small>
-    </div>`,
+    templateUrl: './html/works-thumbnail.html',
     styles: [
         'img { width: 100%; height: auto; display: block; }',
         'p { position: absolute; bottom: 12px; width: 100%; font-size: 18px; color: #fff; font-weight: normal; overflow: hidden; cursor: pointer; line-height: initial; }',

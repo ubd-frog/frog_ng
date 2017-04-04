@@ -9,28 +9,7 @@ declare var $:any;
 
 @Component({
     selector: 'works-nav',
-    template: `
-    <ul [@panelState]="visible" class="dropdown-content grey darken-4 light-green-text" [style.display]="(visible === 'show') ? 'block' : 'none'">
-        <li>
-            <a (click)="createToggle()" class="light-green-text">
-                <i class="material-icons left">add</i>Create
-            </a>
-        </li>
-        <li id="create_form">
-            <form [@createState]="createVisible" (submit)="createHandler()">
-                <div>
-                    <input _ngcontent-aua-6="" class="light-green-text" id="first_name" placeholder="Title" type="text" [(ngModel)]="title" name="title">
-                    <button class="btn waves-effect waves-light light-green" type="submit" name="action">Create</button>
-                </div>
-            </form>
-        </li>
-        <li *ngFor="let gallery of galleries" [class.active]="gallery.id === worksservice.id">
-            <a (click)="switchGallery(gallery)" class="light-green-text">
-                <i class="material-icons left">{{securityIcon(gallery)}}</i>{{gallery.title}}
-            </a>
-        </li>
-    </ul>
-    `,
+    templateUrl: './html/navigation.html',
     styles: [
         'ul { width: 360px; border: 1px solid #333; }',
         '#create_form { min-height: 0; }',
@@ -78,7 +57,7 @@ export class NavigationComponent {
         private userservice: UserService,
         private worksservice: WorksService,
         private element: ElementRef) {
-        
+
         this.elementRef = element;
         service.items.subscribe(items => {
             this.galleries = items;

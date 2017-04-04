@@ -7,60 +7,7 @@ import { Tag } from '../shared/models';
 
 @Component({
     selector: 'tags-list',
-    template: `
-    <div [@panelState]="visible" id="modal">
-        <div class="modal open modal-fixed-footer">
-            <div class="modal-content">
-                <a class="right" (click)="close()"><i class="material-icons">close</i></a>
-                <h4>Tag Management</h4>
-                <div class="row">
-                    <div class="col s6">
-                        <div class="row">
-                            <a class="waves-effect waves-light light-green btn" (click)="sortBy('name')"><i class="material-icons">sort_by_alpha</i></a>
-                            <a class="waves-effect waves-light light-green btn" (click)="sortBy('count')"><i class="material-icons">sort</i></a>
-                            <div class="switch">
-                                <label>
-                                    <input type="checkbox" [(ngModel)]="showall" (click)="toggleFilter()">
-                                    <span class="lever"></span>
-                                    Unused Only
-                                </label>
-                            </div>
-                        </div>
-                        <div>
-                            <ul class="collection">
-                                <li class="collection-item tag-item" *ngFor="let tag of tags; let i=index;" (click)="toggleSelection(tag)" [class.red-text]="tag.count == 0">
-                                    <span *ngIf="edit != i">
-                                        <span (dblclick)="editTag(i)">{{tag.name}}</span>
-                                        <a (click)="remove($event, tag)" class="secondary-content">
-                                            <i class="material-icons" [class.red-text]="deleteCheck == i">close</i>
-                                        </a>
-                                        <span class="secondary-content badge">{{tag.count}}</span>
-                                    </span>
-                                    <input class="input-field" autofocus="autofocus" *ngIf="edit == i" type="text" [(ngModel)]="editfield" (keyup.enter)="saveEdit()" (keyup.esc)="edit = -1" (blur)="edit = -1" />
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col s6">
-                        <p>Select tags from the list on the left.  The first tag will be the root where the other selected tags will get merged into.</p>
-                        <a class="waves-effect waves-light light-green btn" (click)="submit($event)" [class.disabled]="merge.length < 2">merge</a>
-                        <ul *ngIf="merge.length > 0" class="collection">
-                            <li class="collection-item" *ngFor="let tag of merge; let i=index;">
-                                <div [class.light-green-text]="i == 0" [class.root]="i == 0">
-                                    {{tag.name}}
-                                    <a class="secondary-content" (click)="toggleSelection(tag)"><i class="material-icons light-green-text">close</i></a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a (click)="close()" class="btn-flat">Done</a>
-            </div>
-        </div>
-    </div>
-    `,
+    templateUrl: './html/tags-list.html',
     styles: [
         'div#modal { position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.48); z-index: 4000; }',
         '.modal { display: block; top: 10%; width: 80%; }',
@@ -131,10 +78,16 @@ export class TagsListComponent implements OnDestroy {
     }
     sortBy(attr: string) {
         this.tags.sort((a, b) => {
-            if (a[attr].toLowerCase() > b[attr].toLowerCase()) {
+            let x = a[attr];
+            let y = b[attr];
+            if (typeof x === 'string') {
+                x = x.toLowerCase();
+                y = y.toLowerCase();
+            }
+            if (x > y) {
                 return 1;
             }
-            else if (b[attr].toLowerCase() > a[attr].toLowerCase()) {
+            else if (y > x) {
                 return -1;
             }
             return 0;

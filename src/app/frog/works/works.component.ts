@@ -11,15 +11,7 @@ import { PreferencesComponent } from '../user/preferences.component';
 
 
 @Component({
-    template: `
-    <works-filter></works-filter>
-    <works-list id="works_list"></works-list>
-    <selection-detail></selection-detail>
-    <selection-marquee></selection-marquee>
-    <uploader></uploader>
-    <notification-list></notification-list>
-    <preferences></preferences>
-    `,
+    templateUrl: './html/works.html',
     styles: [
         '#works_detail { z-index: 4000; }',
         'works-filter { position: fixed; top: 0; z-index: 900; width: 100%; }',

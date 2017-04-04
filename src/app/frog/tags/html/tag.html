@@ -1,0 +1,5 @@
+<div class="chip" [class.grey]="dark" [class.darken-3]="dark" [class.grey-text]="dark">
+    <i class="material-icons left">{{(tag.id == 0) ? "search" : "label"}}</i>
+    <span (click)="clickHandler($event)">{{tag.name}}</span>
+    <i *ngIf="editable" class="close material-icons" (click)="closeHandler($event)">close</i>
+</div>

@@ -9,28 +9,7 @@ import { SelectionService } from '../shared/selection.service';
 
 @Component({
     selector: 'frog-image',
-    template: `
-    <div *ngIf="loading" class='spinner'>
-        loading...
-        <div class="preloader-wrapper small active">
-            <div class="spinner-layer spinner-green-only">
-                <div class="circle-clipper left">
-                    <div class="circle"></div>
-                </div>
-                <div class="gap-patch">
-                    <div class="circle"></div>
-                </div>
-                <div class="circle-clipper right">
-                    <div class="circle"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="info grey-text text-darken-1 center">
-        <span>{{object?.title}} - {{object?.author?.name}}</span>
-    </div>
-    <img #img src="{{object.image}}" (mousedown)="down($event)" (mousemove)="move($event)" (mousewheel)="zoom($event)" (DOMMouseScroll)="zoomFF($event)" />
-    <canvas #canvas width="{{width}}" height="{{height}}"></canvas>`,
+    templateUrl: './html/image.html',
     styles: [
         '.spinner { position: fixed; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%; color: #fff; font-size: 36px; text-align: center; padding-top: 50%; z-index: 3001; }',
         'canvas { cursor: move; }',

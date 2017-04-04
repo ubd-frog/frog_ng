@@ -4,7 +4,7 @@ import { Notification } from '../shared/models';
 
 @Component({
     selector: 'notification',
-    template: `<div [@panelState]="visible" class="toast"><i *ngIf="item.icon" class="material-icons left">{{item.icon}}</i><span [innerHTML]="item.text"></span></div>`,
+    templateUrl: './html/notification.html',
     animations: [
         trigger('panelState', [
             state('show', style({
@@ -18,7 +18,7 @@ import { Notification } from '../shared/models';
     ]
 })
 export class NotificationComponent {
-    @Input() item;
+    @Input() item: Notification;
     private visible: string = 'hide';
 
     constructor() {

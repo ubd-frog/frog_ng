@@ -7,51 +7,7 @@ import { Tag } from '../shared/models';
 
 @Component({
     selector: 'uploader',
-    template: `
-    <div [@panelState]="visible" id='uploader' (drop)="drop($event)" (dragover)="false" (dragend)="false">
-        <div id="modal1" class="modal open modal-fixed-footer">
-            <div class="modal-content">
-                <h4>Upload Files</h4>
-                <div class="row">
-                    Please enter at least one tag for the uploaded items
-                </div>
-                <div class="row">
-                    <autocomplete (onSelect)="addTag($event)"></autocomplete>
-                    <tag *ngFor="let tag of tags" [item]="tag.name" (onClose)="removeTag($event)"></tag>
-                </div>
-                <div class="progress">
-                    <div class="determinate" [style.width.%]="((total - files.length) / total) * 100"></div>
-                </div>
-                <table class="bordered">
-                    <thead>
-                        <tr>
-                            <th colspan="2">File</th>
-                            <th>Size</th>
-                            <th>Created</th>
-                            <th>%</th>
-                            <th>Status</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let file of files" [class.red]="!file.unique" [class.lighten-5]="!file.unique">
-                            <td class="thumb"><div><img class="responsive-img" src="{{file.data?.thumbnail}}" /></div></td>
-                            <td>{{file.name}}</td>
-                            <td>{{file.size | bytes}}</td>
-                            <td>{{file.created | date:"short"}}</td>
-                            <td>{{file.progress}}</td>
-                            <td>{{file.status}}</td>
-                            <td><i class="close material-icons" (click)="removeHandler(file)">close</i></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <a (click)="toggle()" class="waves-effect waves-red btn-flat">Cancel</a>
-                <a (click)="upload()" class="waves-effect waves-green btn" [class.disabled]="files.length === 0 || tags.length === 0">Upload</a>
-            </div>
-        </div>
-    </div>`,
+    templateUrl: './html/uploader.html',
     styles: [
         'div#uploader { position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.48); z-index: 4000; }',
         '.modal { display: block; top: 10%; width: 80%; }',

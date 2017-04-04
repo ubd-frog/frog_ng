@@ -1,0 +1,25 @@
+<section class='light-green-text'>
+    <h1>Frog Login</h1>
+</section>
+<form method='post' action='/frog/login' (ngSubmit)="clickHandler()">
+    {{ csrf_token }}
+    <div class='row'>
+        <div class='input-field col s12'>
+            <input type="email" name='email' [(ngModel)]="email" autocomplete="off">
+            <label>Email</label>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='input-field col s12'>
+            <input type="password" name='password' [(ngModel)]="password" autocomplete="off">
+            <label>Password</label>
+        </div>
+    </div>
+    <button type="submit" class="waves-effect waves-light btn light-green" (click)="clickHandler()">Login</button>
+    <div *ngIf="message.length" class="card-panel red darken-4">
+        <span class="white-text">{{message}}</span>
+    </div>
+</form>
+<footer>
+    <a href="http://frog.readthedocs.io/en/latest/" target="_blank"><img src="/static/frog/i/frog.png"></a>
+</footer>
