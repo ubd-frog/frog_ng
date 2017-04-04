@@ -237,7 +237,7 @@ export class WorksService {
                     this.addItems(items);
                 }
 
-                let message = `Items ${verb}! <a href="/w/${copyTo}">Go There</a>`;
+                let message = `Items ${verb}! <a href="/w/${copyTo || this.id}">Go There</a>`;
                 this.notify.add(new Notification(message));
             });
         });

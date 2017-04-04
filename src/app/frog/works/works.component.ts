@@ -62,9 +62,13 @@ export class WorksComponent {
             this.notify.add(new Notification('Cut', 'content_cut'));
         }
         if (event.ctrlKey && event.key === 'v') {
-            event.preventDefault();
-            let item = this.storage.pop('clipboard');
-            this.workservice.copyItems(item.guids, item.id);
+            if (document.activeElement.tagName === 'BODY') {
+                event.preventDefault();
+                let item = this.storage.pop('clipboard');
+                if (item != null) {
+                    this.workservice.copyItems(item.guids, item.id);
+                }
+            }
         }
     }
     @HostListener('window:dragenter', ['$event'])
