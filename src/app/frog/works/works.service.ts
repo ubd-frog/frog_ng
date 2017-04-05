@@ -8,6 +8,7 @@ import { extractValues, extractValue } from '../shared/common';
 import {IItem, CImage, CVideo, Tag, User, Notification, Gallery} from '../shared/models';
 import { NotificationService } from '../notifications/notification.service';
 import {GalleryService} from "./gallery.service";
+import {PreferencesService} from "../user/preferences.service";
 
 
 @Injectable()
@@ -16,6 +17,7 @@ export class WorksService {
     private guids: string[];
     private isLoading: boolean;
     private gallery: Gallery;
+    private orderby: string;
     public routecache: string;
     public results: BehaviorSubject<[IItem[], boolean]>;
     public loading: BehaviorSubject<boolean>;
@@ -23,17 +25,34 @@ export class WorksService {
     public selection: IItem[];
     public terms: Array<Array<any>>;
     public scrollpos: number;
+    public minitems: number;
 
-    constructor(private http:Http, private notify: NotificationService, private galleryservice: GalleryService) {
+    constructor(
+        private http:Http,
+        private notify: NotificationService,
+        private galleryservice: GalleryService,
+        private prefs: PreferencesService
+    ) {
         this.items = [];
         this.guids = [];
         this.terms = [];
         this.id = 0;
         this.scrollpos = 0;
+        this.orderby = '';
         this.isLoading = false;
         this.results = new BehaviorSubject<[IItem[], boolean]>([this.items, false]);
         this.loading = new BehaviorSubject<boolean>(this.isLoading);
         galleryservice.gallery.subscribe(gallery => this.gallery = gallery);
+        prefs.preferences.subscribe(p => {
+            if (!this.orderby) {
+                this.orderby = p['orderby'];
+            }
+            else if (p['orderby'] != this.orderby) {
+                this.orderby = p['orderby'];
+                this.routecache = '';
+                this.get();
+            }
+        });
     }
     get(id:number=0, append:boolean=false) {
         if (window.location.pathname == this.routecache && !append) {
@@ -63,6 +82,7 @@ export class WorksService {
                 if (!append) {
                     this.items.length = 0;
                     this.guids.length = 0;
+                    this.minitems = items.length;
                 }
 
                 for (let item of items) {
@@ -178,15 +198,6 @@ export class WorksService {
             else {
                 this.items[index] = item;
             }
-            this.items.sort((a,b) => {
-                if (a.created > b.created) {
-                    return -1;
-                }
-                else if (b.created > a.created) {
-                    return 1;
-                }
-                return 0;
-            });
         }
         this.results.next([this.items, false]);
     }

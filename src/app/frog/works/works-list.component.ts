@@ -23,7 +23,6 @@ export class WorksListComponent implements OnDestroy, AfterViewInit {
     private scrollcheck: boolean = false;
     private minheight: number = 0;
     private buffer: number = 300;
-    private minitems: number = 300;
     private loading: boolean;
     private subs: Subscription[];
 
@@ -49,7 +48,7 @@ export class WorksListComponent implements OnDestroy, AfterViewInit {
         if (this.loading) {
             return;
         }
-        if (this.items.length > 0 && this.length != this.items.length && this.items.length >= this.minitems) {
+        if (this.items.length > 0 && this.length != this.items.length && this.items.length >= this.service.minitems) {
             this.length = this.items.length;
             this.scrollcheck = true;
         }
