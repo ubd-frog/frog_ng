@@ -46,6 +46,19 @@
     <li>
         <div class="row">
             <div class="input-field col s12">
+                <h6 class="grey-text text-lighten-1">Sort By</h6>
+                <p>
+                    <input name="group1" type="radio" id="created" [(ngModel)]="prefs.orderby" value="created" (change)="service.setValue('orderby', 'created')" />
+                    <label for="created">Created</label>
+                    <input name="group1" type="radio" id="modified" [(ngModel)]="prefs.orderby" value="modified" (change)="service.setValue('orderby', 'modified')" />
+                    <label for="modified">Modified</label>
+                </p>
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="row">
+            <div class="input-field col s12">
                 <h6 class="grey-text text-lighten-1">Viewer Background Color</h6>
                 <div *ngFor="let key of keys" class="swatch {{key}}" [class.active]="prefs.backgroundColor === swatches[key]" (click)="service.setValue('backgroundColor', swatches[key])"></div>
             </div>
