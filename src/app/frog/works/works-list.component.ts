@@ -29,6 +29,11 @@ export class WorksListComponent implements OnDestroy, AfterViewInit {
     constructor(private element: ElementRef, private service:WorksService, private selectionservice: SelectionService) {
         this.subs = [];
         let sub = this.service.results.subscribe(items => {
+            if (this.items.length != items[0].length) {
+                this.length = 0;
+                this.minheight = 0;
+                window.scrollTo(0, this.service.scrollpos);
+            }
             this.items = items[0];
         });
         this.subs.push(sub);

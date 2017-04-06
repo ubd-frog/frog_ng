@@ -105,7 +105,7 @@ export class WorksService {
                     this.items.push(obj);
                     this.guids.push(obj.guid);
                 }
-                this.results.next([this.items, append]);
+                this.results.next([this.items.slice(0), append]);
                 this.loading.next(false);
             }, error => console.log(error));
     }
