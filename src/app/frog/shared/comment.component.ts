@@ -9,7 +9,7 @@ import { CommentService } from './comment.service';
 
 @Component({
     selector: 'comment-item',
-    template: './html/comment.html',
+    templateUrl: './html/comment.html',
     styles: [
         '.comment-body { position: relative; width: 100%; overflow: visible; vertical-align: top; line-height: initial; }',
         '.comment-body .commenter a { font-size: 16px; font-weight: 300; }',
