@@ -106,6 +106,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     addFiles(event: Event) {
         let element = <HTMLInputElement>event.target;
         this.uploadservice.addFiles(element.files);
+        element.value = null;
     }
     gallerySelectHandler(gallery: Gallery) {
         this.router.navigate(['w/' + gallery.id]);
