@@ -77,24 +77,28 @@ export class AutocompleteComponent {
         else {
             this.filteredList = [];
         }
+        console.log('filter', this.selectedIndex);
     }
     down(event) {
         event.stopPropagation();
         if (event.code === "ArrowDown") {
+            event.preventDefault();
             this.selectedIndex++;
         }
         else if (event.code === "ArrowUp") {
+            event.preventDefault();
             this.selectedIndex--;
         }
         else if (event.code === "Tab") {
-            //this.activate();
             event.preventDefault();
         }
         else if (event.code === "Space") {
             this.activate(-1);
         }
+
         this.selectedIndex = (this.filteredList.length + this.selectedIndex) % this.filteredList.length;
         this.selectedIndex = (isNaN(this.selectedIndex)) ? -1 : this.selectedIndex;
+        this.activate();
     }
     select(event: any, tag: Tag) {
         if (!tag) {
@@ -125,6 +129,9 @@ export class AutocompleteComponent {
                 this.cache = this.cache.trim() + ' ';
                 this.query = this.cache;
             }
+        }
+        else if (this.selectedIndex !== -1) {
+            this.query = this.filteredList[this.selectedIndex].name;
         }
     }
     handleClick(event) {
