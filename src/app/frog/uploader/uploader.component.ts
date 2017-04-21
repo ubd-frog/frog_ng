@@ -66,6 +66,7 @@ export class UploaderComponent implements OnDestroy {
         this.total = this.files.length;
         this.service.upload(this.files, this.tags).subscribe(files => {
             this.files = files;
+        }, () => {}, () => {
             this.visible = 'hide';
             this.total = 0;
         });
