@@ -31,16 +31,16 @@ export class FilterComponent implements OnInit, OnDestroy {
     private tags: string[];
     private galleryid: number;
     private query: string;
-    private branding: Object = {};
-    private user: User;
+    public branding: Object = {};
+    public user: User;
     private sub;
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private service: WorksService,
+        public service: WorksService,
         private uploadservice: UploaderService,
-        private preferencesService: PreferencesService,
+        public preferencesService: PreferencesService,
         private galleryservice: GalleryService,
         private userservice: UserService,
         private tagservice: TagsService

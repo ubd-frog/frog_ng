@@ -30,9 +30,9 @@ import { CommentService } from './comment.service';
 export class CommentComponent implements AfterContentInit {
     @Input() comment: Comment;
     private user: User
-    private isOwner: boolean = false;
-    private editing: boolean = false;
-    private content: string = '';
+    public content: string = '';
+    public isOwner: boolean = false;
+    public editing: boolean = false;
 
     constructor(private service: CommentService, private userservice: UserService) {
 

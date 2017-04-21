@@ -20,7 +20,8 @@ export class TagComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() dark: boolean = false;
     @Output() onClose = new EventEmitter<Tag>();
     @Output() onClick = new EventEmitter<Tag>();
-    private tag: Tag;
+
+    public tag: Tag;
 
     constructor(private service: TagsService) {
         this.tag = new Tag(0, '', false);

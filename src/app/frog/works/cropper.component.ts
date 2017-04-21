@@ -68,14 +68,14 @@ export class CropperComponent implements AfterViewChecked {
     @Input() item;
     @Output() onCrop = new EventEmitter();
     @ViewChild('content') content: ElementRef;
-    private rect: Rect;
     private origin: Point;
     private source: Rect;
-    private handle: string;
     private isMouseDown: boolean;
-    private width: number;
-    private height: number;
-    private visible: string = 'hide';
+    public rect: Rect;
+    public width: number;
+    public height: number;
+    public visible: string = 'hide';
+    public handle: string;
 
     constructor(private service: WorksService) {
         this.rect = new Rect(0, 0, 400, 400);

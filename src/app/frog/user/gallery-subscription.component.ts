@@ -11,10 +11,10 @@ export class GallerySubscriptionComponent implements AfterViewInit {
     @Input() gallery;
     @Input() subscriptions;
 
-    private weekly: boolean;
-    private daily: boolean;
+    public weekly: boolean;
+    public daily: boolean;
 
-    constructor(private service: GalleryService) {
+    constructor(public service: GalleryService) {
 
     }
 

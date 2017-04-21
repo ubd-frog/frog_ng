@@ -33,16 +33,16 @@ import { Tag } from '../shared/models';
     ]
 })
 export class TagsListComponent implements OnDestroy {
-    private tags: Tag[] = [];
     private _tags: Tag[] = [];
-    private merge: Tag[] = [];
     private subs: Subscription[] = [];
-    private visible: string = 'hide';
     private order: boolean = true;
-    private showall: boolean = false;
     private edit: number = -1;
     private editfield: string = '';
     private deleteCheck: number = -1;
+    public tags: Tag[] = [];
+    public merge: Tag[] = [];
+    public visible: string = 'hide';
+    public showall: boolean = false;
 
     constructor(private service: TagsService) {
         this.subs.push(service.contentTags.subscribe(tags => {

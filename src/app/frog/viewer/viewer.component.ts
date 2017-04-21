@@ -46,15 +46,15 @@ export class ViewerComponent implements OnInit, OnDestroy {
     @ViewChild(ImageComponent) image: ImageComponent;
     @ViewChild(VideoComponent) video: VideoComponent;
 
-    private objects: IItem[] = [];
     private allitems: IItem[];
     private viewall: boolean = false;
     private index: number = -1;
-    private itemtype: string;
-    private prefs: Object = {};
     private subs: Subscription[] = [];
-    width: number = 0;
-    height: number = 0;
+    public objects: IItem[] = [];
+    public itemtype: string;
+    public prefs: Object = {};
+    public width: number = 0;
+    public height: number = 0;
 
     constructor(
         private route: ActivatedRoute,

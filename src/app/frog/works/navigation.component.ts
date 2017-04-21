@@ -46,11 +46,11 @@ declare var $:any;
 export class NavigationComponent {
     @Output() onSelect = new EventEmitter<Gallery>();
 
-    private galleries: Gallery[];
-    private visible: string = 'hide';
-    private createVisible: string = 'hide';
-    private elementRef: ElementRef;
-    private title: string = '';
+    public galleries: Gallery[];
+    public visible: string = 'hide';
+    public createVisible: string = 'hide';
+    public elementRef: ElementRef;
+    public title: string = '';
 
     constructor(
         private service: GalleryService,
@@ -79,7 +79,7 @@ export class NavigationComponent {
         this.hide();
         this.onSelect.emit(gallery);
     }
-    private createHandler() {
+    createHandler() {
         this.service.create(this.title).subscribe(gallery => {
             this.service.add(gallery);
             this.switchGallery(gallery);

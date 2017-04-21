@@ -31,10 +31,10 @@ import { Tag } from '../shared/models';
 export class UploaderComponent implements OnDestroy {
     private sub;
     private filesub;
-    private files: UploadFile[];
-    private visible: string = 'hide';
-    private tags: Tag[];
-    private total: number;
+    public files: UploadFile[];
+    public visible: string = 'hide';
+    public tags: Tag[];
+    public total: number;
 
     constructor(private service: UploaderService) {
         this.sub = this.service.requested.subscribe(show => {

@@ -34,13 +34,14 @@ declare var $:any;
 export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
     @Input() item;
     @ViewChild('img') img: ElementRef;
+
     private selecteditems: IItem[] = [];
     private ctrlKey: boolean;
     private subs: Subscription[];
-    private prefs: Object = {};
-    private thumbnail: string;
     private viewportsub: Subscription;
     private loaded: boolean;
+    public prefs: Object = {};
+    public thumbnail: string;
 
     constructor(
         private element: ElementRef,

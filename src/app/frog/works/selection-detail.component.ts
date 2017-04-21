@@ -63,15 +63,15 @@ export class SelectionDetailComponent implements AfterViewInit {
     @ViewChild(NavigationComponent) moveNav: NavigationComponent;
     @ViewChild(UserInputComponent) userinput: UserInputComponent;
 
-    private items: IItem[];
-    private tags: Tag[];
-    private guids: string;
+    public items: IItem[];
+    public tags: Tag[];
+    public guids: string;
     private artist: User;
     public enabled: boolean = false;
     public visible: string = 'hide';
 
     constructor(
-        private service: SelectionService,
+        public service: SelectionService,
         private works: WorksService,
         private tagssservice: TagsService,
         private userservice: UserService,

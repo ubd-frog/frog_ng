@@ -18,13 +18,13 @@ import { SelectionService } from '../shared/selection.service';
     ]
 })
 export class WorksListComponent implements OnDestroy, AfterViewInit {
-    private items: IItem[] = [];
     private length: number = 0;
     private scrollcheck: boolean = false;
     private minheight: number = 0;
     private buffer: number = 300;
-    private loading: boolean;
     private subs: Subscription[];
+    public loading: boolean;
+    public items: IItem[] = [];
 
     constructor(private element: ElementRef, private service:WorksService, private selectionservice: SelectionService) {
         this.subs = [];

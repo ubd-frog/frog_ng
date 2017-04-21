@@ -79,7 +79,6 @@ declare var $:any;
 export class WorksDetailComponent implements OnDestroy, AfterViewInit {
     @ViewChild(CropperComponent) cropper: CropperComponent;
 
-    private item: IItem;
     private title: string = '';
     private description: string = '';
     private comments: any[];
@@ -91,10 +90,11 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
     private isOwner: boolean;
     private active: boolean;
     private editing: boolean = false;
-    private visible: string = 'hide';
     private cachebust: number = new Date().getTime();
     private gallery: Gallery;
     private subs: Subscription[];
+    public item: IItem;
+    public visible: string = 'hide';
 
     constructor(
         private service: SelectionService,

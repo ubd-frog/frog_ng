@@ -20,24 +20,24 @@ import { SelectionService } from '../shared/selection.service';
 export class VideoComponent implements OnDestroy {
     @ViewChild('vid') vid: ElementRef;
 
-    private object: CVideo;
     private origin: Point = new Point();
-    private xform: Matrix = Matrix.Identity();
     private main: Matrix = Matrix.Identity();
     private scaleValue: number = 1.0;
     private time: number;
     private wasPaused: boolean;
-    private frame: number;
-    private frameCount: number;
     private alive: boolean = true;
     private isMouseDown: boolean = false;
-    private margin: number;
     private element: HTMLVideoElement;
     private hasMoved: boolean = false;
     private infoPadding: number = 28;
     private subs: Subscription[];
-    width: number;
-    height: number;
+    public xform: Matrix = Matrix.Identity();
+    public frame: number;
+    public frameCount: number;
+    public margin: number;
+    public object: CVideo;
+    public width: number;
+    public height: number;
 
     constructor(private service: SelectionService, private changeDetectionRef : ChangeDetectorRef) {
         this.width = window.innerWidth;

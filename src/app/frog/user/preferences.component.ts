@@ -48,14 +48,14 @@ import { GalleryService } from '../works/gallery.service';
 })
 export class PreferencesComponent {
     private subs: Subscription[];
-    private prefs: Object = {};
-    private galleries: Gallery[];
-    private user: User;
-    private visible: string = 'hide';
-    private swatches: Object;
-    private keys: string[];
+    public galleries: Gallery[];
+    public swatches: Object;
+    public keys: string[];
+    public user: User;
+    public prefs: Object = {};
+    public visible: string = 'hide';
 
-    constructor(private service: PreferencesService, private userservice: UserService, private galleryservice: GalleryService) {
+    constructor(public service: PreferencesService, private userservice: UserService, private galleryservice: GalleryService) {
         this.subs = [];
         this.swatches = {
             'black': '#000000',

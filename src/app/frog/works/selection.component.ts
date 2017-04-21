@@ -15,10 +15,10 @@ import { SelectionService } from '../shared/selection.service';
 export class SelectionComponent implements OnInit, AfterViewInit {
     @ViewChild('canvas') canvas: ElementRef;
     private element: HTMLElement;
-    private isMouseDown: boolean;
     private origin: Point;
-    private active: boolean;
     private rect: Rect;
+    public active: boolean;
+    public isMouseDown: boolean;
 
     constructor(canvas: ElementRef, private service: SelectionService) {
         this.origin = new Point();

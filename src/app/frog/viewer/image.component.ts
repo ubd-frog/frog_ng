@@ -22,21 +22,21 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
     @ViewChild('canvas') canvas: ElementRef;
     @ViewChild('img') img: ElementRef;
 
-    private object: CImage;
     private origin: Point = new Point();
     private xform: Matrix = Matrix.Identity();
     private main: Matrix = Matrix.Identity();
     private scaleValue: number = 1.0;
     private axis: string;
-    private loading: boolean = false;
     private isMouseDown: boolean = false;
     private ctx: CanvasRenderingContext2D;
     private element: HTMLImageElement;
     private sub;
     private dirty: boolean = false;
     private postinit: boolean = false;
-    width: number;
-    height: number;
+    public loading: boolean = false;
+    public object: CImage;
+    public width: number;
+    public height: number;
 
     constructor(canvas: ElementRef, img: ElementRef, private service: SelectionService) {
         this.width = window.innerWidth;

@@ -15,7 +15,7 @@ import { NotificationService } from './notification.service';
 export class NotificationListComponent implements OnDestroy {
     @Input() notification;
 
-    private items: Notification[];
+    public items: Notification[];
     private sub;
 
     constructor(private service: NotificationService) {

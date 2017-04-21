@@ -19,7 +19,7 @@ import { Notification } from '../shared/models';
 })
 export class NotificationComponent {
     @Input() item: Notification;
-    private visible: string = 'hide';
+    public visible: string = 'hide';
 
     constructor() {
         setTimeout(() => this.show(), 0);

@@ -19,10 +19,10 @@ import { UserService } from './user.service';
     ]
 })
 export class LoginComponent implements OnInit {
-    private email: string = '';
-    private password: string = '';
-    private message: string = '';
-    private csrf_token: string = '';
+    public email: string = '';
+    public password: string = '';
+    public message: string = '';
+    public csrf_token: string = '';
 
     constructor(private service: UserService, private router: Router) {
         service.csrf().subscribe();
