@@ -40,7 +40,7 @@
                 <div class="artist">
                     <div *ngIf="!editing" class="artist-name-and-headline">
                         <div class="name">
-                            <a href="{{authorLink}}" class="light-green-text">{{item.author.name | capitalize:1}}</a>
+                            <a href="{{authorLink}}" class="light-green-text">{{item.author.name | capitalize:true}}</a>
                         </div>
                         <div class="headline">{{item.author.email}}</div>
                     </div>

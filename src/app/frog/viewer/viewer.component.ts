@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
-import { IItem, CImage, CVideo } from '../shared/models';
+import {IItem, CImage, CVideo, Preferences} from '../shared/models';
 import { Point, Matrix } from '../shared/euclid';
 import { SelectionService } from '../shared/selection.service';
 import { WorksService } from '../works/works.service';
@@ -52,7 +52,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     public objects: IItem[] = [];
     public itemtype: string;
-    public prefs: Object = {};
+    public prefs: Preferences;
     public width: number = 0;
     public height: number = 0;
 

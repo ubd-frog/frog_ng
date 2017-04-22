@@ -2,7 +2,7 @@ import { Component, trigger, state, style, transition, animate } from '@angular/
 
 import { Subscription } from 'rxjs';
 
-import { User, Gallery } from '../shared/models';
+import {User, Gallery, Preferences} from '../shared/models';
 import { PreferencesService } from './preferences.service';
 import { UserService } from './user.service';
 import { GalleryService } from '../works/gallery.service';
@@ -52,7 +52,7 @@ export class PreferencesComponent {
     public swatches: Object;
     public keys: string[];
     public user: User;
-    public prefs: Object = {};
+    public prefs: Preferences;
     public visible: string = 'hide';
 
     constructor(public service: PreferencesService, private userservice: UserService, private galleryservice: GalleryService) {
@@ -62,7 +62,7 @@ export class PreferencesComponent {
             'grey': '#9e9e9e',
             'grey darken-4': '#212121',
             'white': '#ffffff'
-        }
+        };
         this.keys = Object.keys(this.swatches);
         let sub = userservice.user.subscribe(user => {
             if (user) {

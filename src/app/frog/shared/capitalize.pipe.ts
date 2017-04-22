@@ -8,22 +8,17 @@ export function isString(txt): boolean {
   name: 'capitalize'
 })
 export class CapitalizePipe implements PipeTransform {
-  regexp: RegExp = /([^\W_]+[^\s-]*) */g;
+    regexp: RegExp = /([^\W_]+[^\s-]*) */g;
 
-  supports(txt): boolean {
-    return isString(txt);
-  }
+    supports(txt): boolean {
+        return isString(txt);
+    }
 
-  transform(value: string, args?: Array<any>): any {
-    return (!value) ? '' :
-      (!args) ?
-        this.capitalizeWord(value) :
-        value.replace(this.regexp, this.capitalizeWord);
-  }
+    transform(value: string, word?: boolean): any {
+        return (!value) ? '' : (!word) ? this.capitalizeWord(value) : value.replace(this.regexp, this.capitalizeWord);
+    }
 
-  capitalizeWord(txt: string): string {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-
-  }
-
+    capitalizeWord(txt: string): string {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    }
 }

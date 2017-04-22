@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { WorksService } from './works.service';
 import { GalleryService } from './gallery.service';
 import { NavigationComponent } from './navigation.component';
-import { Tag, Gallery, User } from '../shared/models';
+import {Tag, Gallery, User, Branding} from '../shared/models';
 import { TagsService } from '../tags/tags.service';
 import { UploaderService } from '../uploader/uploader.service';
 import { PreferencesService } from '../user/preferences.service';
@@ -31,7 +31,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     private tags: string[];
     private galleryid: number;
     private query: string;
-    public branding: Object = {};
+    public branding: Branding;
     public user: User;
     private sub;
 

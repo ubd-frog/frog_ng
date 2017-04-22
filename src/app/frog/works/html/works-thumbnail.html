@@ -11,5 +11,5 @@
         <i (click)="setFocus($event)" class="tiny material-icons">comment</i> <small>{{item.comment_count}}</small>
         <i (click)="setFocus($event)" class="tiny material-icons">info</i>
     </div>
-    <small class="author" (click)="setAuthor(item.author.name)">{{item.author.name | capitalize:1}}</small>
+    <small class="author" (click)="setAuthor(item.author.name)">{{item.author.name | capitalize:true}}</small>
 </div>

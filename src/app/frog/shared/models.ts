@@ -136,3 +136,23 @@ export class Gallery {
     uploads: boolean;
     parent: Gallery;
 }
+
+
+export class Preferences {
+    backgroundColor: string;
+    tileCount: number;
+    emailComments: boolean;
+    emailLikes: boolean;
+    thumbnailPadding: number;
+    semiTransparent: boolean;
+    showTags: boolean;
+    orderby: string;
+}
+
+
+export class Branding {
+    name: string;
+    favicon: string;
+    icon: string;
+    link: string;
+}

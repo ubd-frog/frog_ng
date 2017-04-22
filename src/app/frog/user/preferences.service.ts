@@ -4,18 +4,19 @@ import { Http, RequestOptions } from '@angular/http';
 import { BehaviorSubject } from 'rxjs';
 
 import { extractValue } from '../shared/common';
+import {Preferences} from "../shared/models";
 
 @Injectable()
 export class PreferencesService {
-    private prefs: Object;
+    private prefs: Preferences;
     private source: Object;
     private vis: boolean;
-    public preferences: BehaviorSubject<Object>;
+    public preferences: BehaviorSubject<Preferences>;
     public visible: BehaviorSubject<boolean>;
 
     constructor(private http: Http) {
-        this.prefs = {};
-        this.preferences = new BehaviorSubject<Object>(this.prefs);
+        this.prefs = new Preferences();
+        this.preferences = new BehaviorSubject<Preferences>(this.prefs);
         this.visible = new BehaviorSubject<boolean>(false);
         this.http.get('/frog/pref/').map(extractValue).subscribe(prefs => {
             this.prefs = prefs;
@@ -38,7 +39,7 @@ export class PreferencesService {
         });
     }
     discard() {
-        this.prefs = Object.assign({}, this.source);
+        this.prefs = <Preferences>Object.assign({}, this.source);
         this.preferences.next(this.prefs);
     }
     show() {

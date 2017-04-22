@@ -8,7 +8,7 @@
             <div class="artist">
                 <div class="artist-name-and-headline">
                     <div class="name">
-                        <a class="light-green-text">{{user?.name | capitalize:1}} <i *ngIf="user?.isManager" class="material-icons left">security</i></a>
+                        <a class="light-green-text">{{user?.name | capitalize:true}} <i *ngIf="user?.isManager" class="material-icons left">security</i></a>
                     </div>
                     <div class="headline">{{user?.email}}</div>
                 </div>

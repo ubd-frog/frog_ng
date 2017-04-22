@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 import { WorksService } from './works.service';
 import { ViewportService } from './viewport.service';
-import { IItem } from '../shared/models';
+import {IItem, Preferences} from '../shared/models';
 import { Rect } from '../shared/euclid';
 import { CapitalizePipe } from '../shared/capitalize.pipe';
 import { TagsService } from '../tags/tags.service';
@@ -40,7 +40,7 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
     private subs: Subscription[];
     private viewportsub: Subscription;
     private loaded: boolean;
-    public prefs: Object = {};
+    public prefs: Preferences;
     public thumbnail: string;
 
     constructor(
@@ -52,9 +52,7 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
         private tags: TagsService,
         private prefservice: PreferencesService
         ) {
-        this.service.selection.subscribe(items => {
-            this.selecteditems = items
-        });
+        this.service.selection.subscribe(items => this.selecteditems = items);
         this.subs = [];
         this.thumbnail = '/static/frog/i/pixel.png';
         let sub = this.service.selectionRect.subscribe(rect => {

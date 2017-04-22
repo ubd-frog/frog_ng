@@ -29,7 +29,8 @@ import { CommentService } from './comment.service';
 })
 export class CommentComponent implements AfterContentInit {
     @Input() comment: Comment;
-    private user: User
+
+    private user: User;
     public content: string = '';
     public isOwner: boolean = false;
     public editing: boolean = false;
