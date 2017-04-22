@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 
 export class BytesPipe implements PipeTransform {
-    transform(arg: number, args: any[]): any {
+    transform(arg: number, args?: any[]): any {
         let result = [],
 		val = 0,
 		e, base, bits, ceil, neg, num, output, round, unix, spacer, standard, symbols;

@@ -64,7 +64,10 @@ export class UserInputComponent implements OnInit, AfterViewInit {
             }
         }
     }
-    select(event: any, user: User) {
+    select(user=null) {
+        if (user === null) {
+            user = this.filteredList[this.selectedIndex];
+        }
         this.query = user.name;
         this.filteredList = [];
         this.onSelect.emit(user);

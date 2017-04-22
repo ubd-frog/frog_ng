@@ -7,7 +7,7 @@
             </div>
             <div class="row">
                 <autocomplete (onSelect)="addTag($event)"></autocomplete>
-                <tag *ngFor="let tag of tags" [item]="tag.name" (onClose)="removeTag($event)"></tag>
+                <tag *ngFor="let tag of tags" [item]="tag.name" (onClose)="removeTag(tag)"></tag>
             </div>
             <div class="progress">
                 <div class="determinate" [style.width.%]="((total - files.length) / total) * 100"></div>
@@ -28,7 +28,7 @@
                     <td class="thumb"><div><img class="responsive-img" src="{{file.data?.thumbnail}}" /></div></td>
                     <td>{{file.name}}</td>
                     <td>{{file.size | bytes}}</td>
-                    <td>{{file.created | date:"short"}}</td>
+                    <td>{{file.created | date:'short'}}</td>
                     <td>{{file.progress}}</td>
                     <td>{{file.status}}</td>
                     <td><i class="close material-icons" (click)="removeHandler(file)">close</i></td>
