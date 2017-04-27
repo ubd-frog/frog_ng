@@ -85,6 +85,10 @@ export class AutocompleteComponent {
         }
     }
     select(event: any) {
+        if (this.textedit.nativeElement.value.length === 0) {
+            return;
+        }
+
         let obj = {
             value: this.textedit.nativeElement.value,
             event: event
