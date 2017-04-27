@@ -4,6 +4,7 @@ import { BytesPipe } from './bytes.pipe';
 import { UploaderService } from './uploader.service';
 import { UploadFile } from './models';
 import { Tag } from '../shared/models';
+import {TagsService} from "../tags/tags.service";
 
 @Component({
     selector: 'uploader',
@@ -36,7 +37,7 @@ export class UploaderComponent implements OnDestroy {
     public tags: Tag[];
     public total: number;
 
-    constructor(private service: UploaderService) {
+    constructor(private service: UploaderService, private tagsservice: TagsService) {
         this.sub = this.service.requested.subscribe(show => {
             if (show && this.visible == 'hide') {
                 this.tags = [];
@@ -76,7 +77,26 @@ export class UploaderComponent implements OnDestroy {
         this.files.splice(index, 1);
     }
     addTag(event: any) {
-        this.tags.push(event.tag);
+        this.tagsservice.resolve(event.value).subscribe(tag => {
+            if (tag) {
+                let found = false;
+                for (let t of this.tags) {
+                    if (tag.id == t.id) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    this.tags.push(tag);
+                }
+            }
+            else {
+                this.tagsservice.create(event.value).subscribe(tag => {
+                    this.tags.push(tag);
+                });
+            }
+        });
     }
     removeTag(tag: Tag) {
         let index = this.tags.indexOf(tag);

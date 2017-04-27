@@ -78,6 +78,7 @@ export class UploaderService {
 
         fd.append('file', file.file, this.file.name);
         fd.append('tags', tags);
+        fd.append('gallery', this.service.id.toString());
 
         xhr.onreadystatechange = () => {
             if (xhr.readyState == 4) {

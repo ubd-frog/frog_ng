@@ -11,7 +11,7 @@ import { PreferencesService } from '../user/preferences.service';
 import { UserService } from '../user/user.service';
 import { TagsListComponent } from '../tags/tags-list.component';
 
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import "rxjs/add/operator/mergeMap";
 
 
@@ -28,12 +28,11 @@ import "rxjs/add/operator/mergeMap";
 export class FilterComponent implements OnInit, OnDestroy {
     @ViewChild(NavigationComponent) nav: NavigationComponent;
     @ViewChild(TagsListComponent) tagslist: TagsListComponent;
-    private tags: string[];
     private galleryid: number;
     private query: string;
     public branding: Branding;
     public user: User;
-    private sub;
+    private subs: Subscription[];
 
     constructor(
         private route: ActivatedRoute,
@@ -45,7 +44,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         private userservice: UserService,
         private tagservice: TagsService
     ) {
-        this.tags = [];
+        this.subs = [];
     }
     ngOnInit() {
         this.galleryservice.branding().subscribe(data => {
@@ -54,7 +53,7 @@ export class FilterComponent implements OnInit, OnDestroy {
             document.getElementById('favicon').setAttribute('href', data.favicon);
         });
         this.userservice.user.subscribe(user => this.user = user);
-        this.sub = this.route.params.subscribe(params => {
+        let sub = this.route.params.subscribe(params => {
             this.galleryid = +params['id'];
             this.galleryservice.setGalleryId(this.galleryid);
             this.service.reset();
@@ -64,21 +63,20 @@ export class FilterComponent implements OnInit, OnDestroy {
             }
             this.service.get(this.galleryid);
         });
+        this.subs.push(sub);
     }
     ngOnDestroy() {
-        this.sub.unsubscribe();
+        this.subs.map(sub => sub.unsubscribe());
     }
     addTag(event: any) {
-        if (event.tag.id == 0) {
-            let query = this.parseUserInput(event.tag.name);
-            this.addTagString(query);
-        }
-        else {
-            this.tagservice.resolve(event.tag.id).subscribe(tag => {
-                let tagid = (tag == null) ? name : tag.id;
-                this.addTagString(tagid);
-            });
-        }
+        this.tagservice.resolve(event.value).subscribe(tag => {
+            if (tag) {
+                this.addTagString(tag.id);
+            }
+            else {
+                this.addTagString(event.value);
+            }
+        });
     }
     addTagString(name: string) {
         this.router.navigate(['w/' + this.galleryid + '/' + name]);

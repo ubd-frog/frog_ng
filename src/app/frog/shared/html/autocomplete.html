@@ -1,10 +1,10 @@
 <div id='root'>
     <div class="input-field">
-        <input id="search" type="search" class="validate filter-input input autocomplete" [(ngModel)]=query (ngModelChange)="filter()" (keydown)="down($event)" (keydown.enter)="select($event, null)" (keydown.tab)="activate()">
+        <input #textedit id="search" type="search" class="validate filter-input input autocomplete" [(ngModel)]="cache" (ngModelChange)="filter()" (keypress)="down($event)" (keyup)="down($event)" (keydown.enter)="select($event)">
         <label for="search"><i class="material-icons">{{icon}}</i></label>
         <i class="material-icons" (click)="reset()">close</i>
     </div>
     <ul class='autocomplete-content dropdown-content'>
-        <li *ngFor="let item of filteredList; let idx = index" [class.complete-selected]="idx == selectedIndex"><a (click)="select($event, item)">{{item.name}}</a></li>
+        <li *ngFor="let item of filteredList; let idx = index" [class.complete-selected]="idx == selectedIndex"><a (click)="select($event, item)">{{item}}</a></li>
     </ul>
 </div>
