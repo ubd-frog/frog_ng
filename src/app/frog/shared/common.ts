@@ -19,5 +19,5 @@ export function isInt(value: any) {
     if (typeof value === 'number') {
         return true;
     }
-    return parseFloat(value) % 1 === 0 && value.indexOf('.') === -1;
+    return parseFloat(value) % 1 === 0 && value.indexOf('.') === -1 && value.match(/[A-Za-z]+/ig) === null;
 }
