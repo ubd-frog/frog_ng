@@ -73,7 +73,7 @@ export class SelectionDetailComponent implements AfterViewInit {
     constructor(
         public service: SelectionService,
         private works: WorksService,
-        private tagssservice: TagsService,
+        private tagsservice: TagsService,
         private userservice: UserService,
         private notify: NotificationService,
         private router: Router) {
@@ -130,23 +130,32 @@ export class SelectionDetailComponent implements AfterViewInit {
         this.cancelPrompt();
     }
     addTag(event: any) {
-        this.tagssservice.create(event.tag.name).subscribe(tag => {
-            this.works.editTags(this.items, [tag], []).subscribe(() => {
-                let found = false;
-                let tags = this.tags.slice(0);
+        this.tagsservice.resolve(event.value).subscribe(tag => {
+            let name = (tag) ? tag.name : event.value;
+            this.tagsservice.create(name).subscribe(tag => {
+                this.works.editTags(this.items, [tag], []).subscribe(() => {
+                    let found = false;
+                    let tags = this.tags.slice(0);
 
-                for (let t of tags) {
-                    if (tag.id == t.id) {
-                        found = true;
-                        t.added = true;
-                        break;
+                    for (let t of tags) {
+                        if (tag.id == t.id) {
+                            found = true;
+                            t.added = true;
+                            break;
+                        }
                     }
-                }
-                if (!found) {
-                    tags.push(tag);
-                }
+                    if (!found) {
+                        tags.push(tag);
+                    }
 
-                this.tags = tags;
+                    for (let item of this.items) {
+                        let tags = item.tags.splice(0);
+                        tags.push(tag);
+                        item.tags = tags;
+                    }
+
+                    this.tags = tags;
+                });
             });
         });
     }

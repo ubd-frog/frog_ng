@@ -1,7 +1,8 @@
-import { Component, ElementRef, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import {Component, ElementRef, Input, Output, EventEmitter, OnInit, ViewChild} from '@angular/core';
 
 import { TagsService } from '../tags/tags.service';
 import { Tag } from './models';
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'autocomplete',
@@ -22,110 +23,76 @@ export class AutocompleteComponent {
     @Input() placeholder: string;
     @Input() icon: string = "search";
     @Input() complex: boolean = false;
+    // @Input() items: string[];
     @Output() onSelect = new EventEmitter<any>();
+    @ViewChild('textedit') textedit: ElementRef;
 
-    private tags: Tag[];
     private selectedIndex: number;
     private cache: string = '';
-    private jointags: Tag[];
+    private subs: Subscription[];
     public query: string;
-    public filteredList: Tag[];
+    public filteredList: string[];
     public elementRef: ElementRef;
+    public items: string[];
 
     constructor(element: ElementRef, private service: TagsService) {
-        this.tags = [];
         this.filteredList = [];
         this.query = '';
         this.selectedIndex = -1;
         this.elementRef = element;
-        this.jointags = [new Tag(0, 'AND'), new Tag(0, 'OR')];
-
-        service.tags.subscribe({
-            next: (items) => {
-                this.tags = items;
-            }
+        this.cache = '';
+        this.subs = [];
+        this.items = [];
+        let sub = this.service.tags.subscribe(tags => {
+            this.items = tags.map(tag => tag.name);
         });
+        this.subs.push(sub);
     }
     reset() {
         this.query = '';
         this.filteredList = [];
         this.cache = '';
     }
-    filter() {
-        if (this.query.length < this.cache.length) {
-            this.cache = this.query;
+    down(event) {
+        event.stopPropagation();
+        let select = false;
+        if (event.code === "ArrowDown") {
+            this.selectedIndex++;
+            select = true;
         }
-        if (this.query !== '' && this.query.length > this.cache.length) {
-            let subquery = this.query.slice(this.cache.length).toLowerCase();
-            this.filteredList = this.tags.filter(function(tag) {
-                return tag.name.indexOf(subquery) > -1;
-            }.bind(this));
-            if (this.cache) {
-                let temp = this.filteredList.splice(0);
-                temp.splice(0, 0, this.jointags[0], this.jointags[1]);
-                this.filteredList = temp;
-                this.selectedIndex += 2;
+        else if (event.code === "ArrowUp") {
+            this.selectedIndex--;
+            select = true;
+        }
+        this.query = this.textedit.nativeElement.value;
 
-                if (this.query.slice(this.query.length - 5).toLocaleLowerCase() == ' and ') {
-                    this.activate(0);
-                }
-                else if (this.query.slice(this.query.length - 4).toLocaleLowerCase() == ' or ') {
-                    this.activate(1);
-                }
-            }
+        this.selectedIndex = (this.filteredList.length + this.selectedIndex) % this.filteredList.length;
+        this.selectedIndex = (isNaN(this.selectedIndex)) ? -1 : this.selectedIndex;
+
+        if (select) {
+            this.textedit.nativeElement.value = this.filteredList[this.selectedIndex];
+        }
+        else {
+            this.filter();
+        }
+    }
+    filter() {
+        if (this.query !== '') {
+            this.filteredList = this.items.filter(item => item.indexOf(this.query.toLowerCase()) > -1);
         }
         else {
             this.filteredList = [];
         }
     }
-    down(event) {
-        event.stopPropagation();
-        if (event.code === "ArrowDown") {
-            this.selectedIndex++;
-        }
-        else if (event.code === "ArrowUp") {
-            this.selectedIndex--;
-        }
-        else if (event.code === "Tab") {
-            //this.activate();
-            event.preventDefault();
-        }
-        else if (event.code === "Space") {
-            this.activate(-1);
-        }
-        this.selectedIndex = (this.filteredList.length + this.selectedIndex) % this.filteredList.length;
-        this.selectedIndex = (isNaN(this.selectedIndex)) ? -1 : this.selectedIndex;
-    }
-    select(event: any, tag: Tag) {
-        if (!tag) {
-            if (this.selectedIndex === -1 || this.cache.length > 0) {
-                tag = new Tag(0, this.query.trim(), false);
-            }
-            else {
-                tag = this.filteredList[this.selectedIndex];
-            }
-        }
+    select(event: any) {
         let obj = {
-            tag: tag,
+            value: this.textedit.nativeElement.value,
             event: event
         };
+        this.textedit.nativeElement.value = '';
+        this.query = '';
+        this.filteredList = [];
         this.onSelect.emit(obj);
-        this.reset();
-    }
-    activate(index: number=null) {
-        if (this.complex) {
-            index = (index != null) ? index : this.selectedIndex;
-            if (index == -1) {
-                if (this.cache.length == 0) {
-                    this.cache = this.query;
-                }
-            }
-            else {
-                this.cache += ' ' + this.filteredList[index].name;
-                this.cache = this.cache.trim() + ' ';
-                this.query = this.cache;
-            }
-        }
     }
     handleClick(event) {
         let clickedComponent = event.target;

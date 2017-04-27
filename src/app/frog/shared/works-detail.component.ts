@@ -100,7 +100,7 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
         private service: SelectionService,
         private works: WorksService,
         private userservice: UserService,
-        private tagssservice: TagsService,
+        private tagsservice: TagsService,
         private commentservice: CommentService,
         private galleryservice: GalleryService,
         private router: Router) {
@@ -188,23 +188,34 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
         });
     }
     addTag(event: any) {
-        let found = false;
-        for (let t of this.item.tags) {
-            if (event.tag.id == t.id) {
-                found = true;
-                break;
+        this.tagsservice.resolve(event.value).subscribe(tag => {
+            if (tag) {
+                let found = false;
+                for (let t of this.item.tags) {
+                    if (tag.id == t.id) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    this.works.editTags([this.item], [tag], []).subscribe(() => {
+                        let tags = this.item.tags.splice(0);
+                        tags.push(tag);
+                        this.item.tags = tags;
+                    });
+                }
             }
-        }
-        if (!found) {
-            let name = event.tag.name;
-            this.tagssservice.create(name).subscribe(tag => {
-                this.works.editTags([this.item], [tag], []).subscribe(() => {
-                    let tags = this.item.tags.splice(0);
-                    tags.push(tag);
-                    this.item.tags = tags;
+            else {
+                this.tagsservice.create(event.value).subscribe(tag => {
+                    this.works.editTags([this.item], [tag], []).subscribe(() => {
+                        let tags = this.item.tags.splice(0);
+                        tags.push(tag);
+                        this.item.tags = tags;
+                    });
                 });
-            });
-        }
+            }
+        });
     }
     selectArtistHandler(user: User) {
         this.artist = user;
