@@ -27,7 +27,7 @@ declare var $:any;
         '.tiny { font-size: 1.2rem; }',
         '.author { position: absolute; left: 4px; bottom: 10px; font-size: 0.8rem; cursor: pointer; }',
         '.semi { opacity: 0.5; }',
-        '.tags { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }',
+        '.tags { position: absolute; top: 0; left: 0; }',
         '.tag { line-height: 26px; background-color: #fff; color: #000; margin: 0 2px; padding: 2px; border: 1px solid #333; border-radius: 2px;}'
     ]
 })
