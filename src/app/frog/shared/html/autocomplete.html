@@ -1,6 +1,6 @@
 <div id='root'>
     <div class="input-field">
-        <input #textedit id="search" type="search" class="validate filter-input input autocomplete" [(ngModel)]="cache" (ngModelChange)="filter()" (keypress)="down($event)" (keyup)="down($event)" (keydown.enter)="select($event)">
+        <input #textedit id="search" type="search" class="validate filter-input input autocomplete" (keypress)="down($event)" (keyup)="down($event)" (keydown.enter)="select($event)">
         <label for="search"><i class="material-icons">{{icon}}</i></label>
         <i class="material-icons" (click)="reset()">close</i>
     </div>

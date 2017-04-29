@@ -28,7 +28,6 @@ export class AutocompleteComponent {
     @ViewChild('textedit') textedit: ElementRef;
 
     private selectedIndex: number;
-    private cache: string = '';
     private subs: Subscription[];
     public query: string;
     public filteredList: string[];
@@ -40,7 +39,6 @@ export class AutocompleteComponent {
         this.query = '';
         this.selectedIndex = -1;
         this.elementRef = element;
-        this.cache = '';
         this.subs = [];
         this.items = [];
         let sub = this.service.tags.subscribe(tags => {
@@ -51,7 +49,6 @@ export class AutocompleteComponent {
     reset() {
         this.query = '';
         this.filteredList = [];
-        this.cache = '';
     }
     down(event) {
         event.stopPropagation();
