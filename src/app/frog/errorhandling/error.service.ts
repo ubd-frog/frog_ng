@@ -44,7 +44,19 @@ export class ErrorService {
     }
     handleError(error: any) {
         console.log(error);
-        let notification = new Notification('An error has occurred and top men are on it...Top Men', 'error');
+        let message = 'An error has occurred and top men are on it...Top Men';
+        if (error.hasOwnProperty('status') && error.hasOwnProperty('url')) {
+            // Response error
+            if (error.status >= 400 && error.status < 500) {
+                // Use the error body for the message
+                message = error.statusText;
+            }
+        }
+        else {
+            // Client error
+            this.clientError(error);
+        }
+        let notification = new Notification(message, 'error');
         notification.error = true;
         notification.timeout = 8000;
         this.notify.add(notification);
