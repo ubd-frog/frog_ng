@@ -7,6 +7,7 @@ import { extractValues, extractValue } from '../shared/common';
 import { Tag } from '../shared/models';
 import { WorksService } from '../works/works.service';
 import {Subject} from "rxjs";
+import {ErrorService} from "../errorhandling/error.service";
 
 @Injectable()
 export class TagsService {
@@ -15,7 +16,7 @@ export class TagsService {
     private _tags: Tag[];
     private _ids: number[];
 
-    constructor(private http:Http, private service: WorksService) {
+    constructor(private http:Http, private service: WorksService, private errors: ErrorService) {
         this._tags = [];
         this._ids = [];
         this.tags = new ReplaySubject<Tag[]>();
@@ -24,17 +25,17 @@ export class TagsService {
     }
     get() {
         this.http.get('/frog/tag/?count=1&cache=' + Date.now())
-            .map(extractValues).subscribe(tags => {
+            .map(this.errors.extractValues, this.errors).subscribe(tags => {
                 this._tags = tags;
                 this._ids = [];
                 for (let tag of tags) {
                     this._ids.push(tag.id);
                 }
                 this.tags.next(this._tags);
-            });
+            }, error => this.errors.handleError(error));
     }
     resolve(name: string) {
-        return this.http.get('/frog/tag/resolve/' + name).map(extractValue);
+        return this.http.get('/frog/tag/resolve/' + name).map(this.errors.extractValue, this.errors);
     }
     getTagById(id: number){
         let index = this._ids.indexOf(id);
@@ -68,7 +69,7 @@ export class TagsService {
             }
             tagresult.next(data.value);
             tagresult.complete();
-        });
+        }, error => this.errors.handleError(error));
 
         return tagresult;
     }
@@ -81,7 +82,7 @@ export class TagsService {
         let options = new RequestOptions();
 
         options.body = {tags: ids};
-        this.http.post(url, options).subscribe(() => this.get());
+        this.http.post(url, options).subscribe(() => this.get(), error => this.errors.handleError(error));
     }
     rename(tag: Tag) {
         let url = `/frog/tag/${tag.id}/`;

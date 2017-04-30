@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -54,6 +54,9 @@ import { TagsListComponent } from './tags/tags-list.component';
 import { TagComponent } from './tags/tag.component';
 import { TagsService } from './tags/tags.service';
 
+import { ClientError } from './errorhandling/clienterror';
+import { ErrorService } from './errorhandling/error.service';
+
 
 @NgModule({
     imports: [
@@ -61,7 +64,7 @@ import { TagsService } from './tags/tags.service';
         FormsModule,
         worksRouting,
         viewerRouting,
-        userRouting
+        userRouting,
     ],
     declarations: [
         WorksComponent,
@@ -113,7 +116,11 @@ import { TagsService } from './tags/tags.service';
         NotificationService,
         UserService,
         PreferencesService,
-        LoggedInGuard
+        LoggedInGuard,
+        ErrorService,
+        {
+            provide: ErrorHandler, useClass: ClientError
+        }
     ]
 })
 export class FrogModule {}

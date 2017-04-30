@@ -6,6 +6,7 @@ import {User, Gallery, Preferences} from '../shared/models';
 import { PreferencesService } from './preferences.service';
 import { UserService } from './user.service';
 import { GalleryService } from '../works/gallery.service';
+import {ErrorService} from "../errorhandling/error.service";
 
 @Component({
     selector: 'preferences',
@@ -55,7 +56,12 @@ export class PreferencesComponent {
     public prefs: Preferences;
     public visible: string = 'hide';
 
-    constructor(public service: PreferencesService, private userservice: UserService, private galleryservice: GalleryService) {
+    constructor(
+        public service: PreferencesService,
+        private userservice: UserService,
+        private galleryservice: GalleryService,
+        private errors: ErrorService
+    ) {
         this.subs = [];
         this.swatches = {
             'black': '#000000',
@@ -68,25 +74,23 @@ export class PreferencesComponent {
             if (user) {
                 this.user = user as User;
             }
-        });
+        }, error => this.errors.handleError(error));
         this.subs.push(sub);
-        sub = service.visible.subscribe(vis => (vis) ? this.show() : this.hide());
+        sub = service.visible.subscribe(vis => (vis) ? this.show() : this.hide(), error => this.errors.handleError(error));
         this.subs.push(sub);
         sub = service.preferences.subscribe(prefs => {
             this.prefs = prefs;
             sub = galleryservice.items.subscribe(items => {
                 let personal = 2;
                 this.galleries = items.filter(gallery => gallery.security < personal);
-            });
+            }, error => this.errors.handleError(error));
             this.subs.push(sub);
-        });
+        }, error => this.errors.handleError(error));
         this.subs.push(sub);
 
     }
     ngOnDestroy() {
-        this.subs.forEach(sub => {
-            sub.unsubscribe();
-        });
+        this.subs.map(sub => sub.unsubscribe());
     }
     show() {
         this.visible = 'show';

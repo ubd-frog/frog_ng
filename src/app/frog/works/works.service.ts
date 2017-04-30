@@ -9,6 +9,7 @@ import {IItem, CImage, CVideo, Tag, User, Notification, Gallery} from '../shared
 import { NotificationService } from '../notifications/notification.service';
 import {GalleryService} from "./gallery.service";
 import {PreferencesService} from "../user/preferences.service";
+import {ErrorService} from "../errorhandling/error.service";
 
 
 @Injectable()
@@ -31,7 +32,8 @@ export class WorksService {
         private http:Http,
         private notify: NotificationService,
         private galleryservice: GalleryService,
-        private prefs: PreferencesService
+        private prefs: PreferencesService,
+        private errors: ErrorService
     ) {
         this.items = [];
         this.guids = [];
@@ -78,7 +80,7 @@ export class WorksService {
         this.loading.next(true);
 
         this.http.get(url, options)
-            .map(extractValues).subscribe(items => {
+            .map(this.errors.extractValues, this.errors).subscribe(items => {
                 if (!append) {
                     this.items.length = 0;
                     this.guids.length = 0;
@@ -96,7 +98,7 @@ export class WorksService {
                             break;
                     }
                     if (!obj) {
-                        console.error(item);
+                        this.errors.clientError(`Item guid was invalid: ${item.guid}`);
                         continue;
                     }
 
@@ -107,7 +109,7 @@ export class WorksService {
                 }
                 this.results.next([this.items.slice(0), append]);
                 this.loading.next(false);
-            }, error => console.log(error));
+            }, error => this.errors.handleError(error));
     }
     getFromGuid(guid: string) {
         let index = this.guids.indexOf(guid);
@@ -139,10 +141,10 @@ export class WorksService {
     likeItem(item:IItem) {
         let url = '/frog/like/' + item.guid;
         this.notify.add(new Notification('Liked', 'thumb_up'));
-        this.http.put(url, null).map(extractValues).subscribe(items => {
+        this.http.put(url, null).map(this.errors.extractValues, this.errors).subscribe(items => {
             let index = this.guids.indexOf(items[0].guid);
             this.items[index].like_count = items[0].like_count;
-        }, error => console.log('error loading items'));
+        }, error => this.errors.handleError(error));
     }
     update(item: IItem) {
         let url = '/frog/piece/' + item.guid + '/';
@@ -151,7 +153,7 @@ export class WorksService {
         options.body = {title: item.title, description: item.description};
         options.withCredentials = true;
         this.notify.add(new Notification('Item details updated', 'done'));
-        return this.http.put(url, options).map(extractValue);
+        return this.http.put(url, options).map(this.errors.extractValue, this.errors);
     }
     setArtist(items: IItem[], user: User) {
         let url = '/frog/switchartist';
@@ -162,10 +164,10 @@ export class WorksService {
             artist: user.id
         };
         options.withCredentials = true;
-        this.http.post(url, options).map(extractValues).subscribe(() => {
+        this.http.post(url, options).map(this.errors.extractValues, this.errors).subscribe(() => {
             items.map(function(_) { _.author = user; });
             this.notify.add(new Notification('New artist set', 'done'));
-        });
+        }, error => this.errors.handleError(error));
     }
     editTags(items: IItem[], add: Tag[], remove: Tag[]) {
         let url = '/frog/tag/manage';
@@ -178,14 +180,14 @@ export class WorksService {
             rem: remove.map(function(_) { return _.id; }).join(',')
         };
         options.withCredentials = true;
-        return this.http.post(url, options).map(extractValues);
+        return this.http.post(url, options).map(this.errors.extractValues, this.errors);
     }
     download(items: IItem[]) {
         let url = '/frog/download';
         let options = new RequestOptions();
         options.search = new URLSearchParams();
         options.search.set('guids', items.map(function(_) { return _.guid; }).join(','));
-        return this.http.get(url, options).map(extractValues);
+        return this.http.get(url, options).map(this.errors.extractValues, this.errors);
     }
     addItems(items: IItem[]) {
         while (items.length > 0) {
@@ -217,14 +219,14 @@ export class WorksService {
             guids: items.map(function(_) { return _.guid; }).join(',')
         };
         options.withCredentials = true;
-        this.http.delete(url, options).map(extractValues).subscribe();
+        this.http.delete(url, options).map(this.errors.extractValues, this.errors).subscribe(null, error => this.errors.handleError(error));
     }
     resolveGuids(guids: string[]) {
         let url = '/frog/p';
         let options = new RequestOptions();
         options.search = new URLSearchParams();
         options.search.set('guids', guids.join(','));
-        return this.http.get(url, options).map(extractValues);
+        return this.http.get(url, options).map(this.errors.extractValues, this.errors);
     }
     /**
      * Copy or Move items from one gallery to another
@@ -236,7 +238,7 @@ export class WorksService {
         options.body = {guids: guids.join(','), 'from': copyfrom};
         options.withCredentials = true;
         this.loading.next(true);
-        this.http.put(url, options).map(extractValue).subscribe(() => {
+        this.http.put(url, options).map(this.errors.extractValue, this.errors).subscribe(() => {
             this.resolveGuids(guids).subscribe(items => {
                 this.loading.next(false);
                 let verb = 'moved';
@@ -251,7 +253,7 @@ export class WorksService {
                 let message = `Items ${verb}! <a href="/w/${copyTo || this.id}">Go There</a>`;
                 this.notify.add(new Notification(message));
             });
-        });
+        }, );
     }
     upload(item: IItem, files: File[], reset: boolean = false) {
         return Observable.create(observer => {
@@ -289,6 +291,6 @@ export class WorksService {
 
         options.body = {crop: [x, y, width, height]};
         options.withCredentials = true;
-        return this.http.post(url, options).map(extractValue);
+        return this.http.post(url, options).map(this.errors.extractValue, this.errors);
     }
 }

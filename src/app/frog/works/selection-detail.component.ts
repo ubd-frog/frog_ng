@@ -13,6 +13,7 @@ import { UserInputComponent } from '../user/userinput.component';
 import { NotificationService } from '../notifications/notification.service';
 
 import { WorksService } from './works.service';
+import {ErrorService} from "../errorhandling/error.service";
 
 declare var $:any;
 
@@ -76,6 +77,7 @@ export class SelectionDetailComponent implements AfterViewInit {
         private tagsservice: TagsService,
         private userservice: UserService,
         private notify: NotificationService,
+        private errors: ErrorService,
         private router: Router) {
         this.tags = [];
         this.items = [];
@@ -87,7 +89,7 @@ export class SelectionDetailComponent implements AfterViewInit {
             if (this.items.length == 0) {
                 this.visible = 'hide';
             }
-        });
+        }, error => this.errors.handleError(error));
     }
     ngAfterViewInit() {
         this.userinput.query = '';
@@ -155,12 +157,12 @@ export class SelectionDetailComponent implements AfterViewInit {
                     }
 
                     this.tags = tags;
-                });
-            });
-        });
+                }, error => this.errors.handleError(error));
+            }, error => this.errors.handleError(error));
+        }, error => this.errors.handleError(error));
     }
     removeTag(tag) {
-        this.works.editTags(this.items, [], [tag]).subscribe();
+        this.works.editTags(this.items, [], [tag]).subscribe(null, error => this.errors.handleError(error));
     }
     offset(index: number) {
         return index * 8 + 12;

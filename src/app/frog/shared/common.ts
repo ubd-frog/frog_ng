@@ -21,3 +21,4 @@ export function isInt(value: any) {
     }
     return parseFloat(value) % 1 === 0 && value.indexOf('.') === -1 && value.match(/[A-Za-z]+/ig) === null;
 }
+

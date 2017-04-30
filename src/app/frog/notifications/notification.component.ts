@@ -5,6 +5,9 @@ import { Notification } from '../shared/models';
 @Component({
     selector: 'notification',
     templateUrl: './html/notification.html',
+    styles: [
+        '.toast { word-break: inherit; }'
+    ],
     animations: [
         trigger('panelState', [
             state('show', style({
