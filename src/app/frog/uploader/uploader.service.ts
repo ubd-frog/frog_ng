@@ -11,6 +11,7 @@ import { IItem, Tag } from '../shared/models';
 import { UploadFile } from './models';
 import { WorksService } from '../works/works.service';
 import {forEach} from "@angular/router/src/utils/collection";
+import {ErrorService} from "../errorhandling/error.service";
 
 @Injectable()
 export class UploaderService {
@@ -20,7 +21,7 @@ export class UploaderService {
     private files: UploadFile[];
     private items: IItem[];
 
-    constructor(private http: Http, private service: WorksService) {
+    constructor(private http: Http, private service: WorksService, private errors: ErrorService) {
         this.requested = new Subject<boolean>();
         this.fileList = new ReplaySubject<UploadFile[]>(1);
         this.items = [];
@@ -36,7 +37,7 @@ export class UploaderService {
             paths: names
         };
         options.withCredentials = true;
-        return this.http.post(url, options).map(extractValues);
+        return this.http.post(url, options).map(this.errors.extractValues, this.errors);
     }
     addFiles(files: FileList) {
         if (files.length === 0) {
@@ -60,7 +61,7 @@ export class UploaderService {
             this.files = uploadfiles;
             this.fileList.next(this.files);
             this.requested.next(true);
-        });
+        }, error => this.errors.handleError(error));
     }
     upload(files: UploadFile[], tags: Tag[]) {
         this.files = files;
@@ -83,11 +84,19 @@ export class UploaderService {
         xhr.onreadystatechange = () => {
             if (xhr.readyState == 4) {
                 if (xhr.status == 200) {
-                    this.files.shift();
-                    let item = <IItem>JSON.parse(xhr.response).value;
+                    let data = JSON.parse(xhr.response);
+
+                    if (data.isError) {
+                        this.files[0].status = data.message;
+                        return;
+                    }
+
+                    let item = <IItem>data.value;
                     if (item) {
                         this.items.push(item);
                     }
+
+                    this.files.shift();
 
                     if (this.files.length) {
                         this.uploadFile(this.files[0], tags, observer);

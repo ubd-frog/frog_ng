@@ -116,11 +116,13 @@ export class Notification {
     public icon: string;
     public color: string;
     public timeout: number;
+    public error: boolean;
 
     constructor(text: string, icon: string = '', timeout: number = 5000) {
         this.text = text;
         this.icon = icon;
         this.timeout = timeout;
+        this.error = false;
     }
 }
 

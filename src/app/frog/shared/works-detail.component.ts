@@ -19,6 +19,7 @@ import { CommentService } from '../shared/comment.service';
 import { TagsService } from '../tags/tags.service';
 import { SelectionService } from '../shared/selection.service';
 import {GalleryService} from "../works/gallery.service";
+import {ErrorService} from "../errorhandling/error.service";
 
 declare var $:any;
 
@@ -103,6 +104,7 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
         private tagsservice: TagsService,
         private commentservice: CommentService,
         private galleryservice: GalleryService,
+        private errors: ErrorService,
         private router: Router) {
         this.comments = [];
         this.subs = [];
@@ -141,11 +143,11 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
                 else {
                     this.visible = (show) ? 'show' : 'hide';
                 }
-            });
+            }, error => this.errors.handleError(error));
             this.subs.push(sub);
-        });
+        }, error => this.errors.handleError(error));
         this.subs.push(sub);
-        sub = this.galleryservice.gallery.subscribe(gallery => this.gallery = gallery);
+        sub = this.galleryservice.gallery.subscribe(gallery => this.gallery = gallery, error => this.errors.handleError(error));
         this.subs.push(sub);
         userservice.get();
     }
@@ -178,14 +180,14 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
             let comments = this.comments.slice(0);
             comments.push(comment);
             this.comments = comments;
-        });
+        }, error => this.errors.handleError(error));
         this.comment = '';
         this.prompted = false;
     }
     removeTag(tag: Tag) {
         this.works.editTags([this.item], [], [tag]).subscribe(result => {;
             this.item.tags = result[0].tags;
-        });
+        }, error => this.errors.handleError(error));
     }
     addTag(event: any) {
         this.tagsservice.resolve(event.value).subscribe(tag => {
@@ -203,7 +205,7 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
                         let tags = this.item.tags.splice(0);
                         tags.push(tag);
                         this.item.tags = tags;
-                    });
+                    }, error => this.errors.handleError(error));
                 }
             }
             else {
@@ -212,10 +214,10 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
                         let tags = this.item.tags.splice(0);
                         tags.push(tag);
                         this.item.tags = tags;
-                    });
+                    }, error => this.errors.handleError(error));
                 });
             }
-        });
+        }, error => this.errors.handleError(error));
     }
     selectArtistHandler(user: User) {
         this.artist = user;
@@ -225,7 +227,7 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
             if (this.isOwner) {
                 this.item.title = this.title;
                 this.item.description = this.description;
-                this.works.update(this.item).subscribe(item => this.active = true);
+                this.works.update(this.item).subscribe(item => this.active = true, error => this.errors.handleError(error));
             }
             if (this.artist) {
                 this.works.setArtist([this.item], this.artist);
@@ -248,7 +250,7 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
         this.works.upload(this.item, null, true).subscribe(item => {
             this.item = item;
             this.works.addItems([item]);
-        });
+        }, error => this.errors.handleError(error));
     }
     cropThumbnail() {
         this.cropper.show();

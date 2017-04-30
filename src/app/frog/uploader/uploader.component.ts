@@ -5,6 +5,7 @@ import { UploaderService } from './uploader.service';
 import { UploadFile } from './models';
 import { Tag } from '../shared/models';
 import {TagsService} from "../tags/tags.service";
+import {ErrorService} from "../errorhandling/error.service";
 
 @Component({
     selector: 'uploader',
@@ -37,15 +38,19 @@ export class UploaderComponent implements OnDestroy {
     public tags: Tag[];
     public total: number;
 
-    constructor(private service: UploaderService, private tagsservice: TagsService) {
+    constructor(
+        private service: UploaderService,
+        private tagsservice: TagsService,
+        private errors: ErrorService
+    ) {
         this.sub = this.service.requested.subscribe(show => {
             if (show && this.visible == 'hide') {
                 this.tags = [];
                 this.total = 0;
             }
             this.visible = (show) ? 'show': 'hide';
-        });
-        this.filesub = this.service.fileList.subscribe(files => this.files = files);
+        }, error => this.errors.handleError(error));
+        this.filesub = this.service.fileList.subscribe(files => this.files = files, error => this.errors.handleError(error));
         this.files = [];
         this.tags = [];
         this.total = 0;
@@ -65,12 +70,16 @@ export class UploaderComponent implements OnDestroy {
             return;
         }
         this.total = this.files.length;
-        this.service.upload(this.files, this.tags).subscribe(files => {
-            this.files = files;
-        }, () => {}, () => {
-            this.visible = 'hide';
-            this.total = 0;
-        });
+        this.service.upload(this.files, this.tags).subscribe(
+            files => this.files = files,
+            error => {
+
+            },
+            () => {
+                this.visible = 'hide';
+                this.total = 0;
+            }
+        );
     }
     removeHandler(file: UploadFile) {
         let index = this.files.indexOf(file);
@@ -94,9 +103,9 @@ export class UploaderComponent implements OnDestroy {
             else {
                 this.tagsservice.create(event.value).subscribe(tag => {
                     this.tags.push(tag);
-                });
+                }, error => this.errors.handleError(error));
             }
-        });
+        }, error => this.errors.handleError(error));
     }
     removeTag(tag: Tag) {
         let index = this.tags.indexOf(tag);

@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { extractValue } from '../shared/common';
 import { User } from '../shared/models';
+import {ErrorService} from "../errorhandling/error.service";
 
 
 @Injectable()
@@ -15,7 +16,7 @@ export class UserService {
     public user: Observable<User>;
     public users: BehaviorSubject<User[]>;
 
-    constructor(private http:Http, private router: Router) {
+    constructor(private http:Http, private router: Router, private errors: ErrorService) {
         this.results = new BehaviorSubject<User>(null);
         this.user = this.results.filter(user => user != null);
         this.users = new BehaviorSubject<User[]>([]);
@@ -28,12 +29,12 @@ export class UserService {
         options.search.set('timestamp', new Date().getTime().toString());
 
         this.http.get(url, options)
-            .map(extractValue).subscribe(data => {
+            .map(this.errors.extractValue, this.errors).subscribe(data => {
                 let user = <User>data.user;
                 user.prefs = data.prefs;
 
                 this.results.next(user);
-            }, error => console.log('error loading items'));
+            }, error => this.errors.handleError(error));
     }
     getList() {
         let url = '/frog/userlist';
@@ -45,10 +46,10 @@ export class UserService {
         this.http.get(url, options)
             .map(res => {return res.json().values;}).subscribe(users => {
                 this.users.next(users);
-            }, error => console.log('error loading items'));
+            }, error => this.errors.handleError(error));
     }
     csrf() {
-        return this.http.get('/frog/csrf').map(extractValue);
+        return this.http.get('/frog/csrf').map(this.errors.extractValue, this.errors);
     }
     isAuthenticated() {
         let options = new RequestOptions();
@@ -79,6 +80,6 @@ export class UserService {
     logout() {
         let url = '/frog/logout';
 
-        return this.http.get(url).map(extractValue);
+        return this.http.get(url).map(this.errors.extractValue, this.errors);
     }
 }
