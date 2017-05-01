@@ -43,6 +43,9 @@ export class ErrorService {
         return body.values || [];
     }
     handleError(error: any) {
+        if (error === null) {
+            return;
+        }
         console.log(error);
         let message = 'An error has occurred and top men are on it...Top Men';
         if (error.hasOwnProperty('status') && error.hasOwnProperty('url')) {
