@@ -15,7 +15,8 @@ import { SelectionService } from '../shared/selection.service';
         'canvas { cursor: move; }',
         'img { opacity: 0; width: 100%; height: 100%; position: absolute; cursor: url("//ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur") 7 5, default; }',
         'img:active { cursor: url("//ssl.gstatic.com/ui/v1/icons/mail/images/2/closedhand.cur") 7 5, default; }',
-        '.info { position:absolute; width: 100%; font-family: monospace; font-weight: 500; }'
+        '.info { position:absolute; width: 100%; font-family: monospace; font-weight: 500; }',
+        '.progress { position: absolute; margin: 0; background-color: transparent; }'
     ]
 })
 export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecked {
@@ -33,10 +34,10 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
     private sub;
     private dirty: boolean = false;
     private postinit: boolean = false;
-    public loading: boolean = false;
     public object: CImage;
     public width: number;
     public height: number;
+    public percent;
 
     constructor(canvas: ElementRef, img: ElementRef, private service: SelectionService) {
         this.width = window.innerWidth;
@@ -67,8 +68,15 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         this.sub.unsubscribe();
     }
     setImage(image: IItem) {
+        this.percent = 0;
         this.object = <CImage>image;
-        this.loading = !this.element.complete;
+
+        let xhr: XMLHttpRequest = new XMLHttpRequest();
+        xhr.open('GET', this.object.image, true);
+        xhr.onprogress = function(e) {
+            this.percent = (e.loaded / e.total) * 100;
+        }.bind(this);
+        xhr.send();
     }
     // -- Events
     @HostListener('window:mouseup')
@@ -140,7 +148,6 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
     }
     @HostListener('window:resize')
     resize() {
-        this.loading = false;
         this.postinit = false;
         this.width = window.innerWidth;
         this.height = window.innerHeight;
