@@ -1,9 +1,7 @@
-import { Component, OnInit, Input, AfterContentInit } from '@angular/core';
+import { Component, Input, AfterContentInit } from '@angular/core';
 
 import { UserService } from '../user/user.service';
 import { Comment, User } from './models';
-import { CapitalizePipe } from './capitalize.pipe';
-import { CommentURLPipe } from './comment-url.pipe';
 import { CommentService } from './comment.service';
 
 
