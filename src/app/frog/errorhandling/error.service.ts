@@ -9,11 +9,10 @@ export class ErrorService {
 
     }
     clientError(error: any) {
-        console.error(error);
         let url = '/frog/clienterror/';
         let options = new RequestOptions();
         options.body = {
-            error: error.toString()
+            error: error.zoneAwareStack
         };
         options.withCredentials = true;
         this.http.put(url, options).subscribe();
