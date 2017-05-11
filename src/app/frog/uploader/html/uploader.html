@@ -6,7 +6,7 @@
                 Please enter at least one tag for the uploaded items
             </div>
             <div class="row">
-                <autocomplete (onSelect)="addTag($event)"></autocomplete>
+                <autocomplete (onSelect)="addTag($event)" [artists]="false"></autocomplete>
                 <tag *ngFor="let tag of tags" [item]="tag.name" (onClose)="removeTag(tag)"></tag>
             </div>
             <div class="progress">

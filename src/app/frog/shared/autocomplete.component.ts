@@ -23,6 +23,7 @@ export class AutocompleteComponent {
     @Input() placeholder: string;
     @Input() icon: string = "search";
     @Input() complex: boolean = false;
+    @Input() artists: boolean = true;
     // @Input() items: string[];
     @Output() onSelect = new EventEmitter<any>();
     @ViewChild('textedit') textedit: ElementRef;
@@ -42,13 +43,19 @@ export class AutocompleteComponent {
         this.subs = [];
         this.items = [];
         let sub = this.service.tags.subscribe(tags => {
-            this.items = tags.map(tag => tag.name);
+            if (this.artists) {
+                this.items = tags.map(tag => tag.name);
+            }
+            else {
+                this.items = tags.filter(tag => !tag.artist).map(tag => tag.name);
+            }
         });
         this.subs.push(sub);
     }
     reset() {
         this.query = '';
         this.filteredList = [];
+        this.textedit.nativeElement.value = '';
     }
     down(event) {
         event.stopPropagation();
