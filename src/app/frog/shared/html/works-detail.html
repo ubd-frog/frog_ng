@@ -59,7 +59,7 @@
             <h3 *ngIf="!editing || !isOwner" class="white-text col s12 truncate" title="{{item.title}}">{{item.title}}</h3>
             <div *ngIf="editing && isOwner" class="col s12">
                 <div class="input-field">
-                    <input id="title" type="text" [(ngModel)]="title" />
+                    <input id="title" type="text" [(ngModel)]="title" (keypress)="$event.stopPropagation();" />
                     <label class="active" for="title">Title</label>
                 </div>
             </div>
@@ -69,7 +69,7 @@
             <div *ngIf="editing && isOwner">
                 <div class="col s12">
                     <div class="input-field">
-                        <textarea id="description" class="materialize-textarea1 expanded" [(ngModel)]="description" placeholder="Description"></textarea>
+                        <textarea id="description" class="materialize-textarea1 expanded" [(ngModel)]="description" (keypress)="$event.stopPropagation();" placeholder="Description"></textarea>
                     </div>
                 </div>
             </div>
