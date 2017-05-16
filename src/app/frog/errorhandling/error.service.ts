@@ -12,7 +12,7 @@ export class ErrorService {
         let url = '/frog/clienterror/';
         let options = new RequestOptions();
         options.body = {
-            error: error.zoneAwareStack
+            error: error.zoneAwareStack || error
         };
         options.withCredentials = true;
         this.http.put(url, options).subscribe();
