@@ -58,6 +58,7 @@ export class TagsListComponent implements OnDestroy {
         this.visible = 'hide';
     }
     show() {
+        this.service.getTagWithCount();
         this.visible = 'show';
     }
     toggleSelection(tag: Tag) {

@@ -24,15 +24,26 @@ export class TagsService {
         this.get();
     }
     get() {
+        this.http.get('/frog/tag/?cache=' + Date.now())
+            .map(this.errors.extractValues, this.errors).subscribe(tags => {
+            this._tags = tags;
+            this._ids = [];
+            for (let tag of tags) {
+                this._ids.push(tag.id);
+            }
+            this.tags.next(this._tags);
+        }, error => this.errors.handleError(error));
+    }
+    getTagWithCount() {
         this.http.get('/frog/tag/?count=1&cache=' + Date.now())
             .map(this.errors.extractValues, this.errors).subscribe(tags => {
-                this._tags = tags;
-                this._ids = [];
-                for (let tag of tags) {
-                    this._ids.push(tag.id);
-                }
-                this.tags.next(this._tags);
-            }, error => this.errors.handleError(error));
+            this._tags = tags;
+            this._ids = [];
+            for (let tag of tags) {
+                this._ids.push(tag.id);
+            }
+            this.tags.next(this._tags);
+        }, error => this.errors.handleError(error));
     }
     resolve(name: string) {
         return this.http.get('/frog/tag/resolve/' + name).map(this.errors.extractValue, this.errors);
