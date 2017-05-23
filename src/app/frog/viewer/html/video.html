@@ -1,5 +1,5 @@
-<div id='video_player' [style.margin-top.px]="margin" [style.width.px]="xform.elements[0][0]">
-    <video #vid poster="{{object.poster}}" controls="controls" autoplay="autoplay" loop="loop" (mouseup)="up($event)" (mousedown)="down($event)" (mousemove)="move($event)">
+<div [hidden]="frameview" id='video_player' [style.margin-top.px]="margin" [style.width.px]="xform.elements[0][0]">
+    <video #vid poster="{{object.poster}}" controls="controls" autoplay="autoplay" loop="loop">
         <source type='video/mp4' src="{{object.video}}" />
     </video>
     <div class='info row'>
@@ -7,4 +7,21 @@
         <span class='white-text text-darken-2 col s8 center-align'>{{object.title}}</span>
         <span class='white-text text-darken-2 col s2 right-align'>{{object.framerate}} fps</span>
     </div>
+    <div>
+        <a (click)="imageArray()" [class.disabled]="!cangetframes" class="btn grey darken-3 grey-text"><i class="material-icons">video_library</i> Get Frames</a>
+    </div>
 </div>
+
+<div [hidden]="!frameview" [style.margin-top.px]="margin" [style.width.px]="xform.elements[0][0]">
+    <canvas #viewport width="{{object.width}}" height="{{object.height}}" (mouseup)="up($event)" (mousedown)="down($event)" (mousemove)="move($event)"></canvas>
+    <div class="progress" *ngIf="loadingframes">
+        <div class="determinate light-green" [style.width.%]="(loadedframe / frameCount) * 100.0"></div>
+    </div>
+    <div class='info row'>
+        <span class='white-text text-darken-2 col s2 left-align'>{{loadedframe}}/{{frameCount}}</span>
+        <span class='white-text text-darken-2 col s8 center-align'>{{object.title}}</span>
+        <span class='white-text text-darken-2 col s2 right-align'>{{object.framerate}} fps</span>
+    </div>
+</div>
+
+<div id="debug">foo</div>

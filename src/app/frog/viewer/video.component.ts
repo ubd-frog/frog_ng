@@ -1,36 +1,39 @@
-import { Component, Input, AfterViewInit, OnDestroy, HostListener, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
 
 import { Observable, Subscription } from 'rxjs';
 
-import { IItem, CVideo, Tag, User, Comment } from '../shared/models';
-import { Point, Matrix, Rect } from '../shared/euclid';
+import { IItem, CVideo } from '../shared/models';
+import { Point, Matrix } from '../shared/euclid';
 import { SelectionService } from '../shared/selection.service';
+import {ImageAtlas, kMaxCanvasSize} from "./image-atlas";
 
 
 @Component({
     selector: 'frog-video',
     templateUrl: './html/video.html',
     styles: [
-        'video { width: 100%; height: 100%; cursor:ew-resize; }',
-        '#video_player { display: block; margin: 0 auto; }',
+        'video, canvas { width: 100%; height: 100%; cursor:ew-resize; }',
+        '#video_player { margin: 0 auto; }',
         '.info { font-family: Courier; background-color: #000; }',
-        '.row { margin: 0; padding: 0; }'
+        '.row { margin: 0; padding: 0; }',
+        'i { vertical-align: middle; }',
     ]
 })
 export class VideoComponent implements OnDestroy {
     @ViewChild('vid') vid: ElementRef;
+    @ViewChild('viewport') viewport: ElementRef;
 
     private origin: Point = new Point();
     private main: Matrix = Matrix.Identity();
-    private scaleValue: number = 1.0;
-    private time: number;
     private wasPaused: boolean;
     private alive: boolean = true;
     private isMouseDown: boolean = false;
     private element: HTMLVideoElement;
-    private hasMoved: boolean = false;
+    private atlas: ImageAtlas;
+    private vctx: CanvasRenderingContext2D;
     private infoPadding: number = 28;
     private subs: Subscription[];
+    private currentframe: number;
     public xform: Matrix = Matrix.Identity();
     public frame: number;
     public frameCount: number;
@@ -38,8 +41,12 @@ export class VideoComponent implements OnDestroy {
     public object: CVideo;
     public width: number;
     public height: number;
+    public loadedframe: number;
+    public loadingframes: boolean;
+    public cangetframes: boolean;
+    public frameview: boolean;
 
-    constructor(private service: SelectionService, private changeDetectionRef : ChangeDetectorRef) {
+    constructor(viewport: ElementRef, private service: SelectionService) {
         this.width = window.innerWidth;
         this.height = window.innerHeight;
         this.object = new CVideo();
@@ -47,12 +54,21 @@ export class VideoComponent implements OnDestroy {
         this.wasPaused = false;
         this.frame = 0;
         this.subs = [];
+        this.frameview = false;
+        this.currentframe = 0;
     }
     ngAfterViewInit() {
         this.element = this.vid.nativeElement;
+        this.vctx = this.viewport.nativeElement.getContext('2d');
         let sub = Observable.fromEvent(<any>this.element, 'timeupdate').subscribe(event => {
             this.frame = Math.floor(this.object.framerate * this.element.currentTime);
-            this.frameCount = Math.floor(this.object.framerate * this.element.duration);
+        });
+        this.subs.push(sub);
+        sub = Observable.fromEvent(<any>this.element, 'canplay').subscribe(event => {
+            this.frameCount = this.object.framerate * this.element.duration
+            if (this.object.width * this.object.height * this.frameCount <= Math.pow(kMaxCanvasSize, 2)) {
+                setTimeout(() => this.cangetframes = true, 0);
+            }
         });
         this.subs.push(sub);
         sub = this.service.detail.subscribe(data => {
@@ -77,37 +93,50 @@ export class VideoComponent implements OnDestroy {
         this.xform.elements[0][0] = this.object.width;
         this.xform.elements[1][1] = this.object.height;
         this.fitToWindow();
+        this.atlas = new ImageAtlas(this.element, this.object);
+        this.loadingframes = true;
+        let sub = this.atlas.loadedFrame.subscribe(
+            frame => this.loadedframe = frame,
+            () => null,
+            () => {
+                this.loadingframes = false;
+                this.vctx.drawImage(
+                    this.atlas.canvas,
+                    0, 0, this.object.width, this.object.height,
+                    0, 0, this.object.width, this.object.height
+                )
+            }
+        );
+        this.subs.push(sub);
     }
     // -- Events
     up(event: MouseEvent) {
         this.isMouseDown = false;
-        this.main = this.xform;
-        if (!this.hasMoved && event.button == 0) {
-            if (this.wasPaused) {
-                this.element.play();
-            }
-            else {
-                this.element.pause();
-            }
-        }
+        let x:number = event.clientX - this.origin.x;
+        this.currentframe = Math.floor(this.currentframe + x / 6);
     }
     down(event:MouseEvent) {
         if (event.button == 0) {
-            this.hasMoved = false;
             this.isMouseDown = true;
-            this.wasPaused = this.element.paused;
             this.origin.x = event.clientX;
             this.origin.y = event.clientY;
-            this.element.pause();
-            this.time = this.element.currentTime;
         }
     }
     move(event:MouseEvent) {
         if (this.isMouseDown) {
             let x:number = event.clientX - this.origin.x;
-
-            this.element.currentTime = this.time + (x / this.object.framerate);
-            this.hasMoved = true;
+            let padding = 6;
+            let frame = Math.floor(this.currentframe + x / padding) % this.frameCount;
+            if (frame < 0) {
+                frame = this.frameCount + frame;
+            }
+            this.loadedframe = frame;
+            let coords = this.atlas.getCoords(frame);
+            this.vctx.drawImage(
+                this.atlas.canvas,
+                coords[1] * this.object.width, coords[0] * this.object.height, this.object.width, this.object.height,
+                0, 0, this.object.width, this.object.height
+            )
         }
     }
     @HostListener('window:resize')
@@ -161,5 +190,13 @@ export class VideoComponent implements OnDestroy {
         ]);
         let m2:Matrix = this.xform.x(m1);
         this.xform = m2.dup();
+    }
+    imageArray() {
+        if (!this.frameview) {
+            this.element.pause();
+            this.element.loop = false;
+            this.frameview = true;
+            setTimeout(() => this.element.currentTime = 0.0, 0);
+        }
     }
 }
