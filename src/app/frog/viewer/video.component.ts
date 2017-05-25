@@ -5,18 +5,20 @@ import { Observable, Subscription } from 'rxjs';
 import { IItem, CVideo } from '../shared/models';
 import { Point, Matrix } from '../shared/euclid';
 import { SelectionService } from '../shared/selection.service';
-import {ImageAtlas, kMaxCanvasSize} from "./image-atlas";
+import { ImageAtlas, kMaxCanvasSize } from "./image-atlas";
 
 
 @Component({
     selector: 'frog-video',
     templateUrl: './html/video.html',
     styles: [
-        'video, canvas { width: 100%; height: 100%; cursor:ew-resize; }',
-        '#video_player { margin: 0 auto; }',
+        'video, canvas { width: 100%; height: 100%; }',
+        '.video_player { margin: 0 auto; }',
+        '.video_player canvas { cursor: ew-resize; }',
         '.info { font-family: Courier; background-color: #000; }',
         '.row { margin: 0; padding: 0; }',
         'i { vertical-align: middle; }',
+        '.progress .determinate { transition: none !important; }'
     ]
 })
 export class VideoComponent implements OnDestroy {
@@ -30,10 +32,11 @@ export class VideoComponent implements OnDestroy {
     private isMouseDown: boolean = false;
     private element: HTMLVideoElement;
     private atlas: ImageAtlas;
-    private vctx: CanvasRenderingContext2D;
+    private ctx: CanvasRenderingContext2D;
     private infoPadding: number = 28;
     private subs: Subscription[];
     private currentframe: number;
+    private timer: number;
     public xform: Matrix = Matrix.Identity();
     public frame: number;
     public frameCount: number;
@@ -56,16 +59,17 @@ export class VideoComponent implements OnDestroy {
         this.subs = [];
         this.frameview = false;
         this.currentframe = 0;
+        this.timer = null;
     }
     ngAfterViewInit() {
         this.element = this.vid.nativeElement;
-        this.vctx = this.viewport.nativeElement.getContext('2d');
+        this.ctx = this.viewport.nativeElement.getContext('2d');
         let sub = Observable.fromEvent(<any>this.element, 'timeupdate').subscribe(event => {
             this.frame = Math.floor(this.object.framerate * this.element.currentTime);
         });
         this.subs.push(sub);
         sub = Observable.fromEvent(<any>this.element, 'canplay').subscribe(event => {
-            this.frameCount = this.object.framerate * this.element.duration
+            this.frameCount = Math.round(this.object.framerate * this.element.duration);
             if (this.object.width * this.object.height * this.frameCount <= Math.pow(kMaxCanvasSize, 2)) {
                 setTimeout(() => this.cangetframes = true, 0);
             }
@@ -100,7 +104,7 @@ export class VideoComponent implements OnDestroy {
             () => null,
             () => {
                 this.loadingframes = false;
-                this.vctx.drawImage(
+                this.ctx.drawImage(
                     this.atlas.canvas,
                     0, 0, this.object.width, this.object.height,
                     0, 0, this.object.width, this.object.height
@@ -112,14 +116,25 @@ export class VideoComponent implements OnDestroy {
     // -- Events
     up(event: MouseEvent) {
         this.isMouseDown = false;
-        let x:number = event.clientX - this.origin.x;
+        let padding = 4;
+        let x = event.clientX - this.origin.x;
+        let y = event.clientY - this.origin.y;
         this.currentframe = Math.floor(this.currentframe + x / 6);
+        if (Math.abs(x) < padding && Math.abs(y) < padding) {
+            // -- Click
+            if (this.wasPaused) {
+                this.play();
+            }
+        }
     }
     down(event:MouseEvent) {
         if (event.button == 0) {
             this.isMouseDown = true;
             this.origin.x = event.clientX;
             this.origin.y = event.clientY;
+            this.wasPaused = this.timer === null;
+            this.pause();
+            this.currentframe = this.loadedframe;
         }
     }
     move(event:MouseEvent) {
@@ -131,12 +146,7 @@ export class VideoComponent implements OnDestroy {
                 frame = this.frameCount + frame;
             }
             this.loadedframe = frame;
-            let coords = this.atlas.getCoords(frame);
-            this.vctx.drawImage(
-                this.atlas.canvas,
-                coords[1] * this.object.width, coords[0] * this.object.height, this.object.width, this.object.height,
-                0, 0, this.object.width, this.object.height
-            )
+            this.drawFrame(frame);
         }
     }
     @HostListener('window:resize')
@@ -165,6 +175,7 @@ export class VideoComponent implements OnDestroy {
     }
     original() {
         this.center();
+        this.margin = (window.innerHeight / 2) - ((this.xform.elements[1][1] + this.infoPadding) / 2);
     }
     fitToWindow() {
         let size = this.xform.rect.fit(window.innerWidth, window.innerHeight - this.infoPadding);
@@ -192,11 +203,37 @@ export class VideoComponent implements OnDestroy {
         this.xform = m2.dup();
     }
     imageArray() {
-        if (!this.frameview) {
+        if (this.frameview) {
+            this.frameview = false;
+        }
+        else {
             this.element.pause();
             this.element.loop = false;
             this.frameview = true;
             setTimeout(() => this.element.currentTime = 0.0, 0);
         }
+    }
+    drawFrame(frame: number) {
+        let coords = this.atlas.getCoords(frame);
+        this.ctx.drawImage(
+            this.atlas.canvas,
+            coords[1] * this.object.width, coords[0] * this.object.height, this.object.width, this.object.height,
+            0, 0, this.object.width, this.object.height
+        )
+    }
+    play() {
+        this.timer = window.setTimeout(() => {
+            let frame = this.loadedframe + 1;
+            frame = frame % this.frameCount;
+            this.loadedframe = frame;
+            this.drawFrame(frame);
+            this.play();
+        }, 1000 / this.object.framerate);
+    }
+    pause() {
+        if (this.timer !== null) {
+            clearTimeout(this.timer);
+        }
+        this.timer = null;
     }
 }
