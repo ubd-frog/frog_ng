@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { WorksService } from './works.service';
 import { GalleryService } from './gallery.service';
 import { NavigationComponent } from './navigation.component';
-import {Tag, Gallery, User, Branding} from '../shared/models';
+import {Tag, Gallery, User, SiteConfig} from '../shared/models';
 import { TagsService } from '../tags/tags.service';
 import { UploaderService } from '../uploader/uploader.service';
 import { PreferencesService } from '../user/preferences.service';
@@ -30,7 +30,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     @ViewChild(TagsListComponent) tagslist: TagsListComponent;
     private galleryid: number;
     private query: string;
-    public branding: Branding;
+    public siteconfig: SiteConfig;
     public user: User;
     private subs: Subscription[];
 
@@ -47,8 +47,8 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.subs = [];
     }
     ngOnInit() {
-        this.galleryservice.branding().subscribe(data => {
-            this.branding = data;
+        this.galleryservice.siteConfig().subscribe(data => {
+            this.siteconfig = data;
             // -- Set the favicon
             document.getElementById('favicon').setAttribute('href', data.favicon);
         });
