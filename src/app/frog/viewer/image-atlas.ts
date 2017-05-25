@@ -50,7 +50,8 @@ export class ImageAtlas {
         );
         let time = this.getTime(offset + 1);
         if (time <= this.element.duration) {
-            setTimeout(() => this.element.currentTime = time, 0);
+            this.element.currentTime = time;
+            // setTimeout(() => this.element.currentTime = time, 0);
         }
         else {
             this.sub.unsubscribe();
