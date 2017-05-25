@@ -152,7 +152,7 @@ export class Preferences {
 }
 
 
-export class Branding {
+export class SiteConfig {
     name: string;
     favicon: string;
     icon: string;

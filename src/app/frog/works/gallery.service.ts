@@ -53,8 +53,8 @@ export class GalleryService {
         this._items.push(gallery);
         this.items.next(this._items);
     }
-    branding() {
-        return this.http.get('/frog/branding').map(this.errors.extractValue, this.errors);
+    siteConfig() {
+        return this.http.get('/frog/siteconfig').map(this.errors.extractValue, this.errors);
     }
     subscribe(id: number, frequency: number) {
         let url = `/frog/gallery/${id}/subscribe`;
