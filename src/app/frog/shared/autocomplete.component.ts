@@ -68,6 +68,9 @@ export class AutocompleteComponent {
             this.selectedIndex--;
             select = true;
         }
+        else {
+            this.selectedIndex = -1;
+        }
         this.query = this.textedit.nativeElement.value;
 
         this.selectedIndex = (this.filteredList.length + this.selectedIndex) % this.filteredList.length;
@@ -88,9 +91,13 @@ export class AutocompleteComponent {
             this.filteredList = [];
         }
     }
-    select(event: any) {
+    select(event: any, item:Tag = null) {
         if (this.textedit.nativeElement.value.length === 0) {
             return;
+        }
+
+        if (item !== null) {
+            this.textedit.nativeElement.value = item;
         }
 
         let obj = {
