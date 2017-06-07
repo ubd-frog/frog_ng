@@ -26,7 +26,7 @@
                 <tbody>
                 <tr *ngFor="let file of files" [class.red]="!file.unique" [class.lighten-5]="!file.unique">
                     <td class="thumb"><div><img class="responsive-img" src="{{file.data?.thumbnail}}" /></div></td>
-                    <td>{{file.name}}</td>
+                    <td><div class="input-field"><input [(ngModel)]="file.name" type="text"></div></td>
                     <td>{{file.size | bytes}}</td>
                     <td>{{file.created | date:'short'}}</td>
                     <td>{{file.progress}}</td>

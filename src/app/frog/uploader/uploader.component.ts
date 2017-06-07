@@ -6,6 +6,7 @@ import { UploadFile } from './models';
 import { Tag } from '../shared/models';
 import {TagsService} from "../tags/tags.service";
 import {ErrorService} from "../errorhandling/error.service";
+import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
     selector: 'uploader',
@@ -17,7 +18,9 @@ import {ErrorService} from "../errorhandling/error.service";
         '.thumb { position: relative; padding-right: 12px; }',
         '.thumb div { position: absolute; top: 25%; left: 10%; width: 24px; height: 24px; -webkit-transition: width 0.3s, height 0.3s; -moz-transition: width 0.3s, height 0.3s; -ms-transition: width 0.3s, height 0.3s; transition: width 0.3s, height 0.3s; }',
         '.thumb:hover div { width: 200px; height: 200px; }',
-        '.close { cursor: pointer; }'
+        '.close { cursor: pointer; }',
+        '.input-field { margin-top: 0; }',
+        'input[type="text"] { margin: 0; ]}'
     ],
     animations: [
         trigger('panelState', [
@@ -55,6 +58,7 @@ export class UploaderComponent implements OnDestroy {
         this.tags = [];
         this.total = 0;
     }
+
     ngOnDestroy() {
         this.sub.unsubscribe();
         this.filesub.unsubscribe();

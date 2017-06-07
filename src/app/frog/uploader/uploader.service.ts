@@ -48,7 +48,7 @@ export class UploaderService {
         for (let i = 0; i < files.length; i++) {
             filelist.push(new UploadFile(files[i]));
         }
-        this.isUnique(filelist.map(file => file.name)).subscribe(items => {
+        this.isUnique(filelist.map(file => file.filename())).subscribe(items => {
             let uploadfiles = this.files.slice(0);
             items.forEach((item, index) => {
                 if (item !== true) {
@@ -77,9 +77,10 @@ export class UploaderService {
         let xhr: XMLHttpRequest = new XMLHttpRequest();
         this.file = file;
 
-        fd.append('file', file.file, this.file.name);
+        fd.append('file', file.file, this.file.filename());
         fd.append('tags', tags);
         fd.append('galleries', this.service.id.toString());
+        fd.append('title', file.name);
 
         xhr.onreadystatechange = () => {
             if (xhr.readyState == 4) {
