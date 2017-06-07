@@ -9,11 +9,17 @@ export class UploadFile{
     public status: string;
     public unique: boolean = true;
     public data: IItem;
+    public extension: string;
 
     constructor(file: File) {
         this.file = file;
-        this.name = file.name;
+        this.name = file.name.slice(0, file.name.lastIndexOf('.'));
         this.size = file.size;
         this.created = new Date();
+        this.extension = file.name.split('.').pop();
+    }
+
+    filename() {
+        return this.name + '.' + this.extension;
     }
 }
