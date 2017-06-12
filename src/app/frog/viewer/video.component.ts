@@ -97,6 +97,7 @@ export class VideoComponent implements OnDestroy {
         this.xform.elements[0][0] = this.object.width;
         this.xform.elements[1][1] = this.object.height;
         this.fitToWindow();
+        this.frameview = false;
         this.atlas = new ImageAtlas(this.element, this.object);
         this.loadingframes = true;
         let sub = this.atlas.loadedFrame.subscribe(
