@@ -32,7 +32,7 @@ declare var $:any;
         '.col.s1.left { position: absolute; }',
         '.close-button { position: absolute; top: 0; right: 0; }',
         '.close-button:hover { position: absolute; top: 0; right: 0; }',
-        'works-detail ul { z-index; 3010; }',
+        'works-detail ul { z-index: 3010; }',
         '.nav-arrow { position: absolute; width: 100px; height: 100%; z-index: 3000; opacity: 0; -webkit-transition: opacity 0.3s 0.0s; -moz-transition: opacity 0.3s 0.0s; -ms-transition: opacity 0.3s 0.0s; }',
         '.nav-arrow:hover { opacity: 1; -webkit-transition: opacity 0.3s 0.0s; -moz-transition: opacity 0.3s 0.0s; -ms-transition: opacity 0.3s 0.0s; }',
         '.nav-arrow a { height: 100%; position: fixed; }',
