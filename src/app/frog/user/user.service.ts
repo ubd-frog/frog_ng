@@ -30,6 +30,9 @@ export class UserService {
 
         this.http.get(url, options)
             .map(this.errors.extractValue, this.errors).subscribe(data => {
+                if (data === null) {
+                    return;
+                }
                 let user = <User>data.user;
                 user.prefs = data.prefs;
 
