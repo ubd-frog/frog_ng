@@ -54,7 +54,7 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
         ) {
         this.service.selection.subscribe(items => this.selecteditems = items);
         this.subs = [];
-        this.thumbnail = '/static/frog/i/pixel.png';
+        this.thumbnail = '/public/pixel.png';
         let sub = this.service.selectionRect.subscribe(rect => {
             let r = this.element.nativeElement.getBoundingClientRect();
             if (rect.intersects(r)) {
