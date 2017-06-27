@@ -173,25 +173,26 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
             Math.floor(rect.height),
         );
 
-        // this.renderThumbnail();
+        this.renderThumbnail();
     }
     renderThumbnail() {
         let rect = this.xform.rect;
+        let miniscale = 260 / this.object.width;
         let scale = rect.width / this.object.width;
         let offset = new Point(
-            this.width - (this.object.width * 0.1) - 20,
-            this.height - (this.object.height * 0.1) - 20,
+            this.width - (this.object.width * miniscale) - 20,
+            this.height - (this.object.height * miniscale) - 20,
         );
         let x = Math.abs(Math.min(0, rect.x / scale));
         let y = Math.abs(Math.min(0, rect.y / scale));
-        let width = this.object.width - Math.abs(Math.max(0, (rect.x + rect.width - this.width) / scale));
-        let height = this.object.height - Math.abs(Math.max(0, (rect.y + rect.height - this.height) / scale));
+        let width = this.object.width - Math.abs(Math.max(0, (rect.x + rect.width - this.width) / scale)) - x;
+        let height = this.object.height - Math.abs(Math.max(0, (rect.y + rect.height - this.height) / scale)) - y;
 
         let fullrect = new Rect(
             Math.floor(offset.x),
             Math.floor(offset.y),
-            Math.floor(this.object.width * 0.1),
-            Math.floor(this.object.height * 0.1)
+            Math.floor(this.object.width * miniscale),
+            Math.floor(this.object.height * miniscale)
         );
         let sourcerect = new Rect(
             x,
@@ -200,13 +201,13 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
             height
         );
         let destrect = new Rect(
-            offset.x + (x * 0.1),
-            offset.y + (y * 0.1),
-            width * 0.1,
-            height * 0.1
+            offset.x + (x * miniscale),
+            offset.y + (y * miniscale),
+            width * miniscale,
+            height * miniscale
         );
 
-        this.ctx.globalAlpha = 0.5
+        this.ctx.globalAlpha = 0.5;
         this.ctx.drawImage(
             this.element,
             fullrect.x, fullrect.y, fullrect.width, fullrect.height,
@@ -216,9 +217,9 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
             this.element,
             sourcerect.x, sourcerect.y, sourcerect.width, sourcerect.height,
             destrect.x, destrect.y, destrect.width, destrect.height,
-            // x | 0, y | 0, width | 0, height | 0,
-            // (offset.x + (x * 0.1)) | 0, (offset.y + (y * 0.1)) | 0, (width * 0.1) | 0, (height * 0.1) | 0,
         );
+        this.ctx.strokeStyle = '#fff';
+        this.ctx.strokeRect(destrect.x + 0.5, destrect.y + 0.5, destrect.width, destrect.height);
     }
     center(scale:number = 1.0) {
         this.xform = new Matrix([
