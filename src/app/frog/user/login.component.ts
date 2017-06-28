@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { UserService } from './user.service';
+import {GalleryService} from "../works/gallery.service";
 
 @Component({
     templateUrl: './html/login.html',
@@ -19,13 +20,17 @@ import { UserService } from './user.service';
     ]
 })
 export class LoginComponent implements OnInit {
-    public email: string = '';
-    public password: string = '';
-    public message: string = '';
-    public csrf_token: string = '';
+    public email: string;
+    public password: string;
+    public message: string;
+    public csrftoken: string;
 
-    constructor(private service: UserService, private router: Router) {
+    constructor(private service: UserService, private galleryservice: GalleryService, private router: Router) {
         service.csrf().subscribe();
+        this.email = '';
+        this.password = '';
+        this.message = '';
+        this.csrftoken = '';
     }
     ngOnInit() { }
     clickHandler() {
@@ -34,6 +39,7 @@ export class LoginComponent implements OnInit {
                 this.message = response.message;
             }
             else {
+                this.galleryservice.get();
                 this.router.navigate(['/w/1']);
             }
         }, error => console.log(`Could not log you in: ${error}`));

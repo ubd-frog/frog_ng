@@ -2,7 +2,7 @@
     <h1>Frog Login</h1>
 </section>
 <form method='post' action='/frog/login' (ngSubmit)="clickHandler()">
-    {{ csrf_token }}
+    {{ csrftoken }}
     <div class='row'>
         <div class='input-field col s12'>
             <input type="email" name='email' [(ngModel)]="email" autocomplete="off">
