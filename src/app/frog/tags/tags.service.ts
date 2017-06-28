@@ -57,8 +57,8 @@ export class TagsService {
         return null;
     }
     getTagByName(name: string) {
-        for(let tag of this._tags) {
-            if (tag.name == name) {
+        for (let tag of this._tags) {
+            if (tag.name.toLocaleLowerCase() === name.toLocaleLowerCase()) {
                 return tag;
             }
         }
