@@ -85,7 +85,7 @@ export class AutocompleteComponent {
     }
     filter() {
         if (this.query !== '') {
-            this.filteredList = this.items.filter(item => item.indexOf(this.query.toLowerCase()) > -1);
+            this.filteredList = this.items.filter(item => item.toLocaleLowerCase().indexOf(this.query.toLowerCase()) > -1);
         }
         else {
             this.filteredList = [];
