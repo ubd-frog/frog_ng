@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { WorksService } from './works.service';
 import { GalleryService } from './gallery.service';
 import { NavigationComponent } from './navigation.component';
-import {Tag, Gallery, User, SiteConfig} from '../shared/models';
+import {Tag, Gallery, User, SiteConfig, ReleaseNote} from '../shared/models';
 import { TagsService } from '../tags/tags.service';
 import { UploaderService } from '../uploader/uploader.service';
 import { PreferencesService } from '../user/preferences.service';
@@ -13,6 +13,8 @@ import { TagsListComponent } from '../tags/tags-list.component';
 
 import {Observable, Subscription} from "rxjs";
 import "rxjs/add/operator/mergeMap";
+import {ReleaseNotesService} from "../releasenotes/release-notes.service";
+import {ReleaseNotesComponent} from "../releasenotes/release-notes.component";
 
 
 @Component({
@@ -28,10 +30,13 @@ import "rxjs/add/operator/mergeMap";
 export class FilterComponent implements OnInit, OnDestroy {
     @ViewChild(NavigationComponent) nav: NavigationComponent;
     @ViewChild(TagsListComponent) tagslist: TagsListComponent;
-    private galleryid: number;
-    private query: string;
+    @ViewChild(ReleaseNotesComponent) releasenotes: ReleaseNotesComponent;
+
     public siteconfig: SiteConfig;
     public user: User;
+    public notes: ReleaseNote[];
+    private galleryid: number;
+    private query: string;
     private subs: Subscription[];
 
     constructor(
@@ -42,9 +47,11 @@ export class FilterComponent implements OnInit, OnDestroy {
         public preferencesService: PreferencesService,
         private galleryservice: GalleryService,
         private userservice: UserService,
-        private tagservice: TagsService
+        private tagservice: TagsService,
+        private releasenotesservice: ReleaseNotesService
     ) {
         this.subs = [];
+        this.notes = [];
     }
     ngOnInit() {
         this.galleryservice.siteConfig().subscribe(data => {
@@ -63,6 +70,9 @@ export class FilterComponent implements OnInit, OnDestroy {
             }
             this.service.get(this.galleryid);
         });
+        this.subs.push(sub);
+
+        sub = this.releasenotesservice.notes.subscribe(notes => this.notes = notes);
         this.subs.push(sub);
     }
     ngOnDestroy() {

@@ -158,3 +158,10 @@ export class SiteConfig {
     icon: string;
     link: string;
 }
+
+
+export class ReleaseNote {
+    id: number;
+    date: Date;
+    notes: string;
+}

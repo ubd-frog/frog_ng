@@ -2,6 +2,8 @@ import {ErrorHandler, NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import { MarkdownToHtmlModule } from 'markdown-to-html-pipe';
+
 
 import { WorksComponent } from './works/works.component';
 import { WorksListComponent } from './works/works-list.component';
@@ -57,6 +59,9 @@ import { TagsService } from './tags/tags.service';
 import { ClientError } from './errorhandling/clienterror';
 import { ErrorService } from './errorhandling/error.service';
 
+import { ReleaseNotesComponent } from './releasenotes/release-notes.component';
+import { ReleaseNotesService } from './releasenotes/release-notes.service';
+
 
 @NgModule({
     imports: [
@@ -65,6 +70,7 @@ import { ErrorService } from './errorhandling/error.service';
         worksRouting,
         viewerRouting,
         userRouting,
+        MarkdownToHtmlModule
     ],
     declarations: [
         WorksComponent,
@@ -75,6 +81,7 @@ import { ErrorService } from './errorhandling/error.service';
         FilterComponent,
         SelectionComponent,
         CropperComponent,
+        ReleaseNotesComponent,
 
         SelectionDetailComponent,
         AutocompleteComponent,
@@ -112,6 +119,7 @@ import { ErrorService } from './errorhandling/error.service';
         SelectionService,
         CommentService,
         UploaderService,
+        ReleaseNotesService,
         StorageService,
         NotificationService,
         UserService,

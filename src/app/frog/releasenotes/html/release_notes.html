@@ -1,0 +1,16 @@
+<div [@panelState]="visible" id="modal">
+    <div class="modal open modal-fixed-footer">
+        <div class="modal-content">
+            <a class="right" (click)="close()"><i class="material-icons">close</i></a>
+            <h4>Release Notes</h4>
+            <div *ngFor="let note of notes">
+                <small>{{note.date | date:"MMMM  d, y"}}</small>
+                <div [innerHTML]="note.notes | MarkdownToHtml"></div>
+                <hr />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a (click)="close()" class="btn-flat">Done</a>
+        </div>
+    </div>
+</div>
