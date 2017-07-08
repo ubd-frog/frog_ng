@@ -12,6 +12,11 @@
                         <i class="material-icons">help_outline</i>
                     </a>
                 </li>
+                <li *ngIf="notes.length" class="right">
+                    <a (click)="releasenotes.show()">
+                        <i class="material-icons">card_giftcard</i>
+                    </a>
+                </li>
                 <li *ngIf="user?.isManager" class="right">
                     <a (click)="tagslist.show()">
                         <i class="material-icons">loyalty</i>
@@ -45,3 +50,4 @@
 </div>
 <works-nav (onSelect)="gallerySelectHandler($event)"></works-nav>
 <tags-list #tagslist></tags-list>
+<release-notes #releasenotes></release-notes>
