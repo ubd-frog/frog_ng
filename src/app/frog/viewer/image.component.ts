@@ -36,6 +36,7 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
     private sub;
     private dirty: boolean = false;
     private postinit: boolean = false;
+    private pattern: CanvasPattern;
     public object: CImage;
     public width: number;
     public height: number;
@@ -84,6 +85,18 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         xhr.send();
     }
     // -- Events
+    @HostListener('window:keypress', ['$event'])
+    keyPressEvent(event: KeyboardEvent) {
+        if (event.key === 't') {
+            if (this.pattern === null) {
+                this.pattern = this.ctx.createPattern(this.img.nativeElement, 'repeat');
+            }
+            else {
+                this.pattern = null;
+            }
+            this.render();
+        }
+    }
     @HostListener('window:mouseup')
     up() {
         this.isMouseDown = false;
@@ -177,6 +190,11 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
             this.img.nativeElement.style.top = (window.innerHeight / 2) - (this.object.height/ 2) + 'px';
         }
         else {
+            if (this.pattern !== null) {
+                this.ctx.fillStyle = this.pattern;
+                this.ctx.fillRect(0, 0, this.width, this.height);
+            }
+
             this.ctx.drawImage(
                 this.element,
                 Math.floor(rect.x),
