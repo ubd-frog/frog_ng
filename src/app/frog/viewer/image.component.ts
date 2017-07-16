@@ -54,6 +54,9 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         this.clear();
 
         Observable.fromEvent(<any>this.element, 'load').subscribe(event => {
+            if (this.pattern !== null) {
+                this.pattern = this.ctx.createPattern(this.img.nativeElement, 'repeat');
+            }
             this.resize();
         });
         this.sub = this.service.detail.distinctUntilChanged().subscribe(data => {
