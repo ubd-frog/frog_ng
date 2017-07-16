@@ -16,7 +16,9 @@ import { SelectionService } from '../shared/selection.service';
         'img { opacity: 0; width: 100%; height: 100%; position: absolute; cursor: url("//ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur") 7 5, default; }',
         'img:active { cursor: url("//ssl.gstatic.com/ui/v1/icons/mail/images/2/closedhand.cur") 7 5, default; }',
         '.info { position:absolute; width: 100%; font-family: monospace; font-weight: 500; }',
-        '.progress { position: absolute; margin: 0; background-color: transparent; }'
+        '.progress { position: absolute; margin: 0; background-color: transparent; }',
+
+        '.gif { opacity: 1; width: inherit; height: inherit; }'
     ]
 })
 export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecked {
@@ -38,6 +40,7 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
     public width: number;
     public height: number;
     public percent;
+    public ext: string;
 
     constructor(canvas: ElementRef, img: ElementRef, private service: SelectionService) {
         this.width = window.innerWidth;
@@ -70,6 +73,8 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
     setImage(image: IItem) {
         this.percent = 0;
         this.object = <CImage>image;
+        let parts = this.object.source.split('.');
+        this.ext = parts[parts.length - 1];
 
         let xhr: XMLHttpRequest = new XMLHttpRequest();
         xhr.open('GET', this.object.image, true);
@@ -165,15 +170,23 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
     render() {
         this.clear();
         let rect = this.xform.rect;
-        this.ctx.drawImage(
-            this.element,
-            Math.floor(rect.x),
-            Math.floor(rect.y),
-            Math.floor(rect.width),
-            Math.floor(rect.height),
-        );
+        this.img.nativeElement.style.left = '';
+        this.img.nativeElement.style.top = '';
+        if (this.ext === 'gif') {
+            this.img.nativeElement.style.left = (window.innerWidth / 2) - (this.object.width / 2) + 'px';
+            this.img.nativeElement.style.top = (window.innerHeight / 2) - (this.object.height/ 2) + 'px';
+        }
+        else {
+            this.ctx.drawImage(
+                this.element,
+                Math.floor(rect.x),
+                Math.floor(rect.y),
+                Math.floor(rect.width),
+                Math.floor(rect.height),
+            );
 
-        this.renderThumbnail();
+            this.renderThumbnail();
+        }
     }
     renderThumbnail() {
         let rect = this.xform.rect;
