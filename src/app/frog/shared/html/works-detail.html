@@ -45,6 +45,7 @@
                         <div class="headline">{{item.author.email}}</div>
                     </div>
                     <div *ngIf="editing">
+                        <p>Change Artist</p>
                         <userinput (onSelect)="selectArtistHandler($event)" [user]="item.author"></userinput>
                     </div>
                 </div>
@@ -59,7 +60,7 @@
             <h3 *ngIf="!editing || !isOwner" class="white-text col s12 truncate" title="{{item.title}}">{{item.title}}</h3>
             <div *ngIf="editing && isOwner" class="col s12">
                 <div class="input-field">
-                    <input id="title" type="text" [(ngModel)]="title" (keypress)="$event.stopPropagation();" />
+                    <input id="title" type="text" [(ngModel)]="title" (keydown)="$event.stopPropagation();" (keypress)="$event.stopPropagation();" />
                     <label class="active" for="title">Title</label>
                 </div>
             </div>
@@ -69,7 +70,7 @@
             <div *ngIf="editing && isOwner">
                 <div class="col s12">
                     <div class="input-field">
-                        <textarea id="description" class="materialize-textarea1 expanded" [(ngModel)]="description" (keypress)="$event.stopPropagation();" placeholder="Description"></textarea>
+                        <textarea id="description" class="materialize-textarea1 expanded" [(ngModel)]="description" (keydown)="$event.stopPropagation();" (keypress)="$event.stopPropagation();" placeholder="Description"></textarea>
                     </div>
                 </div>
             </div>
@@ -143,7 +144,7 @@
                     <i class="material-icons">info</i>
                     <span>You can <b (click)="edit()">edit</b> the item and add a description instead of leaving a comment</span>
                 </div>
-                <textarea [(ngModel)]=comment (focus)="true" (keypress)="$event.stopPropagation();" (focus)="prompted = true" placeholder="Add a comment..." [class.expanded]="prompted"></textarea>
+                <textarea [(ngModel)]=comment (keydown)="$event.stopPropagation();" (keypress)="$event.stopPropagation();" (focus)="prompted = true" placeholder="Add a comment..." [class.expanded]="prompted"></textarea>
                 <div *ngIf="prompted" class="col s6">
                     <a class="waves-effect waves-light light-green btn" (click)="postComment()"><i class="material-icons left">comment</i>Post Comment</a>
                 </div>

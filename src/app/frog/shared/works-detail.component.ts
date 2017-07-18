@@ -157,7 +157,7 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
     ngAfterViewInit() {
         $('#remove_prompt_single').modal();
     }
-    @HostListener('window:keydown', ['$event'])
+    @HostListener('window:keypress', ['$event'])
     keyDownEvent(event: KeyboardEvent) {
         if (event.key === 'Escape') {
             event.preventDefault();

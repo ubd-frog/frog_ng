@@ -47,6 +47,7 @@ export class UserInputComponent implements OnInit, AfterViewInit {
         });
     }
     filter(event) {
+        event.stopPropagation();
         if (event.code === "ArrowDown" && this.selectedIndex < this.filteredList.length) {
             this.selectedIndex++;
         }

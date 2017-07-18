@@ -118,15 +118,6 @@ export class ViewerComponent implements OnInit, OnDestroy {
             triggered = true;
             this.setFocus();
         }
-
-        if (triggered) {
-            event.stopPropagation();
-            event.preventDefault();
-        }
-    }
-    @HostListener('window:keypress', ['$event'])
-    keyPressEvent(event: KeyboardEvent) {
-        let triggered = false;
         if (event.key === 'ArrowLeft' || event.key === 'Left' || event.key === 'a') {
             triggered = true;
             this.previous();
@@ -135,11 +126,11 @@ export class ViewerComponent implements OnInit, OnDestroy {
             triggered = true;
             this.next();
         }
-        if (event.key === '2' || event.key === 's') {
+        if (event.key === '2' || event.key === 'ArrowDown' || event.key === 's') {
             triggered = true;
             this.fitToWindow();
         }
-        if (event.key === '1' || event.key === 'w') {
+        if (event.key === '1' || event.key === 'ArrowUp' || event.key === 'w') {
             triggered = true;
             this.original();
         }
@@ -153,6 +144,35 @@ export class ViewerComponent implements OnInit, OnDestroy {
             event.preventDefault();
         }
     }
+    // @HostListener('window:keypress', ['$event'])
+    // keyPressEvent(event: KeyboardEvent) {
+    //     let triggered = false;
+    //     if (event.key === 'ArrowLeft' || event.key === 'Left' || event.key === 'a') {
+    //         triggered = true;
+    //         this.previous();
+    //     }
+    //     if (event.key === 'ArrowRight' || event.key === 'Right' || event.key === 'd') {
+    //         triggered = true;
+    //         this.next();
+    //     }
+    //     if (event.key === '2' || event.key === 's') {
+    //         triggered = true;
+    //         this.fitToWindow();
+    //     }
+    //     if (event.key === '1' || event.key === 'w') {
+    //         triggered = true;
+    //         this.original();
+    //     }
+    //     if (event.key === 'Escape' || event.key === 'Esc') {
+    //         triggered = true;
+    //         this.close(event);
+    //     }
+    //
+    //     if (triggered) {
+    //         event.stopPropagation();
+    //         event.preventDefault();
+    //     }
+    // }
     next() {
         let index:number = this.index + 1;
         index = (index > this.objects.length - 1) ? 0 : index;
