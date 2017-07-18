@@ -13,7 +13,7 @@ import { ImageAtlas, kMaxCanvasSize } from "./image-atlas";
     templateUrl: './html/video.html',
     styles: [
         'video, canvas { width: 100%; height: 100%; }',
-        '.video_player { margin: 0 auto; }',
+        '.video_player { position: relative; margin: 0 auto; z-index: 3000; }',
         '.video_player canvas { cursor: ew-resize; }',
         '.info { font-family: Courier; background-color: #000; }',
         '.row { margin: 0; padding: 0; }',
@@ -130,12 +130,22 @@ export class VideoComponent implements OnDestroy {
     }
     down(event:MouseEvent) {
         if (event.button == 0) {
-            this.isMouseDown = true;
-            this.origin.x = event.clientX;
-            this.origin.y = event.clientY;
-            this.wasPaused = this.timer === null;
-            this.pause();
-            this.currentframe = this.loadedframe;
+            if (this.frameview) {
+                this.isMouseDown = true;
+                this.origin.x = event.clientX;
+                this.origin.y = event.clientY;
+                this.wasPaused = this.timer === null;
+                this.pause();
+                this.currentframe = this.loadedframe;
+            }
+            else {
+                if (this.vid.nativeElement.paused) {
+                    this.play();
+                }
+                else {
+                    this.pause();
+                }
+            }
         }
     }
     move(event:MouseEvent) {
@@ -223,18 +233,28 @@ export class VideoComponent implements OnDestroy {
         )
     }
     play() {
-        this.timer = window.setTimeout(() => {
-            let frame = this.loadedframe + 1;
-            frame = frame % this.frameCount;
-            this.loadedframe = frame;
-            this.drawFrame(frame);
-            this.play();
-        }, 1000 / this.object.framerate);
+        if (this.frameview) {
+            this.timer = window.setTimeout(() => {
+                let frame = this.loadedframe + 1;
+                frame = frame % this.frameCount;
+                this.loadedframe = frame;
+                this.drawFrame(frame);
+                this.play();
+            }, 1000 / this.object.framerate);
+        }
+        else {
+            this.vid.nativeElement.play();
+        }
     }
     pause() {
-        if (this.timer !== null) {
-            clearTimeout(this.timer);
+        if (this.frameview) {
+            if (this.timer !== null) {
+                clearTimeout(this.timer);
+            }
+            this.timer = null;
         }
-        this.timer = null;
+        else {
+            this.vid.nativeElement.pause();
+        }
     }
 }

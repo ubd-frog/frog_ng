@@ -1,5 +1,5 @@
 <div class='video_player' [style.margin-top.px]="margin" [style.width.px]="xform.elements[0][0]">
-    <video #vid [hidden]="frameview" poster="{{object.poster}}" controls="controls" autoplay="autoplay" loop="loop">
+    <video #vid [hidden]="frameview" poster="{{object.poster}}" controls="controls" autoplay="autoplay" loop="loop" (mousedown)="down($event)">
         <source type='video/mp4' src="{{object.video}}" />
     </video>
     <div [hidden]="!frameview">
