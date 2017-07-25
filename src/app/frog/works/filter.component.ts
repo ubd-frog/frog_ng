@@ -56,7 +56,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         let sub;
-        sub = this.galleryservice.siteConfig().subscribe(data => {
+        sub = this.galleryservice.siteconfig.subscribe(data => {
             this.siteconfig = data;
             // -- Set the favicon
             document.getElementById('favicon').setAttribute('href', data.favicon);
