@@ -4,7 +4,7 @@
             <ul>
                 <li>
                     <a (click)="nav.toggle()" class="dropdown-button">
-                        <i class="material-icons left">collections</i>Galleries
+                        <i class="material-icons left">collections</i>{{gallery?.title || 'Galleries'}}
                     </a>
                 </li>
                 <li class="right">

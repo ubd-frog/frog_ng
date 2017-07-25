@@ -35,6 +35,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     public siteconfig: SiteConfig;
     public user: User;
     public notes: ReleaseNote[];
+    public gallery: Gallery;
     private galleryid: number;
     private query: string;
     private subs: Subscription[];
@@ -54,13 +55,21 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.notes = [];
     }
     ngOnInit() {
-        this.galleryservice.siteConfig().subscribe(data => {
+        let sub;
+        sub = this.galleryservice.siteConfig().subscribe(data => {
             this.siteconfig = data;
             // -- Set the favicon
             document.getElementById('favicon').setAttribute('href', data.favicon);
         });
-        this.userservice.user.subscribe(user => this.user = user);
-        let sub = this.route.params.subscribe(params => {
+        this.subs.push(sub);
+
+        sub = this.galleryservice.gallery.subscribe(gallery => this.gallery = gallery);
+        this.subs.push(sub);
+
+        sub = this.userservice.user.subscribe(user => this.user = user);
+        this.subs.push(sub);
+
+        sub = this.route.params.subscribe(params => {
             this.galleryid = +params['id'];
             this.galleryservice.setGalleryId(this.galleryid);
             this.service.reset();
