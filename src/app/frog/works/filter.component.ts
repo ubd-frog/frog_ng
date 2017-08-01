@@ -15,6 +15,7 @@ import {Observable, Subscription} from "rxjs";
 import "rxjs/add/operator/mergeMap";
 import {ReleaseNotesService} from "../releasenotes/release-notes.service";
 import {ReleaseNotesComponent} from "../releasenotes/release-notes.component";
+import {SiteConfigService} from "../shared/siteconfig.service";
 
 
 @Component({
@@ -49,14 +50,15 @@ export class FilterComponent implements OnInit, OnDestroy {
         private galleryservice: GalleryService,
         private userservice: UserService,
         private tagservice: TagsService,
-        private releasenotesservice: ReleaseNotesService
+        private releasenotesservice: ReleaseNotesService,
+        private siteconfigservice: SiteConfigService
     ) {
         this.subs = [];
         this.notes = [];
     }
     ngOnInit() {
         let sub;
-        sub = this.galleryservice.siteconfig.subscribe(data => {
+        sub = this.siteconfigservice.siteconfig.subscribe(data => {
             this.siteconfig = data;
             // -- Set the favicon
             document.getElementById('favicon').setAttribute('href', data.favicon);
