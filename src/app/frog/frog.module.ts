@@ -28,6 +28,7 @@ import { CommentComponent } from './shared/comment.component';
 import { SelectionService } from './shared/selection.service';
 import { CommentService } from './shared/comment.service';
 import { StorageService } from './shared/storage.service';
+import { SiteConfigService } from './shared/siteconfig.service';
 
 import { ViewerComponent } from './viewer/viewer.component';
 import { ImageComponent } from './viewer/image.component';
@@ -121,6 +122,7 @@ import { ReleaseNotesService } from './releasenotes/release-notes.service';
         UploaderService,
         ReleaseNotesService,
         StorageService,
+        SiteConfigService,
         NotificationService,
         UserService,
         PreferencesService,
