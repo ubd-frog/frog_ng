@@ -15,7 +15,10 @@
         </div>
     </div>
 </div>
-<h5 *ngIf="items.length === 0" class="light-green-text center-align">Nothing found</h5>
+<div *ngIf="items.length === 0">
+    <h5 class="light-green-text center-align">No images were found</h5>
+    <p class="light-green-text center-align">Upload something with the <i class="material-icons">cloud_upload</i> button at the top</p>
+</div>
 <div class='row'>
     <thumbnail class='col m1' [class.loaded]="item.loaded" *ngFor="let item of items" [item]="item" [class.selected]="item.selected"></thumbnail>
 </div>
