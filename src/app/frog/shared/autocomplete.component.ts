@@ -11,6 +11,8 @@ import {Subscription} from "rxjs";
         '.input-field { height: 64px; }',
         '.input-field label.active { transform: translateY(0); }',
         '.input-field input[type=search]+label { left: inherit; }',
+        '.input-field > i { top: 8px; }',
+        '.dropdown-content li:hover { background-color: #f8f8f8; }',
         '.autocomplete-content { position: absolute; width: 100%; }',
         '.complete-selected { background-color: #eee; }',
         '#root { position: relative; }'
@@ -57,8 +59,12 @@ export class AutocompleteComponent {
         this.filteredList = [];
         this.textedit.nativeElement.value = '';
     }
-    down(event) {
+    down(event: KeyboardEvent) {
         event.stopPropagation();
+        if (event.type !== 'keyup') {
+            return;
+        }
+
         let select = false;
         if (event.code === "ArrowDown") {
             this.selectedIndex++;
