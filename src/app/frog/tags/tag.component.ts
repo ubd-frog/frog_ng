@@ -50,8 +50,7 @@ export class TagComponent implements OnInit, OnDestroy, AfterViewInit {
         this.service.tags.subscribe(tags => {
             let tag = this.service.getTagById(this.tag.id) || this.service.getTagByName(this.tag.name);
             if (tag !== null) {
-                this.tag.name = tag.name;
-                this.tag.artist = tag.artist;
+                this.tag = tag;
             }
         });
     }
