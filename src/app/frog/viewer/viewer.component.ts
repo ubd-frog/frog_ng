@@ -20,7 +20,7 @@ declare var $:any;
     templateUrl: './html/viewer.html',
     styles: [
         '#viewer { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }',
-        '.actions { position: absolute; top: 16px; right: 16px; z-index: 3000; }',
+        '.actions { position: absolute; top: 16px; right: 16px; z-index: 3001; }',
         '.actions .btn-flat { font-size: 18px; font-family: Roboto; font-weight: 500; }',
         '.row { margin-bottom: 0; z-index: 3000; height: 100%; }',
         '.row > div.col { height: 100%; }',
@@ -144,35 +144,6 @@ export class ViewerComponent implements OnInit, OnDestroy {
             event.preventDefault();
         }
     }
-    // @HostListener('window:keypress', ['$event'])
-    // keyPressEvent(event: KeyboardEvent) {
-    //     let triggered = false;
-    //     if (event.key === 'ArrowLeft' || event.key === 'Left' || event.key === 'a') {
-    //         triggered = true;
-    //         this.previous();
-    //     }
-    //     if (event.key === 'ArrowRight' || event.key === 'Right' || event.key === 'd') {
-    //         triggered = true;
-    //         this.next();
-    //     }
-    //     if (event.key === '2' || event.key === 's') {
-    //         triggered = true;
-    //         this.fitToWindow();
-    //     }
-    //     if (event.key === '1' || event.key === 'w') {
-    //         triggered = true;
-    //         this.original();
-    //     }
-    //     if (event.key === 'Escape' || event.key === 'Esc') {
-    //         triggered = true;
-    //         this.close(event);
-    //     }
-    //
-    //     if (triggered) {
-    //         event.stopPropagation();
-    //         event.preventDefault();
-    //     }
-    // }
     next() {
         let index:number = this.index + 1;
         index = (index > this.objects.length - 1) ? 0 : index;
