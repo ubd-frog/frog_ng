@@ -9,7 +9,7 @@ import { NotificationService } from './notification.service';
     selector: 'notification-list',
     templateUrl: './html/notification-list.html',
     styles: [
-        'ul { position: fixed; top: 84px; right: 12px; width: 300px; }'
+        'ul { position: fixed; top: 84px; right: 12px; width: 300px; z-index: 4010; }'
     ]
 })
 export class NotificationListComponent implements OnDestroy {
