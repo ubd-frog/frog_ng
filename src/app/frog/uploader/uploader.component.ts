@@ -15,12 +15,16 @@ import {forEach} from "@angular/router/src/utils/collection";
         'div#uploader { position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.48); z-index: 4000; }',
         '.modal { display: block; top: 10%; width: 80%; }',
         '.modal-content { padding-bottom: 180px; }',
-        '.thumb { position: relative; padding-right: 12px; }',
-        '.thumb div { position: absolute; top: 25%; left: 10%; width: 24px; height: 24px; -webkit-transition: width 0.3s, height 0.3s; -moz-transition: width 0.3s, height 0.3s; -ms-transition: width 0.3s, height 0.3s; transition: width 0.3s, height 0.3s; }',
+        '.thumb { position: relative; padding-right: 12px; z-index: 3001; }',
+        '.thumb div { position: absolute; top: 25%; left: 10%; width: 24px; height: 24px; font-size: 0px; -webkit-transition: width 0.3s, height 0.3s, font-size 1s; -moz-transition: width 0.3s, height 0.3s; -ms-transition: width 0.3s, height 0.3s; transition: width 0.3s, height 0.3s; }',
         '.thumb:hover div { width: 200px; height: 200px; }',
+        '.thumb p { font-size: 0px; -webkit-transition: all 1s; -moz-transition: all 0.3s; -ms-transition: all 0.3s; transition: all 0.3s; }',
+        '.thumb:hover p { font-size: 14px; }',
+        '.thumb i { vertical-align: bottom; }',
         '.close { cursor: pointer; }',
         '.input-field { margin-top: 0; }',
-        'input[type="text"] { margin: 0; ]}'
+        'input[type="text"] { margin: 0; ]}',
+        '.progress { height: 8px; border-radius: 0; }'
     ],
     animations: [
         trigger('panelState', [
@@ -64,9 +68,13 @@ export class UploaderComponent implements OnDestroy {
         this.filesub.unsubscribe();
     }
     toggle() {
+        this.files = [];
+        this.tags = [];
+        this.total = 0;
+        this.service.clearFiles();
         this.visible = (this.visible == 'hide') ? 'show': 'hide';
         if (this.visible == 'hide') {
-            this.files.length = 0;
+
         }
     }
     upload() {
@@ -105,9 +113,11 @@ export class UploaderComponent implements OnDestroy {
                 }
             }
             else {
-                this.tagsservice.create(event.value).subscribe(tag => {
-                    this.tags.push(tag);
-                }, error => this.errors.handleError(error));
+                let tag = new Tag(0, event.value);
+                this.tags.push(tag);
+                // this.tagsservice.create(event.value).subscribe(tag => {
+                //     this.tags.push(tag);
+                // }, error => this.errors.handleError(error));
             }
         }, error => this.errors.handleError(error));
     }

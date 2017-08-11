@@ -6,11 +6,15 @@
                 Please enter at least one tag for the uploaded items
             </div>
             <div class="row">
-                <autocomplete (onSelect)="addTag($event)" [artists]="false"></autocomplete>
+                <div class="col s6">
+                    <autocomplete (onSelect)="addTag($event)" [artists]="false" [icon]="'label'"></autocomplete>
+                </div>
+            </div>
+            <div class="row">
                 <tag *ngFor="let tag of tags" [item]="tag.name" (onClose)="removeTag(tag)"></tag>
             </div>
-            <div class="progress">
-                <div class="determinate" [style.width.%]="((total - files.length) / total) * 100"></div>
+            <div class="progress light-green lighten-4">
+                <div class="determinate light-green" [style.width.%]="((total - files.length) / total) * 100"></div>
             </div>
             <table class="bordered">
                 <thead>
@@ -25,13 +29,22 @@
                 </thead>
                 <tbody>
                 <tr *ngFor="let file of files" [class.red]="!file.unique" [class.lighten-5]="!file.unique">
-                    <td class="thumb"><div><img class="responsive-img" src="{{file.data?.thumbnail}}" /></div></td>
+                    <td *ngIf="file.data?.thumbnail" class="thumb" width="32">
+                        <div class="blue-grey white-text">
+                            <p><i class="material-icons">warning</i>This will be overwritten</p>
+                            <img class="responsive-img" src="{{file.data?.thumbnail}}" />
+                        </div>
+                    </td>
                     <td><div class="input-field"><input [(ngModel)]="file.name" type="text"></div></td>
-                    <td>{{file.size | bytes}}</td>
-                    <td>{{file.created | date:'short'}}</td>
-                    <td>{{file.progress}}</td>
-                    <td>{{file.status}}</td>
-                    <td><i class="close material-icons" (click)="removeHandler(file)">close</i></td>
+                    <td width="100">{{file.size | bytes}}</td>
+                    <td width="180">{{file.created | date:'short'}}</td>
+                    <td>
+                        <div class="progress grey lighten-2">
+                            <div class="determinate grey" [style.width.%]="file.progress"></div>
+                        </div>
+                    </td>
+                    <td width="200">{{file.status}}</td>
+                    <td width="32"><i class="close material-icons" (click)="removeHandler(file)">close</i></td>
                 </tr>
                 </tbody>
             </table>

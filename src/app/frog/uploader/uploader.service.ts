@@ -63,6 +63,11 @@ export class UploaderService {
             this.requested.next(true);
         }, error => this.errors.handleError(error));
     }
+    clearFiles() {
+        this.items = [];
+        this.files = [];
+        this.fileList.next(this.files);
+    }
     upload(files: UploadFile[], tags: Tag[]) {
         this.files = files;
 
@@ -115,6 +120,7 @@ export class UploaderService {
         };
         xhr.upload.onprogress = (event) => {
             this.file.progress = Math.round(event.loaded / event.total * 100);
+            this.file.status = 'Uploading...';
             if (this.file.progress == 100) {
                 this.file.status = 'Processing...';
             }
