@@ -91,6 +91,7 @@ export class VideoComponent implements OnDestroy {
         if (!this.alive) {
             return;
         }
+        this.cangetframes = false;
         this.object = <CVideo>image;
         this.element.load();
         this.xform = Matrix.Identity();
