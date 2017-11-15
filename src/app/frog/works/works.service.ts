@@ -77,8 +77,6 @@ export class WorksService {
         options.search.set('more', append.toString());
         options.search.set('timestamp', new Date().getTime().toString());
 
-        this.loading.next(true);
-
         this.http.get(url, options)
             .map(this.errors.extractValues, this.errors).subscribe(items => {
                 if (!append) {
@@ -108,7 +106,6 @@ export class WorksService {
                     this.guids.push(obj.guid);
                 }
                 this.results.next([this.items.slice(0), append]);
-                this.loading.next(false);
             }, error => this.errors.handleError(error));
     }
     getFromGuid(guid: string) {
