@@ -10,6 +10,7 @@ import { NotificationService } from '../notifications/notification.service';
 import {GalleryService} from "./gallery.service";
 import {PreferencesService} from "../user/preferences.service";
 import {ErrorService} from "../errorhandling/error.service";
+import {ReplaySubject} from "rxjs/ReplaySubject";
 
 
 @Injectable()
@@ -20,7 +21,7 @@ export class WorksService {
     private gallery: Gallery;
     private orderby: string;
     public routecache: string;
-    public results: BehaviorSubject<[IItem[], boolean]>;
+    public results: ReplaySubject<[IItem[], boolean]>;
     public loading: BehaviorSubject<boolean>;
     public id: number;
     public selection: IItem[];
@@ -42,7 +43,8 @@ export class WorksService {
         this.scrollpos = 0;
         this.orderby = '';
         this.isLoading = false;
-        this.results = new BehaviorSubject<[IItem[], boolean]>([this.items, false]);
+        this.results = new ReplaySubject<[IItem[], boolean]>();
+        this.results.next([this.items, false]);
         this.loading = new BehaviorSubject<boolean>(this.isLoading);
         galleryservice.gallery.subscribe(gallery => this.gallery = gallery);
         prefs.preferences.subscribe(p => {

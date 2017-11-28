@@ -11,6 +11,8 @@ import { WorksService } from '../works/works.service';
 import { PreferencesService } from '../user/preferences.service';
 import { ImageComponent } from './image.component';
 import { VideoComponent } from './video.component';
+import {StorageService} from "../shared/storage.service";
+import {Observable} from "rxjs/Observable";
 
 declare var $:any;
 
@@ -50,6 +52,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
     private viewall: boolean = false;
     private index: number = -1;
     private subs: Subscription[] = [];
+    private closeroute: string;
     public objects: IItem[] = [];
     public itemtype: string;
     public prefs: Preferences;
@@ -61,6 +64,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
         private router: Router,
         private service: WorksService,
         private selectionservice: SelectionService,
+        private storageservice: StorageService,
         private location: Location,
         private prefservice: PreferencesService
     ) {
@@ -71,33 +75,44 @@ export class ViewerComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         let sub = this.route.params.subscribe(params => {
-            this.index = +params['focus'];
-            let guids = params['guids'].split(',');
-            this.service.resolveGuids(guids).subscribe(items => {
-                if (this.viewall && this.allitems.length > 0) {
+            let guid = params['guid'];
+            let guids = (params['selection'] || '').split(',');
+            if (guids[0].length !== 16) {
+                // Gallery id, not selection
+                // this.closeroute = '/w/' + guids[0];
+                guids = [''];
+            }
+
+            if (params['gallery']) {
+                this.closeroute = '/w/' + params['gallery'];
+            }
+
+            if (guids.length === 1 && guids[0] === '') {
+                this.viewall = true;
+                guids = [guid];
+            }
+
+            let obsall = this.service.results.take(1);
+            let obsresolve = this.service.resolveGuids(guids);
+
+            sub = Observable.forkJoin([obsall, obsresolve]).subscribe(results => {
+                if (this.viewall && results[0][0].length > 0) {
+                    this.allitems = results[0][0];
                     this.objects = this.allitems;
-                    for (let i = 0; i < this.allitems.length; i++) {
-                        if (this.allitems[i].guid == items[this.index].guid) {
-                            this.index = i;
-                            break;
-                        }
-                    }
                 }
                 else {
-                    this.objects = items;
+                    this.objects = results[1] as any;
+                    let data = {
+                        'closeroute': this.closeroute,
+                        'assets': this.objects
+                    };
+                    this.storageservice.set('viewer', JSON.stringify(data));
                 }
+
+                this.index = Math.max(0, this.objects.map(o => o.guid).indexOf(guid));
                 this.setIndex(this.index);
             });
-        });
-        this.subs.push(sub);
-        sub = this.service.results.subscribe(items => {
-            this.allitems = items[0];
-        });
-        this.subs.push(sub);
-        sub = this.route.data.subscribe(data => {
-            if (data['all']) {
-                this.viewall = true;
-            }
+            this.subs.push(sub);
         });
         this.subs.push(sub);
     }
@@ -170,16 +185,15 @@ export class ViewerComponent implements OnInit, OnDestroy {
             this.video.fitToWindow();
         }
     }
-    download() {
-
-    }
     setFocus() {
         this.selectionservice.setDetailItem(this.objects[this.index]);
     }
     close(event: Event) {
         event.preventDefault();
         this.selectionservice.clearDetailItem();
-        this.router.navigate([this.service.routecache || '/w/1']);
+
+        // Use closeroute
+        this.router.navigate([this.closeroute || this.service.routecache || '/w/1']);
     }
     setIndex(index:number) {
         if (this.objects[index].guid.charAt(0) === this.objects[this.index].guid.charAt(0)) {
@@ -197,6 +211,11 @@ export class ViewerComponent implements OnInit, OnDestroy {
             }
 
             this.selectionservice.setDetailItem(this.objects[index], false);
+            let url = ['/v', this.objects[this.index].guid];
+            if (this.objects.length > 1 && !this.viewall) {
+                url.push(this.objects.map(o => o.guid).join(','));
+            }
+            this.router.navigate(url, {replaceUrl: true});
         }
     }
 }
