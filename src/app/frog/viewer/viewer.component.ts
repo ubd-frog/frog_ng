@@ -76,56 +76,43 @@ export class ViewerComponent implements OnInit, OnDestroy {
     ngOnInit() {
         let sub = this.route.params.subscribe(params => {
             let guid = params['guid'];
-
-            // Read cache first
-            let cache = this.storageservice.get('viewer');
-            if (cache === null) {
-                let guids = (params['selection'] || '').split(',');
-                if (guids[0].length !== 16) {
-                    // Gallery id, not selection
-                    this.closeroute = '/w/' + guids[0];
-                    guids = [''];
-                }
-
-                if (params['gallery']) {
-                    this.closeroute = '/w/' + params['gallery'];
-                }
-
-                if (guids.length === 1 && guids[0] === '') {
-                    this.viewall = true;
-                    guids = [guid];
-                }
-
-                let obsall = this.service.results.take(1);
-                let obsresolve = this.service.resolveGuids(guids);
-
-                sub = Observable.forkJoin([obsall, obsresolve]).subscribe(results => {
-                    if (this.viewall && results[0][0].length > 0) {
-                        this.allitems = results[0][0];
-                        this.objects = this.allitems;
-                    }
-                    else {
-                        this.objects = results[1] as any;
-                        let data = {
-                            'closeroute': this.closeroute,
-                            'assets': this.objects
-                        };
-                        this.storageservice.set('viewer', JSON.stringify(data));
-                    }
-
-                    this.index = Math.max(0, this.objects.map(o => o.guid).indexOf(guid));
-                    this.setIndex(this.index);
-                });
-                this.subs.push(sub);
+            let guids = (params['selection'] || '').split(',');
+            if (guids[0].length !== 16) {
+                // Gallery id, not selection
+                // this.closeroute = '/w/' + guids[0];
+                guids = [''];
             }
-            else {
-                // populate from cache
-                let data = JSON.parse(cache);
-                this.closeroute = data['closeroute'];
-                this.objects = data['assets'];
+
+            if (params['gallery']) {
+                this.closeroute = '/w/' + params['gallery'];
+            }
+
+            if (guids.length === 1 && guids[0] === '') {
+                this.viewall = true;
+                guids = [guid];
+            }
+
+            let obsall = this.service.results.take(1);
+            let obsresolve = this.service.resolveGuids(guids);
+
+            sub = Observable.forkJoin([obsall, obsresolve]).subscribe(results => {
+                if (this.viewall && results[0][0].length > 0) {
+                    this.allitems = results[0][0];
+                    this.objects = this.allitems;
+                }
+                else {
+                    this.objects = results[1] as any;
+                    let data = {
+                        'closeroute': this.closeroute,
+                        'assets': this.objects
+                    };
+                    this.storageservice.set('viewer', JSON.stringify(data));
+                }
+
                 this.index = Math.max(0, this.objects.map(o => o.guid).indexOf(guid));
                 this.setIndex(this.index);
-            }
+            });
+            this.subs.push(sub);
         });
         this.subs.push(sub);
     }
@@ -172,14 +159,6 @@ export class ViewerComponent implements OnInit, OnDestroy {
             event.preventDefault();
         }
     }
-    @HostListener('window:popstate', ['$event'])
-    onPopState(event) {
-        this.clearCache();
-    }
-    @HostListener('window:onbeforeunload', ['$event'])
-    onBeforeUnload(event) {
-        this.clearCache();
-    }
     next() {
         let index:number = this.index + 1;
         index = (index > this.objects.length - 1) ? 0 : index;
@@ -206,9 +185,6 @@ export class ViewerComponent implements OnInit, OnDestroy {
             this.video.fitToWindow();
         }
     }
-    download() {
-
-    }
     setFocus() {
         this.selectionservice.setDetailItem(this.objects[this.index]);
     }
@@ -216,8 +192,6 @@ export class ViewerComponent implements OnInit, OnDestroy {
         event.preventDefault();
         this.selectionservice.clearDetailItem();
 
-        // Clear the cache
-        this.clearCache();
         // Use closeroute
         this.router.navigate([this.closeroute || this.service.routecache || '/w/1']);
     }
@@ -243,8 +217,5 @@ export class ViewerComponent implements OnInit, OnDestroy {
             }
             this.router.navigate(url, {replaceUrl: true});
         }
-    }
-    clearCache() {
-        this.storageservice.pop('viewer');
     }
 }
