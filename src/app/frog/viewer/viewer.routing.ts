@@ -4,9 +4,9 @@ import { ViewerComponent } from './viewer.component';
 import { LoggedInGuard } from '../user/loggedin.guard';
 
 export const viewerRoutes: Routes = [
-    { path: 'v/:focus', component: ViewerComponent, canActivate: [LoggedInGuard] },
-    { path: 'v/:focus/:guids', component: ViewerComponent, canActivate: [LoggedInGuard] },
-    { path: 'v/:focus/:guids/+', component: ViewerComponent, data: {'all': true}, canActivate: [LoggedInGuard] }
+    { path: 'v/:guid', component: ViewerComponent, canActivate: [LoggedInGuard] },
+    { path: 'v/:guid/:selection', component: ViewerComponent, canActivate: [LoggedInGuard] },
+    { path: 'v/:guid/:selection/:gallery', component: ViewerComponent, canActivate: [LoggedInGuard] },
 ];
 
 export const viewerRoutingProviders: any[] = [];

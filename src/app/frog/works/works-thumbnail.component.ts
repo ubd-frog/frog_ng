@@ -98,9 +98,12 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
                 }
             }
             index = Math.max(0, index);
-            let nav = ['/v', index, guids.join(',')];
-            if (guids.length === 1) {
-                nav.push('+')
+            let nav = ['/v', this.item.guid];
+            if (guids.length > 1) {
+                nav.push(guids.join(','));
+            }
+            if (this.worksservice.id) {
+                nav.push(this.worksservice.id);
             }
             this.router.navigate(nav);
         }

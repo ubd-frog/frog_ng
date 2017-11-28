@@ -1,4 +1,4 @@
-<a href="/v/0/{{item.guid}}" (click)="clickHandler($event)">
+<a href="/v/{{item.guid}}" (click)="clickHandler($event)">
     <img #img src='{{thumbnail}}' [style.padding.px]="prefs.thumbnailPadding" />
 </a>
 <div *ngIf="prefs.showTags" class="tags">
