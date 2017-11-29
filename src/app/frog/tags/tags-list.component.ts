@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { TagsService } from './tags.service';
 import { Tag } from '../shared/models';
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'tags-list',
@@ -44,7 +45,7 @@ export class TagsListComponent implements OnDestroy {
     public visible: string = 'hide';
     public showall: boolean = false;
 
-    constructor(private service: TagsService) {
+    constructor(private service: TagsService, private router: Router) {
         this.subs.push(service.contentTags.subscribe(tags => {
             this.tags = tags;
             this._tags = this.tags.slice(0);
@@ -131,5 +132,11 @@ export class TagsListComponent implements OnDestroy {
         this.deleteCheck = -1;
         this.tags.splice(index, 1);
         this.service.remove(tag).subscribe();
+    }
+    queryAll(event: MouseEvent, tag: Tag) {
+        event.stopPropagation();
+        event.preventDefault();
+        this.close();
+        this.router.navigate(['/w/0', tag.id]);
     }
 }

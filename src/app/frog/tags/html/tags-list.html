@@ -21,6 +21,9 @@
                             <li class="collection-item tag-item" *ngFor="let tag of tags; let i=index;" (click)="toggleSelection(tag)" [class.red-text]="tag.count == 0">
                                     <span *ngIf="edit != i">
                                         <span (dblclick)="editTag(i)">{{tag.name}}</span>
+                                        <a (click)="queryAll($event, tag)" class="secondary-content">
+                                            <i class="material-icons">find_in_page</i>
+                                        </a>
                                         <a (click)="remove($event, tag)" class="secondary-content">
                                             <i class="material-icons" [class.red-text]="deleteCheck == i">close</i>
                                         </a>
