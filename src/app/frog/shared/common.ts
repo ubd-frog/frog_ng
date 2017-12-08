@@ -21,3 +21,7 @@ export function isInt(value: any) {
     }
     return parseFloat(value) % 1 === 0 && value.indexOf('.') === -1 && value.match(/[A-Za-z]+/ig) === null;
 }
+
+export function randomInt(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min) + min);
+}

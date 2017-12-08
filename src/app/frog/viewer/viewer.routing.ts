@@ -4,6 +4,7 @@ import { ViewerComponent } from './viewer.component';
 import { LoggedInGuard } from '../user/loggedin.guard';
 
 export const viewerRoutes: Routes = [
+    { path: 'v/slideshow', component: ViewerComponent, canActivate: [LoggedInGuard], data: {"slideshow": true} },
     { path: 'v/:guid', component: ViewerComponent, canActivate: [LoggedInGuard] },
     { path: 'v/:guid/:selection', component: ViewerComponent, canActivate: [LoggedInGuard] },
     { path: 'v/:guid/:selection/:gallery', component: ViewerComponent, canActivate: [LoggedInGuard] },

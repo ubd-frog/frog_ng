@@ -9,6 +9,11 @@
             <i class="material-icons left">card_giftcard</i> What's New
         </a>
     </li>
+    <li>
+        <a (click)="slideShowDialog()" class="light-green-text">
+            <i class="material-icons left">slideshow</i> Play Slideshow
+        </a>
+    </li>
     <li *ngIf="user?.isManager" class="divider"></li>
     <li *ngIf="user?.isManager">
         <a (click)="tagslist.show()" class="light-green-text">

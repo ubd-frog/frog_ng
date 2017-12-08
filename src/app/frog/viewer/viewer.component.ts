@@ -13,6 +13,7 @@ import { ImageComponent } from './image.component';
 import { VideoComponent } from './video.component';
 import {StorageService} from "../shared/storage.service";
 import {Observable} from "rxjs/Observable";
+import {randomInt} from "../shared/common";
 
 declare var $:any;
 
@@ -53,6 +54,8 @@ export class ViewerComponent implements OnInit, OnDestroy {
     private index: number = -1;
     private subs: Subscription[] = [];
     private closeroute: string;
+    private slideshowcache: IItem[];
+    private randomize: boolean;
     public objects: IItem[] = [];
     public itemtype: string;
     public prefs: Preferences;
@@ -72,9 +75,17 @@ export class ViewerComponent implements OnInit, OnDestroy {
         this.height = window.innerHeight;
         let sub = this.prefservice.preferences.subscribe(prefs => this.prefs = prefs);
         this.subs.push(sub);
+        this.randomize = false;
     }
     ngOnInit() {
         let sub = this.route.params.subscribe(params => {
+            if (this.route.snapshot.data['slideshow']) {
+                this.slideshowcache = this.allitems.slice();
+                this.randomize = true;
+
+                return;
+            }
+
             let guid = params['guid'];
             let guids = (params['selection'] || '').split(',');
             if (guids[0].length !== 16) {
@@ -160,8 +171,22 @@ export class ViewerComponent implements OnInit, OnDestroy {
         }
     }
     next() {
-        let index:number = this.index + 1;
-        index = (index > this.objects.length - 1) ? 0 : index;
+        let index: number;
+        if (this.randomize) {
+            // Reset the cache
+            if (this.slideshowcache.length === 0) {
+                this.slideshowcache = this.allitems.slice();
+            }
+
+            index = randomInt(0, this.slideshowcache.length);
+            // Remove the item
+            this.slideshowcache.slice(index, 1);
+        }
+        else {
+            index = this.index + 1;
+            index = (index > this.objects.length - 1) ? 0 : index;
+        }
+
         this.setIndex(index);
     }
     previous() {
