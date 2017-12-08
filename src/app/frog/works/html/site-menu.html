@@ -1,0 +1,31 @@
+<ul [@panelState]="visible" class="dropdown-content grey darken-4 light-green-text" [style.display]="(visible === 'show') ? 'block' : 'none'">
+    <li>
+        <a (click)="preferencesService.show()" class="light-green-text">
+            <i class="material-icons left">settings</i>Settings
+        </a>
+    </li>
+    <li>
+        <a (click)="releasenotes.showAll()" class="light-green-text">
+            <i class="material-icons left">card_giftcard</i> What's New
+        </a>
+    </li>
+    <li *ngIf="user?.isManager" class="divider"></li>
+    <li *ngIf="user?.isManager">
+        <a (click)="tagslist.show()" class="light-green-text">
+            <i class="material-icons left">loyalty</i> Manage Tags
+        </a>
+    </li>
+    <li *ngIf="user?.isManager">
+        <a href="/admin/" target="_blank" rel="noopener noreferrer" class="light-green-text">
+            <i class="material-icons left">assignment_ind</i> Admin
+        </a>
+    </li>
+    <li class="divider"></li>
+    <li>
+        <a href="{{siteconfig?.link}}" target="_blank" rel="noopener noreferrer" class="light-green-text">
+            <i class="material-icons left">help_outline</i> Help
+        </a>
+    </li>
+</ul>
+<tags-list #tagslist></tags-list>
+<release-notes #releasenotes></release-notes>

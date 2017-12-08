@@ -13,6 +13,7 @@ import { NavigationComponent } from './works/navigation.component';
 import { FilterComponent } from './works/filter.component';
 import { SelectionComponent } from './works/selection.component';
 import { CropperComponent } from './works/cropper.component';
+import { SiteMenuComponent } from './works/sitemenu.component';
 import { WorksService } from './works/works.service';
 import { GalleryService } from './works/gallery.service';
 import { ViewportService } from './works/viewport.service';
@@ -82,6 +83,7 @@ import { ReleaseNotesService } from './releasenotes/release-notes.service';
         FilterComponent,
         SelectionComponent,
         CropperComponent,
+        SiteMenuComponent,
         ReleaseNotesComponent,
 
         SelectionDetailComponent,
