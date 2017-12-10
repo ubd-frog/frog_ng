@@ -12,6 +12,8 @@
     <a (click)="original()" class="waves-effect waves-light btn-floating right grey darken-4 original" title="Zoom to the original size">1:1</a>
     <a (click)="fitToWindow()" class="waves-effect waves-light btn-floating right grey darken-4" title="Zoom to fit the current window"><i class="material-icons">settings_overscan</i></a>
     <a (click)="setFocus()" class="waves-effect waves-light btn-floating right grey darken-4" title="Show information panel"><i class="material-icons">info_outline</i></a>
+    <a *ngIf="objects.length > 1 && timer === null" (click)="playSlideShow()" class="waves-effect waves-light btn-floating right grey darken-4" title="Play Slideshow"><i class="material-icons left">slideshow</i></a>
+    <a *ngIf="objects.length > 1 && timer !== null" (click)="stopSlideShow()" class="waves-effect waves-light btn-floating right grey darken-4" title="Play Slideshow"><i class="material-icons left">stop</i></a>
     <a *ngIf="objects.length > 1" class="btn-flat disabled right">{{index + 1}}/{{objects.length}}</a>
 
 </div>
@@ -23,6 +25,6 @@
     <kbd>TAB</kbd>
 </div>
 <div id='viewer' class="noselect" [style.background]="prefs.backgroundColor">
-    <frog-image *ngIf="itemtype === 'image'"></frog-image>
+    <frog-image *ngIf="itemtype === 'image'" [hide_minimap]="slideshow"></frog-image>
     <frog-video *ngIf="itemtype === 'video'"></frog-video>
 </div>

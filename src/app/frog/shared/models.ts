@@ -108,6 +108,7 @@ export class CVideo implements IItem {
     framerate: number;
     like_count: number;
     loaded: boolean;
+    duration: number;
 }
 
 
@@ -149,6 +150,9 @@ export class Preferences {
     semiTransparent: boolean;
     showTags: boolean;
     orderby: string;
+    slideshowRandomize: boolean;
+    slideshowPlayVideo: boolean;
+    slideshowDuration: number;
 }
 
 

@@ -92,4 +92,7 @@ export class SiteMenuComponent implements OnInit, OnDestroy {
             }
         }
     }
+    slideShowDialog() {
+
+    }
 }

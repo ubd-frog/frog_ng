@@ -24,6 +24,7 @@ import { SelectionService } from '../shared/selection.service';
 export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecked {
     @ViewChild('canvas') canvas: ElementRef;
     @ViewChild('img') img: ElementRef;
+    @Input() hide_minimap: boolean;
 
     private origin: Point = new Point();
     private xform: Matrix = Matrix.Identity();
@@ -204,7 +205,9 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
                 Math.floor(rect.height),
             );
 
-            this.renderThumbnail();
+            if (!this.hide_minimap) {
+                this.renderThumbnail();
+            }
         }
     }
     renderThumbnail() {
