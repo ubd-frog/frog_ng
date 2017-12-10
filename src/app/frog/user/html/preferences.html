@@ -59,16 +59,47 @@
     <li>
         <div class="row">
             <div class="input-field col s12">
+                <h6 class="grey-text text-lighten-1">Thumbnail Padding</h6>
+                <p class="range-field">
+                    <input type="range" min="0" max="10" #thumbpad (change)="service.setValue('thumbnailPadding', thumbpad.value)" value="{{prefs.thumbnailPadding}}" />
+                </p>
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="row">
+            <div class="input-field col s12">
                 <h6 class="grey-text text-lighten-1">Viewer Background Color</h6>
                 <div *ngFor="let key of keys" class="swatch {{key}}" [class.active]="prefs.backgroundColor === swatches[key]" (click)="service.setValue('backgroundColor', swatches[key])"></div>
             </div>
         </div>
+    </li>
+    <li>
+        <div class="row">
+            <div class="col s12">
+                <h6 class="grey-text text-lighten-1">SlideShow: Randomize</h6>
+                <div class="switch">
+                    <label>Off<input #slideshow_randomize type="checkbox" (change)="service.setValue('slideshowRandomize', slideshow_randomize.checked)" [(ngModel)]="prefs.slideshowRandomize"><span class="lever"></span>On</label>
+                </div>
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="row">
+            <div class="col s12">
+                <h6 class="grey-text text-lighten-1">SlideShow: Play Full Video</h6>
+                <div class="switch">
+                    <label>Off<input #slideshow_play_video type="checkbox" (change)="service.setValue('slideshowPlayVideo', slideshow_play_video.checked)" [(ngModel)]="prefs.slideshowPlayVideo"><span class="lever"></span>On</label>
+                </div>
+            </div>
+        </div>
+    </li>
     <li>
         <div class="row">
             <div class="input-field col s12">
-                <h6 class="grey-text text-lighten-1">Thumbnail Padding</h6>
+                <h6 class="grey-text text-lighten-1">SlideShow: Duration</h6>
                 <p class="range-field">
-                    <input type="range" id="test5" min="0" max="10" #thumbpad (change)="service.setValue('thumbnailPadding', thumbpad.value)" value="{{prefs.thumbnailPadding}}" />
+                    <input type="range" min="1" max="30" #slideshow_duration (change)="service.setValue('slideshowDuration', slideshow_duration.value)" value="{{prefs.slideshowDuration}}" />
                 </p>
             </div>
         </div>

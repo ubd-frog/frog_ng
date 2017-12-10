@@ -1,8 +1,8 @@
 import { Component, Input, AfterViewInit, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
 
-import { Subscription } from 'rxjs';
+import {Subscription, TimeInterval} from 'rxjs';
 
 import {IItem, CImage, CVideo, Preferences} from '../shared/models';
 import { Point, Matrix } from '../shared/euclid';
@@ -14,6 +14,7 @@ import { VideoComponent } from './video.component';
 import {StorageService} from "../shared/storage.service";
 import {Observable} from "rxjs/Observable";
 import {randomInt} from "../shared/common";
+import {Timeouts} from "selenium-webdriver";
 
 declare var $:any;
 
@@ -54,8 +55,8 @@ export class ViewerComponent implements OnInit, OnDestroy {
     private index: number = -1;
     private subs: Subscription[] = [];
     private closeroute: string;
-    private slideshowcache: IItem[];
-    private randomize: boolean;
+    private slideshow: boolean;
+    private timer;
     public objects: IItem[] = [];
     public itemtype: string;
     public prefs: Preferences;
@@ -75,16 +76,11 @@ export class ViewerComponent implements OnInit, OnDestroy {
         this.height = window.innerHeight;
         let sub = this.prefservice.preferences.subscribe(prefs => this.prefs = prefs);
         this.subs.push(sub);
-        this.randomize = false;
+        this.timer = null;
     }
     ngOnInit() {
         let sub = this.route.params.subscribe(params => {
-            if (this.route.snapshot.data['slideshow']) {
-                this.slideshowcache = this.allitems.slice();
-                this.randomize = true;
-
-                return;
-            }
+            this.slideshow = Boolean(this.route.snapshot.data['slideshow']);
 
             let guid = params['guid'];
             let guids = (params['selection'] || '').split(',');
@@ -122,6 +118,18 @@ export class ViewerComponent implements OnInit, OnDestroy {
 
                 this.index = Math.max(0, this.objects.map(o => o.guid).indexOf(guid));
                 this.setIndex(this.index);
+                if (this.slideshow) {
+                    let timeout = this.prefs.slideshowDuration;
+                    if (this.objects[this.index].guid.charAt(0) == '2') {
+                        // Check where to play videos or not
+                        if (this.prefs.slideshowPlayVideo) {
+                            timeout = this.video.object.duration;
+                        }
+                    }
+                    this.timer = setTimeout(() => {
+                        this.next();
+                    }, timeout * 1000);
+                }
             });
             this.subs.push(sub);
         });
@@ -131,6 +139,10 @@ export class ViewerComponent implements OnInit, OnDestroy {
         this.subs.forEach(sub => {
             sub.unsubscribe();
         });
+    }
+    @HostListener('window:stateChange', ['$event'])
+    stateChange() {
+        this.stopSlideShow();
     }
     @HostListener('window:resize')
     resize() {
@@ -172,15 +184,11 @@ export class ViewerComponent implements OnInit, OnDestroy {
     }
     next() {
         let index: number;
-        if (this.randomize) {
-            // Reset the cache
-            if (this.slideshowcache.length === 0) {
-                this.slideshowcache = this.allitems.slice();
+        if (this.slideshow && this.prefs.slideshowRandomize) {
+            index = randomInt(0, this.objects.length);
+            while (index === this.index) {
+                index = randomInt(0, this.objects.length);
             }
-
-            index = randomInt(0, this.slideshowcache.length);
-            // Remove the item
-            this.slideshowcache.slice(index, 1);
         }
         else {
             index = this.index + 1;
@@ -214,8 +222,12 @@ export class ViewerComponent implements OnInit, OnDestroy {
         this.selectionservice.setDetailItem(this.objects[this.index]);
     }
     close(event: Event) {
-        event.preventDefault();
+        if (event !== null) {
+            event.preventDefault();
+        }
+
         this.selectionservice.clearDetailItem();
+        this.stopSlideShow();
 
         // Use closeroute
         this.router.navigate([this.closeroute || this.service.routecache || '/w/1']);
@@ -240,7 +252,24 @@ export class ViewerComponent implements OnInit, OnDestroy {
             if (this.objects.length > 1 && !this.viewall) {
                 url.push(this.objects.map(o => o.guid).join(','));
             }
+            if (this.slideshow) {
+                url.push('slideshow');
+            }
             this.router.navigate(url, {replaceUrl: true});
         }
+    }
+    playSlideShow() {
+        let url = this.route.snapshot.url.map(u => u.toString());
+        url.push('slideshow');
+        this.router.navigate(url);
+    }
+    stopSlideShow() {
+        if (this.timer !== null) {
+            clearTimeout(this.timer);
+        }
+        this.timer = null;
+        let url = this.route.snapshot.url.map(u => u.toString());
+        url.pop();
+        this.router.navigate(url);
     }
 }
