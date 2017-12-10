@@ -1,9 +1,11 @@
-import {ErrorHandler, NgModule} from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule } from '@angular/forms';
+import {HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
 
 import { MarkdownToHtmlModule } from 'markdown-to-html-pipe';
-
 
 import { WorksComponent } from './works/works.component';
 import { WorksListComponent } from './works/works-list.component';
@@ -65,14 +67,20 @@ import { ReleaseNotesComponent } from './releasenotes/release-notes.component';
 import { ReleaseNotesService } from './releasenotes/release-notes.service';
 
 
+
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
+        HttpClientModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+
+        MarkdownToHtmlModule,
+
         worksRouting,
         viewerRouting,
         userRouting,
-        MarkdownToHtmlModule
     ],
     declarations: [
         WorksComponent,

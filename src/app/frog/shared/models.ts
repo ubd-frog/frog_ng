@@ -165,3 +165,11 @@ export class ReleaseNote {
     date: Date;
     notes: string;
 }
+
+
+export class Result {
+    isError: boolean;
+    message: string;
+    value: any;
+    values: any[];
+}

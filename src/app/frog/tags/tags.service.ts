@@ -1,13 +1,14 @@
-import {Injectable} from '@angular/core';
-import {Http, RequestOptions} from '@angular/http';
+import { Injectable } from '@angular/core';
+import {HttpClient, HttpParams} from "@angular/common/http";
+
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
-import { extractValues, extractValue } from '../shared/common';
-import { Tag } from '../shared/models';
+import {Result, Tag} from '../shared/models';
 import { WorksService } from '../works/works.service';
-import {Subject} from "rxjs";
-import {ErrorService} from "../errorhandling/error.service";
+import { Subject } from "rxjs";
+import { ErrorService } from "../errorhandling/error.service";
+
 
 @Injectable()
 export class TagsService {
@@ -16,7 +17,7 @@ export class TagsService {
     private _tags: Tag[];
     private _ids: number[];
 
-    constructor(private http:Http, private service: WorksService, private errors: ErrorService) {
+    constructor(private http:HttpClient, private service: WorksService, private errors: ErrorService) {
         this._tags = [];
         this._ids = [];
         this.tags = new ReplaySubject<Tag[]>();
@@ -24,8 +25,14 @@ export class TagsService {
         this.get();
     }
     get() {
-        this.http.get('/frog/tag/?cache=' + Date.now())
-            .map(this.errors.extractValues, this.errors).subscribe(tags => {
+        let params = new HttpParams().set('timestamp', new Date().getTime().toString());
+        let options = {
+            params: params
+        };
+
+        this.http.get('/frog/tag/', options)
+            .map(this.errors.extractValues, this.errors)
+            .subscribe(tags => {
             this._tags = tags;
             this._ids = [];
             for (let tag of tags) {
@@ -35,8 +42,16 @@ export class TagsService {
         }, error => this.errors.handleError(error));
     }
     getTagWithCount() {
-        this.http.get('/frog/tag/?count=1&cache=' + Date.now())
-            .map(this.errors.extractValues, this.errors).subscribe(tags => {
+        let params = new HttpParams();
+        params = params.append('count', '1');
+        params = params.append('timestamp', new Date().getTime().toString());
+        let options = {
+            params: params
+        };
+
+        this.http.get('/frog/tag/', options)
+            .map(this.errors.extractValues, this.errors)
+            .subscribe(tags => {
             this._tags = tags;
             this._ids = [];
             for (let tag of tags) {
@@ -46,7 +61,8 @@ export class TagsService {
         }, error => this.errors.handleError(error));
     }
     resolve(name: string) {
-        return this.http.get('/frog/tag/resolve/' + name).map(this.errors.extractValue, this.errors);
+        return this.http.get('/frog/tag/resolve/' + name)
+            .map(this.errors.extractValue, this.errors);
     }
     getTagById(id: number){
         let index = this._ids.indexOf(id);
@@ -67,18 +83,21 @@ export class TagsService {
     }
     create(name: string) {
         let url = '/frog/tag/';
-        let options = new RequestOptions();
-        options.body = {name: name};
-        options.withCredentials = true;
+        let options = {
+            body: {name: name},
+            withCredentials: true
+        };
+
         let ob = this.http.post(url, options);
         let tagresult = new Subject<Tag>();
+
         ob.subscribe(res => {
-            let data = res.json();
-            if (!data.isError) {
-                this._tags.push(<Tag>data.value);
-                this._ids.push(data.value.id);
+            let result = res as Result;
+            if (!result.isError) {
+                this._tags.push(<Tag>result.value);
+                this._ids.push(result.value.id);
             }
-            tagresult.next(data.value);
+            tagresult.next(result.value);
             tagresult.complete();
         }, error => this.errors.handleError(error));
 
@@ -90,25 +109,29 @@ export class TagsService {
     merge (ids: number[]) {
         let root = ids.shift();
         let url = `/frog/tag/merge/${root}/`;
-        let options = new RequestOptions();
+        let options = {
+            body: {tags: ids},
+            withCredentials: true
+        };
 
-        options.body = {tags: ids};
-        this.http.post(url, options).subscribe(() => this.get(), error => this.errors.handleError(error));
+        this.http.post(url, options)
+            .subscribe(() => this.get(), error => this.errors.handleError(error));
     }
     rename(tag: Tag) {
         let url = `/frog/tag/${tag.id}/`;
-        let options = new RequestOptions();
-        options.body = {
-            name: tag.name,
-            artist: tag.artist
+        let options = {
+            body: {
+                name: tag.name,
+                artist: tag.artist
+            },
+            withCredentials: true
         };
 
         return this.http.put(url, options);
     }
     remove(tag: Tag) {
         let url = `/frog/tag/${tag.id}/`;
-        let options = new RequestOptions();
 
-        return this.http.delete(url, options);
+        return this.http.delete(url, null);
     }
 }
