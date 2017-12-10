@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Http, RequestOptions, Response } from "@angular/http";
 import {NotificationService} from "../notifications/notification.service";
-import { Notification } from '../shared/models';
+import {Notification, Result} from '../shared/models';
 
 @Injectable()
 export class ErrorService {
@@ -18,34 +18,32 @@ export class ErrorService {
         this.http.put(url, options).subscribe();
         this.handleError(null);
     }
-    extractValue(res: Response) {
-        let body = res.json();
-        if (body.isError) {
-            let notification = new Notification(body.message, 'error');
+    extractValue(res: Result) {
+        if (res.isError) {
+            let notification = new Notification(res.message, 'error');
             notification.error = true;
             notification.timeout = 8000;
             this.notify.add(notification);
             return null;
         }
-        return body.value || null;
+        return res.value || null;
     }
 
-    extractValues(res: Response) {
-        let body = res.json();
-        if (body.isError) {
-            let notification = new Notification(body.message, 'error');
+    extractValues(res: Result) {
+        if (res.isError) {
+            let notification = new Notification(res.message, 'error');
             notification.error = true;
             notification.timeout = 8000;
             this.notify.add(notification);
             return [];
         }
-        return body.values || [];
+        return res.values || [];
     }
     handleError(error: any) {
         if (error === null) {
             return;
         }
-        console.log(error);
+        console.error(error);
         let message = 'An error has occurred and top men are on it...Top Men';
         if (error.hasOwnProperty('status') && error.hasOwnProperty('url')) {
             // Response error

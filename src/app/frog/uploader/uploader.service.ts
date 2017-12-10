@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions } from '@angular/http';
+import { HttpClient } from "@angular/common/http";
 
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
-import { extractValues } from '../shared/common';
 import { IItem, Tag } from '../shared/models';
 import { UploadFile } from './models';
 import { WorksService } from '../works/works.service';
-import {forEach} from "@angular/router/src/utils/collection";
-import {ErrorService} from "../errorhandling/error.service";
+import { ErrorService } from "../errorhandling/error.service";
+
 
 @Injectable()
 export class UploaderService {
@@ -21,7 +20,7 @@ export class UploaderService {
     private files: UploadFile[];
     private items: IItem[];
 
-    constructor(private http: Http, private service: WorksService, private errors: ErrorService) {
+    constructor(private http: HttpClient, private service: WorksService, private errors: ErrorService) {
         this.requested = new Subject<boolean>();
         this.fileList = new ReplaySubject<UploadFile[]>(1);
         this.items = [];
@@ -32,12 +31,15 @@ export class UploaderService {
     }
     isUnique(names: string[]) {
         let url = '/frog/isunique/';
-        let options = new RequestOptions();
-        options.body = {
-            paths: names
+        let options = {
+            body: {
+                paths: names
+            },
+            withCredentials: true
         };
-        options.withCredentials = true;
-        return this.http.post(url, options).map(this.errors.extractValues, this.errors);
+
+        return this.http.post(url, options)
+            .map(this.errors.extractValues, this.errors);
     }
     addFiles(files: FileList) {
         if (files.length === 0) {
