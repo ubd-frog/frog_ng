@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import any = jasmine.any;
+
 
 @Injectable()
 export class StorageService {

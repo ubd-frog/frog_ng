@@ -1,25 +1,18 @@
-import {
-    Component, Input, ViewChild, OnInit, OnDestroy, AfterContentInit, HostListener, trigger, state, style,
-    transition, animate, AfterViewInit
-} from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, ViewChild, OnDestroy, HostListener, AfterViewInit } from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
 import { UserService } from '../user/user.service';
 import { WorksService } from '../works/works.service';
 import { CropperComponent } from '../works/cropper.component';
-import {IItem, Tag, User, Gallery} from '../shared/models';
-import { CapitalizePipe } from '../shared/capitalize.pipe';
-import { TagArtistFilterPipe } from '../shared/tag-artist-filter.pipe';
-import { AutocompleteComponent } from '../shared/autocomplete.component';
-import { TagComponent } from '../tags/tag.component';
-import { CommentComponent } from '../shared/comment.component';
+import { IItem, Tag, User, Gallery } from '../shared/models';
 import { CommentService } from '../shared/comment.service';
 import { TagsService } from '../tags/tags.service';
 import { SelectionService } from '../shared/selection.service';
-import {GalleryService} from "../works/gallery.service";
-import {ErrorService} from "../errorhandling/error.service";
+import { GalleryService } from "../works/gallery.service";
+import { ErrorService } from "../errorhandling/error.service";
 
 declare var $:any;
 

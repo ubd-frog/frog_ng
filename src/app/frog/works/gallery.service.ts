@@ -8,6 +8,7 @@ import {Gallery} from '../shared/models';
 import {ErrorService} from "../errorhandling/error.service";
 import {Observable} from "rxjs/Observable";
 import {SiteConfigService} from "../shared/siteconfig.service";
+import {HttpClient, HttpParams} from "@angular/common/http";
 
 
 @Injectable()
@@ -19,7 +20,7 @@ export class GalleryService {
     private id: number;
 
     constructor(
-        private http:Http,
+        private http:HttpClient,
         private title: Title,
         private errors: ErrorService,
         private siteconfig: SiteConfigService
@@ -31,12 +32,15 @@ export class GalleryService {
     }
     get() {
         let url = '/frog/gallery';
-        let options = new RequestOptions();
-        options.search = new URLSearchParams();
-        options.search.set('json', '1');
-        options.search.set('timestamp', new Date().getTime().toString());
+        let params = new HttpParams();
+        params = params.append('json', '1');
+        params = params.append('timestamp', new Date().getTime().toString());
+        let options = {
+            params: params
+        };
 
-        let galleryreq = this.http.get(url, options).map(this.errors.extractValues, this.errors);
+        let galleryreq = this.http.get(url, options)
+            .map(this.errors.extractValues, this.errors);
 
         Observable.forkJoin([galleryreq, this.siteconfig.siteconfig.asObservable()]).subscribe(results => {
             this._items = results[0];
@@ -48,14 +52,15 @@ export class GalleryService {
     }
     create(title: string) {
         let url = '/frog/gallery';
-        let options = new RequestOptions();
-        options.body = {
-            title: title,
-            security: 1
+        let options = {
+            body: {
+                title: title,
+                security: 1
+            },
+            withCredentials: true
         };
-
-        options.withCredentials = true;
-        return this.http.post(url, options).map(this.errors.extractValue, this.errors);
+        return this.http.post(url, options)
+            .map(this.errors.extractValue, this.errors);
     }
     add(gallery: Gallery) {
         this._items.push(gallery);
@@ -63,13 +68,14 @@ export class GalleryService {
     }
     subscribe(id: number, frequency: number) {
         let url = `/frog/gallery/${id}/subscribe`;
-        let options = new RequestOptions();
-        options.body = {
-            frequency: frequency
+        let options = {
+            body: {
+                frequency: frequency
+            },
+            withCredentials: true
         };
-
-        options.withCredentials = true;
-        this.http.post(url, options).map(this.errors.extractValue, this.errors).subscribe();
+        this.http.post(url, options)
+            .map(this.errors.extractValue, this.errors).subscribe();
     }
     setGalleryId(id: number) {
         this.id = id;

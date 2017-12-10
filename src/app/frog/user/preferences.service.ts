@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions } from '@angular/http';
+import { HttpClient } from "@angular/common/http";
 
 import { BehaviorSubject } from 'rxjs';
 
-import { extractValue } from '../shared/common';
-import {Preferences} from "../shared/models";
-import {ErrorService} from "../errorhandling/error.service";
+import { Preferences } from "../shared/models";
+import { ErrorService } from "../errorhandling/error.service";
+
 
 @Injectable()
 export class PreferencesService {
@@ -15,11 +15,14 @@ export class PreferencesService {
     public preferences: BehaviorSubject<Preferences>;
     public visible: BehaviorSubject<boolean>;
 
-    constructor(private http: Http, private errors: ErrorService) {
+    constructor(private http: HttpClient, private errors: ErrorService) {
         this.prefs = new Preferences();
         this.preferences = new BehaviorSubject<Preferences>(this.prefs);
         this.visible = new BehaviorSubject<boolean>(false);
-        this.http.get('/frog/pref/').map(this.errors.extractValue, this.errors).subscribe(prefs => {
+
+        this.http.get('/frog/pref/')
+            .map(this.errors.extractValue, this.errors)
+            .subscribe(prefs => {
             this.prefs = prefs;
             this.source = Object.assign({}, this.prefs);
             this.preferences.next(this.prefs);
@@ -28,14 +31,17 @@ export class PreferencesService {
     setValue(key: string, value: any) {
         this.prefs[key] = value;
         let url = '/frog/pref/';
-        let options = new RequestOptions();
-
-        options.body = {
-            key: key,
-            val: value
+        let options = {
+            body: {
+                key: key,
+                val: value
+            },
+            withCredentials: true
         };
-        options.withCredentials = true;
-        this.http.post(url, options).map(this.errors.extractValue, this.errors).subscribe(() => {
+
+        this.http.post(url, options)
+            .map(this.errors.extractValue, this.errors)
+            .subscribe(() => {
             this.preferences.next(this.prefs);
         }, error => this.errors.handleError(error));
     }
