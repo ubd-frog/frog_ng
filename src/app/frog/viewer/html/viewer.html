@@ -7,7 +7,7 @@
     <a (click)="next()"><i class="material-icons large" [style.margin-top.px]="height / 2">navigate_next</i></a>
 </div>
 
-<div *ngIf="objects.length > 0" class='actions noselect'>
+<div *ngIf="objects.length > 0" class='actions noselect' [class.hoverdisplay]="slideshow">
     <a (click)="close($event)" class="btn-floating right red darken-4"><i class="material-icons white-text">close</i></a>
     <a (click)="original()" class="waves-effect waves-light btn-floating right grey darken-4 original" title="Zoom to the original size">1:1</a>
     <a (click)="fitToWindow()" class="waves-effect waves-light btn-floating right grey darken-4" title="Zoom to fit the current window"><i class="material-icons">settings_overscan</i></a>
@@ -17,7 +17,7 @@
     <a *ngIf="objects.length > 1" class="btn-flat disabled right">{{index + 1}}/{{objects.length}}</a>
 
 </div>
-<div class="keyboard">
+<div class="keyboard" [class.hoverdisplay]="slideshow">
     <div style="padding-left: 14px;"><kbd>w</kbd></div>
     <kbd>a</kbd>
     <kbd>s</kbd>

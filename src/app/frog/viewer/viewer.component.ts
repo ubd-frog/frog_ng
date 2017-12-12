@@ -26,6 +26,8 @@ declare var $:any;
         '#viewer { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }',
         '.actions { position: absolute; top: 16px; right: 16px; z-index: 3001; }',
         '.actions .btn-flat { font-size: 18px; font-family: Roboto; font-weight: 500; }',
+        '.hoverdisplay { opacity: 0; }',
+        '.hoverdisplay:hover { opacity: 1; }',
         '.row { margin-bottom: 0; z-index: 3000; height: 100%; }',
         '.row > div.col { height: 100%; }',
         '.row a { height: 100%; opacity: 0; -webkit-transition: opacity 0.3s 0.0s; -moz-transition: opacity 0.3s 0.0s; -ms-transition: opacity 0.3s 0.0s; }',
