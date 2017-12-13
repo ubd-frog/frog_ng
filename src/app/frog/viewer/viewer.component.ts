@@ -57,13 +57,13 @@ export class ViewerComponent implements OnInit, OnDestroy {
     private index: number = -1;
     private subs: Subscription[] = [];
     private closeroute: string;
-    private slideshow: boolean;
     private timer;
     public objects: IItem[] = [];
     public itemtype: string;
     public prefs: Preferences;
     public width: number = 0;
     public height: number = 0;
+    public slideshow: boolean;
 
     constructor(
         private route: ActivatedRoute,
