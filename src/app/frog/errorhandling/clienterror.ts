@@ -9,9 +9,9 @@ export class ClientError extends ErrorHandler {
         super(true);
     }
     handleError(error: any) : void {
-        // const service = this.injector.get(ErrorService);
-        // service.clientError(error);
-        //
+        const service = this.injector.get(ErrorService);
+        service.clientError(error);
+
         super.handleError(error);
     }
 }
