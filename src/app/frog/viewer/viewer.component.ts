@@ -1,21 +1,19 @@
-import { Component, Input, AfterViewInit, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
-import {Subscription, TimeInterval} from 'rxjs';
+import { Subscription } from 'rxjs';
+import { Observable } from "rxjs/Observable";
 
-import {IItem, CImage, CVideo, Preferences} from '../shared/models';
-import { Point, Matrix } from '../shared/euclid';
+import { IItem, Preferences } from '../shared/models';
 import { SelectionService } from '../shared/selection.service';
+import { StorageService } from '../shared/storage.service';
+import { randomInt } from '../shared/common';
+import { SlideshowService } from "../shared/slideshow.service";
 import { WorksService } from '../works/works.service';
 import { PreferencesService } from '../user/preferences.service';
 import { ImageComponent } from './image.component';
 import { VideoComponent } from './video.component';
-import {StorageService} from "../shared/storage.service";
-import {Observable} from "rxjs/Observable";
-import {randomInt} from "../shared/common";
-import {Timeouts} from "selenium-webdriver";
-import {SlideshowService} from "../shared/slideshow.service";
 
 declare var $:any;
 
