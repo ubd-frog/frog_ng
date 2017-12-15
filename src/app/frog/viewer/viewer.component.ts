@@ -15,6 +15,7 @@ import {StorageService} from "../shared/storage.service";
 import {Observable} from "rxjs/Observable";
 import {randomInt} from "../shared/common";
 import {Timeouts} from "selenium-webdriver";
+import {SlideshowService} from "../shared/slideshow.service";
 
 declare var $:any;
 
@@ -71,6 +72,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
         private service: WorksService,
         private selectionservice: SelectionService,
         private storageservice: StorageService,
+        private slideshowservice: SlideshowService,
         private location: Location,
         private prefservice: PreferencesService
     ) {
@@ -128,9 +130,8 @@ export class ViewerComponent implements OnInit, OnDestroy {
                             timeout = this.video.object.duration;
                         }
                     }
-                    this.timer = setTimeout(() => {
-                        this.next();
-                    }, timeout * 1000);
+
+                    this.slideshowservice.start(this.next.bind(this), timeout);
                 }
             });
             this.subs.push(sub);
@@ -266,10 +267,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
         this.router.navigate(url);
     }
     stopSlideShow() {
-        if (this.timer !== null) {
-            clearTimeout(this.timer);
-        }
-        this.timer = null;
+        this.slideshowservice.stop();
         let url = this.route.snapshot.url.map(u => u.toString());
         url.pop();
         this.router.navigate(url);
