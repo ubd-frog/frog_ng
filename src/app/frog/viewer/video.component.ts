@@ -2,7 +2,7 @@ import { Component, OnDestroy, HostListener, ViewChild, ElementRef } from '@angu
 
 import { Observable, Subscription } from 'rxjs';
 
-import { IItem, CVideo } from '../shared/models';
+import { CItem, CVideo } from '../shared/models';
 import { Point, Matrix } from '../shared/euclid';
 import { SelectionService } from '../shared/selection.service';
 import { ImageAtlas, kMaxCanvasSize } from "./image-atlas";
@@ -87,7 +87,7 @@ export class VideoComponent implements OnDestroy {
         this.alive = false;
         this.subs.forEach(sub => sub.unsubscribe());
     }
-    setImage(image: IItem) {
+    setImage(image: CItem) {
         if (!this.alive) {
             return;
         }

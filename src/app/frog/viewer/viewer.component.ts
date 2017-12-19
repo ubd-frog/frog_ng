@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Observable } from "rxjs/Observable";
 
-import { IItem, Preferences } from '../shared/models';
+import { CItem, Preferences } from '../shared/models';
 import { SelectionService } from '../shared/selection.service';
 import { StorageService } from '../shared/storage.service';
 import { randomInt } from '../shared/common';
@@ -51,13 +51,13 @@ export class ViewerComponent implements OnInit, OnDestroy {
     @ViewChild(ImageComponent) image: ImageComponent;
     @ViewChild(VideoComponent) video: VideoComponent;
 
-    private allitems: IItem[];
+    private allitems: CItem[];
     private viewall: boolean = false;
     private index: number = -1;
     private subs: Subscription[] = [];
     private closeroute: string;
     private timer;
-    public objects: IItem[] = [];
+    public objects: CItem[] = [];
     public itemtype: string;
     public prefs: Preferences;
     public width: number = 0;

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 import { WorksService } from './works.service';
 import { ViewportService } from './viewport.service';
-import {IItem, Preferences} from '../shared/models';
+import {CItem, Preferences} from '../shared/models';
 import { Rect } from '../shared/euclid';
 import { CapitalizePipe } from '../shared/capitalize.pipe';
 import { TagsService } from '../tags/tags.service';
@@ -35,7 +35,7 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
     @Input() item;
     @ViewChild('img') img: ElementRef;
 
-    private selecteditems: IItem[] = [];
+    private selecteditems: CItem[] = [];
     private ctrlKey: boolean;
     private subs: Subscription[];
     private viewportsub: Subscription;

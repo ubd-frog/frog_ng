@@ -2,7 +2,7 @@ import { Component, Input, AfterViewInit, AfterViewChecked, OnDestroy, HostListe
 
 import { Observable } from 'rxjs/Observable';
 
-import { IItem, CImage, Tag, User, Comment } from '../shared/models';
+import { CItem, CImage, Tag, User, Comment } from '../shared/models';
 import { Point, Matrix, Rect } from '../shared/euclid';
 import { SelectionService } from '../shared/selection.service';
 
@@ -77,7 +77,7 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
     ngOnDestroy() {
         this.sub.unsubscribe();
     }
-    setImage(image: IItem) {
+    setImage(image: CItem) {
         this.percent = 0;
         this.object = <CImage>image;
         let parts = this.object.source.split('.');

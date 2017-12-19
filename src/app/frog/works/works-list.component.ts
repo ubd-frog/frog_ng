@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { WorksService } from './works.service';
 import { WorksThumbnailComponent } from './works-thumbnail.component';
-import { IItem } from '../shared/models';
+import { CItem } from '../shared/models';
 import { SelectionService } from '../shared/selection.service';
 
 
@@ -24,7 +24,7 @@ export class WorksListComponent implements OnDestroy, AfterViewInit {
     private buffer: number = 300;
     private subs: Subscription[];
     public loading: boolean;
-    public items: IItem[] = [];
+    public items: CItem[] = [];
 
     constructor(private element: ElementRef, private service:WorksService, private selectionservice: SelectionService) {
         this.subs = [];

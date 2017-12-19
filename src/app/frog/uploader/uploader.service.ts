@@ -6,7 +6,7 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
-import { IItem, Tag } from '../shared/models';
+import { CItem, Tag } from '../shared/models';
 import { UploadFile } from './models';
 import { WorksService } from '../works/works.service';
 import { ErrorService } from "../errorhandling/error.service";
@@ -18,7 +18,7 @@ export class UploaderService {
     public fileList: ReplaySubject<UploadFile[]>;
     private file: UploadFile;
     private files: UploadFile[];
-    private items: IItem[];
+    private items: CItem[];
 
     constructor(private http: HttpClient, private service: WorksService, private errors: ErrorService) {
         this.requested = new Subject<boolean>();
@@ -99,7 +99,7 @@ export class UploaderService {
                         return;
                     }
 
-                    let item = <IItem>data.value;
+                    let item = <CItem>data.value;
                     if (item) {
                         this.items.push(item);
                     }

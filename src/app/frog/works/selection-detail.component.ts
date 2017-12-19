@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, HostListener, trigger, sta
 import { Router } from '@angular/router';
 
 import { SelectionService } from '../shared/selection.service';
-import { IItem, Tag, Gallery, User, Notification } from '../shared/models';
+import {IItem, Tag, Gallery, User, Notification, CItem} from '../shared/models';
 import { TagComponent } from '../tags/tag.component';
 import { TagsService } from '../tags/tags.service';
 import { TagArtistFilterPipe } from '../shared/tag-artist-filter.pipe';
@@ -64,7 +64,7 @@ export class SelectionDetailComponent implements AfterViewInit {
     @ViewChild(NavigationComponent) moveNav: NavigationComponent;
     @ViewChild(UserInputComponent) userinput: UserInputComponent;
 
-    public items: IItem[];
+    public items: CItem[];
     public tags: Tag[];
     public guids: string;
     private artist: User;
@@ -151,9 +151,7 @@ export class SelectionDetailComponent implements AfterViewInit {
                     }
 
                     for (let item of this.items) {
-                        let tags = item.tags.splice(0);
-                        tags.push(tag);
-                        item.tags = tags;
+                        item.addTag(tag);
                     }
 
                     this.tags = tags;

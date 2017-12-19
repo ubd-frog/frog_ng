@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { WorksService } from '../works/works.service';
 import { CropperComponent } from '../works/cropper.component';
-import { IItem, Tag, User, Gallery } from '../shared/models';
+import { CItem, Tag, User, Gallery } from '../shared/models';
 import { CommentService } from '../shared/comment.service';
 import { TagsService } from '../tags/tags.service';
 import { SelectionService } from '../shared/selection.service';
@@ -87,7 +87,7 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
     private cachebust: number = new Date().getTime();
     private gallery: Gallery;
     private subs: Subscription[];
-    public item: IItem;
+    public item: CItem;
     public visible: string = 'hide';
 
     constructor(
@@ -260,7 +260,7 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
             this.hide();
         }
     }
-    reloadThumbnail(item: IItem) {
+    reloadThumbnail(item: CItem) {
         this.cachebust = new Date().getTime();
         this.item = item;
     }

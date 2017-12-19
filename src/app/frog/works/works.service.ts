@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { extractValues, extractValue } from '../shared/common';
-import {IItem, CImage, CVideo, Tag, User, Notification, Gallery} from '../shared/models';
+import {CItem, CImage, CVideo, Tag, User, Notification, Gallery} from '../shared/models';
 import { NotificationService } from '../notifications/notification.service';
 import {GalleryService} from "./gallery.service";
 import {PreferencesService} from "../user/preferences.service";
@@ -15,22 +15,22 @@ import {ReplaySubject} from "rxjs/ReplaySubject";
 
 
 interface ItemResponse {
-    values: IItem[];
+    values: CItem[];
 }
 
 
 @Injectable()
 export class WorksService {
-    private items: IItem[];
+    private items: CItem[];
     private guids: string[];
     private isLoading: boolean;
     private gallery: Gallery;
     private orderby: string;
     public routecache: string;
-    public results: ReplaySubject<[IItem[], boolean]>;
+    public results: ReplaySubject<[CItem[], boolean]>;
     public loading: BehaviorSubject<boolean>;
     public id: number;
-    public selection: IItem[];
+    public selection: CItem[];
     public terms: Array<Array<any>>;
     public scrollpos: number;
     public minitems: number;
@@ -49,7 +49,7 @@ export class WorksService {
         this.scrollpos = 0;
         this.orderby = '';
         this.isLoading = false;
-        this.results = new ReplaySubject<[IItem[], boolean]>();
+        this.results = new ReplaySubject<[CItem[], boolean]>();
         this.results.next([this.items, false]);
         this.loading = new BehaviorSubject<boolean>(this.isLoading);
         galleryservice.gallery.subscribe(gallery => this.gallery = gallery);
@@ -97,7 +97,7 @@ export class WorksService {
                 }
 
                 for (let item of items) {
-                    let obj: IItem;
+                    let obj: CItem;
                     switch(item.guid.charAt(0)) {
                         case '1':
                             obj = <CImage>item;
@@ -146,7 +146,7 @@ export class WorksService {
     setTerms(terms: any) {
         this.terms = terms;
     }
-    likeItem(item:IItem) {
+    likeItem(item:CItem) {
         let url = '/frog/like/' + item.guid;
         this.notify.add(new Notification('Liked', 'thumb_up'));
         this.http.put(url, null)
@@ -156,7 +156,7 @@ export class WorksService {
             this.items[index].like_count = items[0].like_count;
         }, error => this.errors.handleError(error));
     }
-    update(item: IItem) {
+    update(item: CItem) {
         let url = '/frog/piece/' + item.guid + '/';
         let options = {
             body: {title: item.title, description: item.description},
@@ -168,7 +168,7 @@ export class WorksService {
         return this.http.put(url, options)
             .map(this.errors.extractValue, this.errors);
     }
-    setArtist(items: IItem[], user: User) {
+    setArtist(items: CItem[], user: User) {
         let url = '/frog/switchartist';
         let options = {
             body: {
@@ -185,7 +185,7 @@ export class WorksService {
             this.notify.add(new Notification('New artist set', 'done'));
         }, error => this.errors.handleError(error));
     }
-    editTags(items: IItem[], add: Tag[], remove: Tag[]) {
+    editTags(items: CItem[], add: Tag[], remove: Tag[]) {
         let url = '/frog/tag/manage';
         let options = {
             body: {
@@ -201,7 +201,7 @@ export class WorksService {
         return this.http.post(url, options)
             .map(this.errors.extractValues, this.errors);
     }
-    download(items: IItem[]) {
+    download(items: CItem[]) {
         let url = '/frog/download';
         let params = new HttpParams().set('guids', items.map(function(_) { return _.guid; }).join(','));
         let options = {
@@ -211,7 +211,7 @@ export class WorksService {
         return this.http.get(url, options)
             .map(this.errors.extractValues, this.errors);
     }
-    addItems(items: IItem[]) {
+    addItems(items: CItem[]) {
         while (items.length > 0) {
             let item = items.pop();
             let index = this.guids.indexOf(item.guid);
@@ -225,7 +225,7 @@ export class WorksService {
         }
         this.results.next([this.items, false]);
     }
-    remove(items: IItem[]) {
+    remove(items: CItem[]) {
         items.forEach(item => {
             let index = this.guids.indexOf(item.guid);
             if (index !== -1) {
@@ -287,7 +287,7 @@ export class WorksService {
                 });
             });
     }
-    upload(item: IItem, files: File[], reset: boolean = false) {
+    upload(item: CItem, files: File[], reset: boolean = false) {
         return Observable.create(observer => {
             let fd: FormData = new FormData();
             let xhr: XMLHttpRequest = new XMLHttpRequest();
@@ -317,7 +317,7 @@ export class WorksService {
             xhr.send(fd);
         });
     }
-    cropItem(item: IItem, x: number, y: number, width: number, height: number) {
+    cropItem(item: CItem, x: number, y: number, width: number, height: number) {
         let url = '/frog/piece/' + item.guid + '/';
         let options = new RequestOptions();
 

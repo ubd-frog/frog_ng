@@ -57,11 +57,10 @@ export interface IItem {
 }
 
 
-export class CImage implements IItem {
+export class CItem implements IItem {
     hash: string;
     tags: Tag[];
     deleted: boolean;
-    image: string;
     height: number;
     guid: string;
     id: number;
@@ -75,39 +74,35 @@ export class CImage implements IItem {
     small: string;
     thumbnail: string;
     custom_thumbnail: boolean;
-    comments: Comment[];
+    comments?: Comment[];
     description: string;
     selected: boolean;
     like_count: number;
     loaded: boolean;
+
+    public addTag(tag: Tag) {
+        if (this.tags.indexOf(tag) === -1) {
+            this.tags.push(tag);
+        }
+    }
+    public removeTag(tag: Tag) {
+        let index = this.tags.indexOf(tag);
+        if (index !== -1) {
+            this.tags.splice(index, 1);
+        }
+    }
 }
 
 
-export class CVideo implements IItem {
-    hash: string;
-    tags: Tag[];
-    deleted: boolean;
+export class CImage extends CItem {
+    image: string;
+}
+
+
+export class CVideo extends CItem {
     video: string;
-    height: number;
-    guid: string;
-    id: number;
-    title: string;
-    author: User;
-    modified: Date;
-    created: Date;
-    width: number;
-    comment_count: number;
-    source: string;
-    small: string;
-    thumbnail: string;
-    custom_thumbnail: boolean;
     poster: string;
-    comments: Comment[];
-    description: string;
-    selected: boolean;
     framerate: number;
-    like_count: number;
-    loaded: boolean;
     duration: number;
 }
 

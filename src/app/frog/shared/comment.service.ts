@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from "@angular/common/http";
 
-import { Comment, IItem } from './models';
+import { Comment, CItem } from './models';
 import { ErrorService } from "../errorhandling/error.service";
 
 
@@ -19,7 +19,7 @@ export class CommentService {
         return this.http.put(url, options)
             .map(this.errors.extractValue, this.errors);
     }
-    get(item:IItem) {
+    get(item:CItem) {
         let url = '/frog/comment/';
         let params = new HttpParams();
         params = params.append('json', '1');
@@ -31,7 +31,7 @@ export class CommentService {
         return this.http.get(url, options)
             .map(this.errors.extractValues, this.errors);
     }
-    add(item:IItem, comment:string) {
+    add(item:CItem, comment:string) {
         let url = '/frog/comment/';
         let options = {
             body: {comment: comment, guid: item.guid},

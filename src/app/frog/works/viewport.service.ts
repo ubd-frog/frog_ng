@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 
-import { IItem } from '../shared/models';
+import { CItem } from '../shared/models';
 import { Rect } from '../shared/euclid';
 import { WorksService } from './works.service';
 
@@ -11,7 +11,7 @@ export class ViewportService {
     public viewport: BehaviorSubject<Rect>;
     public guids: BehaviorSubject<string[]>;
     private sub: Subscription;
-    private items: IItem[];
+    private items: CItem[];
 
     constructor(private service: WorksService) {
         this.viewport = new BehaviorSubject<Rect>(new Rect());
