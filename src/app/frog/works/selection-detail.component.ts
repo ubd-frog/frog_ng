@@ -42,7 +42,7 @@ declare var $:any;
         '#remove_prompt { z-index: 4000 !important; }',
         '.stack { position: relative; height: 256px; }',
         '.stack img { position: absolute; width: 128px; border: 1px solid #ccc; border-bottom-width: 20px; }',
-        '.side-nav { overflow-y: inherit; }',
+        '.side-nav { overflow-y: auto; }',
         '#selection_bar { position:fixed; width: 100%; z-index: 3000; }',
         '#selection_bar a { cursor: pointer; }'
     ],
