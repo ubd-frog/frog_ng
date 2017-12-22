@@ -1,8 +1,11 @@
-import { Component, trigger, state, style, transition, animate } from '@angular/core';
-import {ReleaseNote} from "../shared/models";
-import {Subscription} from "rxjs/Subscription";
-import {ReleaseNotesService} from "./release-notes.service";
-import {StorageService} from "../shared/storage.service";
+import { Component, trigger, state, style } from '@angular/core';
+
+import { Subscription } from 'rxjs/Subscription';
+
+import { ReleaseNote } from '../shared/models';
+import { ReleaseNotesService } from './release-notes.service';
+import { StorageService } from '../shared/storage.service';
+
 
 @Component({
     selector: 'release-notes',

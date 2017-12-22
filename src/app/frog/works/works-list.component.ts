@@ -1,9 +1,8 @@
-import { Component, OnDestroy, AfterViewChecked, AfterViewInit, HostListener, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnDestroy, AfterViewInit, HostListener, ElementRef } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
 import { WorksService } from './works.service';
-import { WorksThumbnailComponent } from './works-thumbnail.component';
 import { CItem } from '../shared/models';
 import { SelectionService } from '../shared/selection.service';
 

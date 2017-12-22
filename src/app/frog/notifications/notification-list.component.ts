@@ -3,7 +3,6 @@ import { Component, Input, OnDestroy } from '@angular/core';
 import { Notification } from '../shared/models';
 import { NotificationService } from './notification.service';
 
-//
 
 @Component({
     selector: 'notification-list',

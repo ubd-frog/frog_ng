@@ -1,6 +1,6 @@
-import {Component, AfterViewInit, Input} from '@angular/core';
+import { Component, AfterViewInit, Input } from '@angular/core';
 
-import {GalleryService} from "../works/gallery.service";
+import { GalleryService } from '../works/gallery.service';
 
 
 @Component({

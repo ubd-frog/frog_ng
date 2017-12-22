@@ -1,21 +1,20 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { Subscription} from 'rxjs';
+
 import { WorksService } from './works.service';
 import { GalleryService } from './gallery.service';
 import { NavigationComponent } from './navigation.component';
-import {Tag, Gallery, User, SiteConfig, ReleaseNote} from '../shared/models';
+import { Tag, Gallery, User, SiteConfig, ReleaseNote } from '../shared/models';
 import { TagsService } from '../tags/tags.service';
 import { UploaderService } from '../uploader/uploader.service';
 import { PreferencesService } from '../user/preferences.service';
 import { UserService } from '../user/user.service';
 import { TagsListComponent } from '../tags/tags-list.component';
-
-import {Observable, Subscription} from "rxjs";
-import "rxjs/add/operator/mergeMap";
-import {ReleaseNotesService} from "../releasenotes/release-notes.service";
-import {ReleaseNotesComponent} from "../releasenotes/release-notes.component";
-import {SiteConfigService} from "../shared/siteconfig.service";
+import { ReleaseNotesService } from '../releasenotes/release-notes.service';
+import { ReleaseNotesComponent } from '../releasenotes/release-notes.component';
+import { SiteConfigService } from '../shared/siteconfig.service';
 
 
 @Component({

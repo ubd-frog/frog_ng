@@ -1,10 +1,11 @@
-import { Component, Input, Output, ViewChild, ElementRef, EventEmitter, OnDestroy, AfterViewChecked, HostListener, trigger, state, style, transition, animate } from '@angular/core';
+import { Component, OnDestroy, trigger, state, style } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
 import { TagsService } from './tags.service';
 import { Tag } from '../shared/models';
-import {Router} from "@angular/router";
+
 
 @Component({
     selector: 'tags-list',

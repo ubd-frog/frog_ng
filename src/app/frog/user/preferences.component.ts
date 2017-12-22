@@ -2,11 +2,12 @@ import { Component, trigger, state, style, transition, animate } from '@angular/
 
 import { Subscription } from 'rxjs';
 
-import {User, Gallery, Preferences} from '../shared/models';
+import { User, Gallery, Preferences } from '../shared/models';
 import { PreferencesService } from './preferences.service';
 import { UserService } from './user.service';
 import { GalleryService } from '../works/gallery.service';
-import {ErrorService} from "../errorhandling/error.service";
+import { ErrorService } from '../errorhandling/error.service';
+
 
 @Component({
     selector: 'preferences',

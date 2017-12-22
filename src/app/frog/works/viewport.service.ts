@@ -6,6 +6,7 @@ import { CItem } from '../shared/models';
 import { Rect } from '../shared/euclid';
 import { WorksService } from './works.service';
 
+
 @Injectable()
 export class ViewportService {
     public viewport: BehaviorSubject<Rect>;

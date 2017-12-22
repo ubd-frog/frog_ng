@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, AfterViewIni
 
 import { TagsService } from './tags.service';
 import { Tag } from '../shared/models';
-import { isInt } from "../shared/common";
+import { isInt } from '../shared/common';
 
 
 @Component({

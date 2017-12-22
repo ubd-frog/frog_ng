@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { UserService } from './user.service';
-import {GalleryService} from "../works/gallery.service";
+import { GalleryService } from '../works/gallery.service';
+
 
 @Component({
     templateUrl: './html/login.html',

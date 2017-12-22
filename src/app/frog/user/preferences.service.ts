@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 
 import { BehaviorSubject } from 'rxjs';
 
-import { Preferences } from "../shared/models";
-import { ErrorService } from "../errorhandling/error.service";
+import { Preferences } from '../shared/models';
+import { ErrorService } from '../errorhandling/error.service';
 
 
 @Injectable()

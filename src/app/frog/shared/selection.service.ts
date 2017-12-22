@@ -1,24 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Http, Request, RequestMethod, Response, RequestOptions, URLSearchParams } from '@angular/http';
 
-import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subject } from 'rxjs/Subject';
 
-import { WorksService } from '../works/works.service';
 import { CItem } from './models';
 import { Rect } from './euclid';
+import { WorksService } from '../works/works.service';
+
 
 export class Gallery {
     items: CItem[]
 }
 
+
 class DetailData {
     constructor(public item: CItem, public showComponent: boolean = true) {}
 }
 
-//
+
 @Injectable()
 export class SelectionService {
     public detail: BehaviorSubject<DetailData>;

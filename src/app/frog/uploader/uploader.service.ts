@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Subject } from 'rxjs/Subject';
@@ -9,7 +9,7 @@ import { Observer } from 'rxjs/Observer';
 import { CItem, Tag } from '../shared/models';
 import { UploadFile } from './models';
 import { WorksService } from '../works/works.service';
-import { ErrorService } from "../errorhandling/error.service";
+import { ErrorService } from '../errorhandling/error.service';
 
 
 @Injectable()

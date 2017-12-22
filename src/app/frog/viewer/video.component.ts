@@ -5,7 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { CItem, CVideo } from '../shared/models';
 import { Point, Matrix } from '../shared/euclid';
 import { SelectionService } from '../shared/selection.service';
-import { ImageAtlas, kMaxCanvasSize } from "./image-atlas";
+import { ImageAtlas, kMaxCanvasSize } from './image-atlas';
 
 
 @Component({

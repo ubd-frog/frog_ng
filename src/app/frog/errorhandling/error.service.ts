@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import {Http, RequestOptions, Response } from "@angular/http";
-import {NotificationService} from "../notifications/notification.service";
-import {Notification, Result} from '../shared/models';
+import { Http, RequestOptions } from '@angular/http';
+
+import { NotificationService } from '../notifications/notification.service';
+import { Notification, Result } from '../shared/models';
+
 
 @Injectable()
 export class ErrorService {

@@ -1,22 +1,16 @@
 import { Injectable } from '@angular/core';
-import { RequestOptions, URLSearchParams } from '@angular/http';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import { RequestOptions } from '@angular/http';
+import { HttpClient, HttpParams } from "@angular/common/http";
 
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { extractValues, extractValue } from '../shared/common';
-import {CItem, CImage, CVideo, Tag, User, Notification, Gallery} from '../shared/models';
+import { CItem, CImage, CVideo, Tag, User, Notification, Gallery } from '../shared/models';
 import { NotificationService } from '../notifications/notification.service';
-import {GalleryService} from "./gallery.service";
-import {PreferencesService} from "../user/preferences.service";
-import {ErrorService} from "../errorhandling/error.service";
-import {ReplaySubject} from "rxjs/ReplaySubject";
-
-
-interface ItemResponse {
-    values: CItem[];
-}
+import { GalleryService } from "./gallery.service";
+import { PreferencesService } from "../user/preferences.service";
+import { ErrorService } from "../errorhandling/error.service";
+import { ReplaySubject } from "rxjs/ReplaySubject";
 
 
 @Injectable()

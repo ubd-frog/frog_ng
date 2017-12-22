@@ -1,8 +1,8 @@
-import { Component, Input, AfterViewInit, AfterViewChecked, OnDestroy, HostListener, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, AfterViewInit, AfterViewChecked, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
-import { CItem, CImage, Tag, User, Comment } from '../shared/models';
+import { CItem, CImage } from '../shared/models';
 import { Point, Matrix, Rect } from '../shared/euclid';
 import { SelectionService } from '../shared/selection.service';
 

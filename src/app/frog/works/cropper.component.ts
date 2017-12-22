@@ -1,4 +1,4 @@
-import { Component, Input, Output, ViewChild, ElementRef, EventEmitter, OnDestroy, AfterViewChecked, HostListener, trigger, state, style, transition, animate } from '@angular/core';
+import { Component, Input, Output, ViewChild, ElementRef, EventEmitter, AfterViewChecked, HostListener, trigger, state, style } from '@angular/core';
 
 import { WorksService } from './works.service';
 import { Point, Rect } from '../shared/euclid';

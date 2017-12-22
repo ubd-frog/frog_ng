@@ -3,6 +3,7 @@ import { Component, ElementRef, Input, Output, EventEmitter, OnInit, AfterViewIn
 import { UserService } from './user.service';
 import { User } from '../shared/models';
 
+
 @Component({
     selector: 'userinput',
     templateUrl: './html/userinput.html',

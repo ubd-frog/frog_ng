@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, URLSearchParams } from '@angular/http';
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Title } from '@angular/platform-browser';
 
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Observable } from "rxjs/Observable";
 
-import {Gallery} from '../shared/models';
-import {ErrorService} from "../errorhandling/error.service";
-import {Observable} from "rxjs/Observable";
-import {SiteConfigService} from "../shared/siteconfig.service";
-import {HttpClient, HttpParams} from "@angular/common/http";
+import { Gallery } from '../shared/models';
+import { ErrorService } from "../errorhandling/error.service";
+import { SiteConfigService } from "../shared/siteconfig.service";
 
 
 @Injectable()

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { Result, User } from '../shared/models';
-import { ErrorService } from "../errorhandling/error.service";
+import { ErrorService } from '../errorhandling/error.service';
 
 
 @Injectable()

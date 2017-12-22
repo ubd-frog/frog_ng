@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Subject } from 'rxjs';
 
-import {Result, Tag} from '../shared/models';
+import { Result, Tag } from '../shared/models';
 import { WorksService } from '../works/works.service';
-import { Subject } from "rxjs";
-import { ErrorService } from "../errorhandling/error.service";
+import { ErrorService } from '../errorhandling/error.service';
 
 
 @Injectable()

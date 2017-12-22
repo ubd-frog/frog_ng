@@ -1,7 +1,7 @@
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
+import { CVideo } from '../shared/models';
 
-import {BehaviorSubject, Observable, Subscription} from "rxjs";
-import {CVideo} from "../shared/models";
 
 export const kMaxCanvasSize = 16000;
 

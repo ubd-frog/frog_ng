@@ -1,16 +1,14 @@
-import {
-    Component, OnInit, trigger, state, style, transition, animate, ElementRef, OnDestroy,
-    ViewChild
-} from '@angular/core';
-import {PreferencesService} from "../user/preferences.service";
-import {UserService} from "../user/user.service";
-import {SiteConfig, User} from "../shared/models";
-import {Subscription} from "rxjs";
-import {TagsListComponent} from "../tags/tags-list.component";
-import {GalleryService} from "./gallery.service";
-import {ReleaseNotesComponent} from "../releasenotes/release-notes.component";
-import {ReleaseNotesService} from "../releasenotes/release-notes.service";
-import {SiteConfigService} from "../shared/siteconfig.service";
+import { Component, OnInit, trigger, state, style, transition, animate, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+
+import { PreferencesService } from '../user/preferences.service';
+import { UserService } from '../user/user.service';
+import { SiteConfig, User } from '../shared/models';
+import { Subscription } from 'rxjs';
+import { TagsListComponent } from '../tags/tags-list.component';
+import { GalleryService } from './gallery.service';
+import { ReleaseNotesComponent } from '../releasenotes/release-notes.component';
+import { SiteConfigService } from '../shared/siteconfig.service';
+
 
 @Component({
     moduleId: module.id,

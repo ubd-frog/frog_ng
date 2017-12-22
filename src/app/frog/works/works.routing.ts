@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { WorksComponent } from './works.component';
 import { LoggedInGuard } from '../user/loggedin.guard';
 
+
 export const worksRoutes: Routes = [
     { path: '', redirectTo: '/w/1', pathMatch: 'full' },
     { path: 'w/:id', component: WorksComponent, canActivate: [LoggedInGuard] },

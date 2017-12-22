@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 
-import { ReplaySubject } from "rxjs/ReplaySubject";
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
-import { SiteConfig } from "./models";
-import { ErrorService } from "../errorhandling/error.service";
+import { SiteConfig } from './models';
+import { ErrorService } from '../errorhandling/error.service';
 
 
 @Injectable()

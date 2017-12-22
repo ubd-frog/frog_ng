@@ -1,7 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, HostListener } from '@angular/core';
-import { NgStyle } from '@angular/common';
 
-import { Point, Matrix, Rect } from '../shared/euclid';
+import { Point, Rect } from '../shared/euclid';
 import { SelectionService } from '../shared/selection.service';
 
 

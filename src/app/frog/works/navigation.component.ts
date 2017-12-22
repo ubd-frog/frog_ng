@@ -2,10 +2,12 @@ import { Component, Output, EventEmitter, ElementRef, trigger, state, style, tra
 
 import { GalleryService } from './gallery.service';
 import { UserService } from '../user/user.service';
-import { WorksService } from '../works/works.service';
+import { WorksService } from './works.service';
 import { Gallery } from '../shared/models';
 
+
 declare var $:any;
+
 
 @Component({
     selector: 'works-nav',

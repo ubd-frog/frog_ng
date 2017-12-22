@@ -1,12 +1,11 @@
-import { Component, OnDestroy, HostListener, trigger, state, style, transition, animate } from '@angular/core';
+import { Component, OnDestroy, trigger, state, style } from '@angular/core';
 
-import { BytesPipe } from './bytes.pipe';
 import { UploaderService } from './uploader.service';
 import { UploadFile } from './models';
 import { Tag } from '../shared/models';
-import {TagsService} from "../tags/tags.service";
-import {ErrorService} from "../errorhandling/error.service";
-import {forEach} from "@angular/router/src/utils/collection";
+import { TagsService } from '../tags/tags.service';
+import { ErrorService } from '../errorhandling/error.service';
+
 
 @Component({
     selector: 'uploader',

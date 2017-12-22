@@ -4,17 +4,19 @@ import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
+import { CItem, Tag, User, Gallery } from './models';
+import { CommentService } from './comment.service';
+import { SelectionService } from './selection.service';
 import { UserService } from '../user/user.service';
 import { WorksService } from '../works/works.service';
 import { CropperComponent } from '../works/cropper.component';
-import { CItem, Tag, User, Gallery } from '../shared/models';
-import { CommentService } from '../shared/comment.service';
 import { TagsService } from '../tags/tags.service';
-import { SelectionService } from '../shared/selection.service';
-import { GalleryService } from "../works/gallery.service";
-import { ErrorService } from "../errorhandling/error.service";
+import { GalleryService } from '../works/gallery.service';
+import { ErrorService } from '../errorhandling/error.service';
+
 
 declare var $:any;
+
 
 @Component({
     selector: 'works-detail',

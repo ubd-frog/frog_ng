@@ -3,13 +3,13 @@ import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
-import { Observable } from "rxjs/Observable";
+import { Observable } from 'rxjs/Observable';
 
 import { CItem, Preferences } from '../shared/models';
 import { SelectionService } from '../shared/selection.service';
 import { StorageService } from '../shared/storage.service';
 import { randomInt } from '../shared/common';
-import { SlideshowService } from "../shared/slideshow.service";
+import { SlideshowService } from '../shared/slideshow.service';
 import { WorksService } from '../works/works.service';
 import { PreferencesService } from '../user/preferences.service';
 import { ImageComponent } from './image.component';

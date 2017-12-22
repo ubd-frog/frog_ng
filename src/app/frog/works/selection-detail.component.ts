@@ -1,21 +1,19 @@
-import { Component, OnInit, AfterViewInit, ViewChild, HostListener, trigger, state, style, transition, animate } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, HostListener, trigger, state, style, transition, animate } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { SelectionService } from '../shared/selection.service';
-import {IItem, Tag, Gallery, User, Notification, CItem} from '../shared/models';
-import { TagComponent } from '../tags/tag.component';
+import { Tag, Gallery, User, Notification, CItem } from '../shared/models';
 import { TagsService } from '../tags/tags.service';
-import { TagArtistFilterPipe } from '../shared/tag-artist-filter.pipe';
-import { AutocompleteComponent } from '../shared/autocomplete.component';
 import { NavigationComponent } from './navigation.component';
 import { UserService } from '../user/user.service';
 import { UserInputComponent } from '../user/userinput.component';
 import { NotificationService } from '../notifications/notification.service';
-
 import { WorksService } from './works.service';
-import {ErrorService} from "../errorhandling/error.service";
+import { ErrorService } from '../errorhandling/error.service';
+
 
 declare var $:any;
+
 
 @Component({
     selector: 'selection-detail',

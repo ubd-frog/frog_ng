@@ -1,4 +1,5 @@
-import { IItem } from "../shared/models";
+import { IItem } from '../shared/models';
+
 
 export class UploadFile{
     public file: File;

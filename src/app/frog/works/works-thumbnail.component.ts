@@ -1,19 +1,18 @@
-import {Component, Input, OnInit, OnDestroy, ElementRef, AfterViewInit, HostListener, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, Input, OnDestroy, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
-import { Observable } from 'rxjs';
 
 import { WorksService } from './works.service';
 import { ViewportService } from './viewport.service';
-import {CItem, Preferences} from '../shared/models';
-import { Rect } from '../shared/euclid';
-import { CapitalizePipe } from '../shared/capitalize.pipe';
+import { CItem, Preferences } from '../shared/models';
 import { TagsService } from '../tags/tags.service';
 import { SelectionService } from '../shared/selection.service';
 import { PreferencesService } from '../user/preferences.service';
 
+
 declare var $:any;
+
 
 @Component({
     selector: 'thumbnail',
