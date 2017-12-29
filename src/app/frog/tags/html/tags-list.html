@@ -17,7 +17,10 @@
                         </div>
                     </div>
                     <div>
-                        <ul class="collection">
+                        <ul *ngIf="!tags" class="collection">
+                            <li class="collection-item tag-item">Loading tags...</li>
+                        </ul>
+                        <ul *ngIf="tags" class="collection">
                             <li class="collection-item tag-item" *ngFor="let tag of tags; let i=index;" (click)="toggleSelection(tag)" [class.red-text]="tag.count == 0">
                                     <span *ngIf="edit != i">
                                         <span (dblclick)="editTag(i)">{{tag.name}}</span>

@@ -41,12 +41,14 @@ export class TagsListComponent implements OnDestroy {
     private edit: number = -1;
     private editfield: string = '';
     private deleteCheck: number = -1;
-    public tags: Tag[] = [];
-    public merge: Tag[] = [];
+    public tags: Tag[];
+    public merge: Tag[];
     public visible: string = 'hide';
     public showall: boolean = false;
 
     constructor(private service: TagsService, private router: Router) {
+        this.merge = [];
+
         this.subs.push(service.contentTags.subscribe(tags => {
             this.tags = tags;
             this._tags = this.tags.slice(0);
