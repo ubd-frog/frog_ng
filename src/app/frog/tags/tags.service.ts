@@ -132,6 +132,6 @@ export class TagsService {
     remove(tag: Tag) {
         let url = `/frog/tag/${tag.id}/`;
 
-        return this.http.delete(url, null);
+        return this.http.delete(url);
     }
 }
