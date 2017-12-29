@@ -53,6 +53,7 @@ export class TagsListComponent implements OnDestroy {
             this.tags = tags;
             this._tags = this.tags.slice(0);
             this.merge = [];
+            this.sortBy('name');
         }));
     }
     ngOnDestroy() {
