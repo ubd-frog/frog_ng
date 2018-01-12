@@ -41,14 +41,18 @@ export class UploaderService {
         return this.http.post(url, options)
             .map(this.errors.extractValues, this.errors);
     }
-    addFiles(files: FileList) {
+    addFiles(files: FileList, clearNames = false) {
         if (files.length === 0) {
             return;
         }
 
         let filelist = [];
         for (let i = 0; i < files.length; i++) {
-            filelist.push(new UploadFile(files[i]));
+            let uploadfile = new UploadFile(files[i]);
+            if (clearNames) {
+                uploadfile.name = '';
+            }
+            filelist.push(uploadfile);
         }
         this.isUnique(filelist.map(file => file.filename())).subscribe(items => {
             let uploadfiles = this.files.slice(0);

@@ -35,7 +35,7 @@
                             <img class="responsive-img" src="{{file.data?.thumbnail}}" />
                         </div>
                     </td>
-                    <td><div class="input-field"><input [(ngModel)]="file.name" type="text"></div></td>
+                    <td><div class="input-field lighten-4" [class.pink]="file.name.length === 0"><input [(ngModel)]="file.name" type="text"></div></td>
                     <td width="100">{{file.size | bytes}}</td>
                     <td width="180">{{file.created | date:'short'}}</td>
                     <td>
@@ -51,7 +51,7 @@
         </div>
         <div class="modal-footer">
             <a (click)="toggle()" class="waves-effect waves-red btn-flat">Cancel</a>
-            <a (click)="upload()" class="waves-effect waves-green btn" [class.disabled]="files.length === 0 || tags.length === 0">Upload</a>
+            <button (click)="upload()" class="waves-effect waves-green btn" [class.disabled]="!canUpload()" [attr.disabled]="canUpload()?null:''">Upload</button>
         </div>
     </div>
 </div>

@@ -88,7 +88,7 @@ export class WorksComponent {
                 let files = clipboardData.files;
                 reader = new FileReader();
                 Observable.fromEvent(reader, 'load').subscribe(event => {
-                    this.uploader.addFiles(files);
+                    this.uploader.addFiles(files, true);
                     this.uploader.show();
                 });
                 reader.readAsDataURL(file);

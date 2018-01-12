@@ -130,4 +130,7 @@ export class UploaderComponent implements OnDestroy {
             this.service.addFiles(event.dataTransfer.files);
         }
     }
+    canUpload() {
+        return this.files.length > 0 && this.tags.length > 0 && this.files.filter(f => f.name.length === 0).length === 0;
+    }
 }
