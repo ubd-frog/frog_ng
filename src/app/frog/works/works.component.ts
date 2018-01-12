@@ -1,12 +1,9 @@
 import { Component, HostListener } from '@angular/core';
 
-import { Observable } from 'rxjs';
-
 import { WorksService } from './works.service';
 import { SelectionService } from '../shared/selection.service';
 import { StorageService } from '../shared/storage.service';
 import { Notification } from '../shared/models';
-import { UploaderService } from '../uploader/uploader.service';
 import { NotificationService } from '../notifications/notification.service';
 
 
@@ -24,7 +21,6 @@ export class WorksComponent {
 
     constructor(
         private service: SelectionService,
-        private uploader: UploaderService,
         private storage: StorageService,
         private workservice: WorksService,
         private notify: NotificationService
@@ -64,36 +60,5 @@ export class WorksComponent {
                 }
             }
         }
-    }
-    @HostListener('window:dragenter', ['$event'])
-    dragEnter(event: DragEvent) {
-        let types = Array.from(event.dataTransfer.types);
-        if (types.indexOf('text/html') === -1) {
-            this.uploader.show();
-        }
-    }
-    @HostListener('window:paste', ['$event'])
-    pasteImage(event: ClipboardEvent) {
-        let matchType = /image.*/;
-        let clipboardData, found;
-        found = false;
-        clipboardData = event.clipboardData;
-        clipboardData.types.forEach((type, i) => {
-            let file, reader;
-            if (found) {
-                return;
-            }
-            if (type.match(matchType) || clipboardData.items[i].type.match(matchType)) {
-                file = clipboardData.items[i].getAsFile();
-                let files = clipboardData.files;
-                reader = new FileReader();
-                Observable.fromEvent(reader, 'load').subscribe(event => {
-                    this.uploader.addFiles(files, true);
-                    this.uploader.show();
-                });
-                reader.readAsDataURL(file);
-                return found = true;
-            }
-        });
     }
 }

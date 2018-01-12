@@ -1,4 +1,4 @@
-<div [@panelState]="visible" id='uploader' (drop)="drop($event)" (dragover)="false" (dragend)="false">
+<div [class.hide]="!visible" id='uploader' (drop)="drop($event)" (dragover)="false" (dragend)="false">
     <div id="modal1" class="modal open modal-fixed-footer">
         <div class="modal-content">
             <h4>Upload Files</h4>

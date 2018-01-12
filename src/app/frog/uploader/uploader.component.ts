@@ -1,4 +1,7 @@
-import { Component, OnDestroy, trigger, state, style } from '@angular/core';
+import {Component, OnDestroy, HostListener} from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 import { UploaderService } from './uploader.service';
 import { UploadFile } from './models';
@@ -24,23 +27,12 @@ import { ErrorService } from '../errorhandling/error.service';
         '.input-field { margin-top: 0; }',
         'input[type="text"] { margin: 0; ]}',
         '.progress { height: 8px; border-radius: 0; }'
-    ],
-    animations: [
-        trigger('panelState', [
-            state('show', style({
-                display: 'block'
-            })),
-            state('hide', style({
-                display: 'none'
-            }))
-        ])
     ]
 })
 export class UploaderComponent implements OnDestroy {
-    private sub;
-    private filesub;
+    private subs: Subscription[];
     public files: UploadFile[];
-    public visible: string = 'hide';
+    public visible: boolean;
     public tags: Tag[];
     public total: number;
 
@@ -49,32 +41,33 @@ export class UploaderComponent implements OnDestroy {
         private tagsservice: TagsService,
         private errors: ErrorService
     ) {
-        this.sub = this.service.requested.subscribe(show => {
-            if (show && this.visible == 'hide') {
+        this.subs = [];
+        let sub = this.service.requested.subscribe(show => {
+            if (show && !this.visible) {
                 this.tags = [];
                 this.total = 0;
             }
-            this.visible = (show) ? 'show': 'hide';
+            this.visible = show;
         }, error => this.errors.handleError(error));
-        this.filesub = this.service.fileList.subscribe(files => this.files = files, error => this.errors.handleError(error));
+        this.subs.push(sub);
+
+        sub = this.service.fileList.subscribe(files => this.files = files, error => this.errors.handleError(error));
+        this.subs.push(sub);
+
         this.files = [];
         this.tags = [];
         this.total = 0;
     }
 
     ngOnDestroy() {
-        this.sub.unsubscribe();
-        this.filesub.unsubscribe();
+        this.subs.forEach(s => s.unsubscribe());
     }
     toggle() {
         this.files = [];
         this.tags = [];
         this.total = 0;
         this.service.clearFiles();
-        this.visible = (this.visible == 'hide') ? 'show': 'hide';
-        if (this.visible == 'hide') {
-
-        }
+        this.visible = !this.visible;
     }
     upload() {
         if (this.files.length === 0 || this.tags.length === 0) {
@@ -87,7 +80,7 @@ export class UploaderComponent implements OnDestroy {
 
             },
             () => {
-                this.visible = 'hide';
+                this.visible = false;
                 this.total = 0;
             }
         );
@@ -114,9 +107,6 @@ export class UploaderComponent implements OnDestroy {
             else {
                 let tag = new Tag(0, event.value);
                 this.tags.push(tag);
-                // this.tagsservice.create(event.value).subscribe(tag => {
-                //     this.tags.push(tag);
-                // }, error => this.errors.handleError(error));
             }
         }, error => this.errors.handleError(error));
     }
@@ -129,6 +119,37 @@ export class UploaderComponent implements OnDestroy {
             event.preventDefault();
             this.service.addFiles(event.dataTransfer.files);
         }
+    }
+    @HostListener('window:dragenter', ['$event'])
+    dragEnter(event: DragEvent) {
+        let types = Array.from(event.dataTransfer.types);
+        if (types.indexOf('text/html') === -1) {
+            this.service.show();
+        }
+    }
+    @HostListener('window:paste', ['$event'])
+    pasteImage(event: ClipboardEvent) {
+        let matchType = /image.*/;
+        let clipboardData, found;
+        found = false;
+        clipboardData = event.clipboardData;
+        clipboardData.types.forEach((type, i) => {
+            let file, reader;
+            if (found) {
+                return;
+            }
+            if (type.match(matchType) || clipboardData.items[i].type.match(matchType)) {
+                file = clipboardData.items[i].getAsFile();
+                let files = clipboardData.files;
+                reader = new FileReader();
+                Observable.fromEvent(reader, 'load').subscribe(event => {
+                    this.service.addFiles(files, true);
+                    this.service.show();
+                });
+                reader.readAsDataURL(file);
+                return found = true;
+            }
+        });
     }
     canUpload() {
         return this.files.length > 0 && this.tags.length > 0 && this.files.filter(f => f.name.length === 0).length === 0;
