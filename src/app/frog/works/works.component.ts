@@ -46,11 +46,13 @@ export class WorksComponent {
         if (event.ctrlKey && event.key === 'c' && this.guids.length > 0) {
             event.preventDefault();
             this.storage.set('clipboard', {'guids': this.guids, 'id': null});
+            this.service.clear();
             this.notify.add(new Notification('Copy', 'content_copy'));
         }
         if (event.ctrlKey && event.key === 'x' && this.guids.length > 0) {
             event.preventDefault();
             this.storage.set('clipboard', {'guids': this.guids, 'id': this.workservice.id});
+            this.service.clear();
             this.notify.add(new Notification('Cut', 'content_cut'));
         }
         if (event.ctrlKey && event.key === 'v') {
