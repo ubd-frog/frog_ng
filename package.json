@@ -26,7 +26,7 @@
     "core-js": "^2.5.2",
     "emojione": "2.2.7",
     "markdown-to-html-pipe": "^1.2.4",
-    "materialize-css": "^0.98.0",
+    "materialize-css": "^0.100.2",
     "rxjs": "5.5.2",
     "ts-helpers": "^1.1.1",
     "zone.js": "^0.8.4"
