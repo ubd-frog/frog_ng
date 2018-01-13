@@ -63,14 +63,5 @@
         </div>
     </nav>
 </div>
-<div id="remove_prompt" class="modal">
-    <div class="modal-content">
-        <h4>Remove Items From Gallery?</h4>
-        <p>Are you sure you wish to remove ({{items.length || 0}}) from the current gallery?</p>
-        <small>This does not delete anything, it simply removes the items</small>
-    </div>
-    <div class="modal-footer">
-        <a (click)="removeItems()" class=" modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
-        <a (click)="cancelPrompt()" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
-    </div>
-</div>
+
+<remove-dialog></remove-dialog>

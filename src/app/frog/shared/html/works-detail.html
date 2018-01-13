@@ -153,16 +153,5 @@
     </div>
 </ul>
 
-<div id="remove_prompt_single" class="modal">
-    <div class="modal-content">
-        <h4>Remove Item From Gallery?</h4>
-        <p>Are you sure you wish to remove this item from the current gallery?</p>
-        <small>This does not delete anything, it simply removes the item</small>
-    </div>
-    <div class="modal-footer">
-        <a (click)="removeItems()" class=" modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
-        <a (click)="cancelPrompt()" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
-    </div>
-</div>
-
+<remove-dialog></remove-dialog>
 <cropper [item]="item" (onCrop)="reloadThumbnail($event)"></cropper>

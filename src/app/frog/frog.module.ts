@@ -28,6 +28,7 @@ import { CommentURLPipe } from './shared/comment-url.pipe';
 import { WorksDetailComponent } from './shared/works-detail.component';
 import { AutocompleteComponent } from './shared/autocomplete.component';
 import { CommentComponent } from './shared/comment.component';
+import { RemoveDialogComponent } from './shared/remove-dialog.component';
 import { SelectionService } from './shared/selection.service';
 import { CommentService } from './shared/comment.service';
 import { StorageService } from './shared/storage.service';
@@ -101,6 +102,7 @@ import { ReleaseNotesService } from './releasenotes/release-notes.service';
         CapitalizePipe,
         EmojiOnePipe,
         TagArtistFilterPipe,
+        RemoveDialogComponent,
 
         ViewerComponent,
         ImageComponent,

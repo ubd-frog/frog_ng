@@ -10,6 +10,7 @@ import { UserInputComponent } from '../user/userinput.component';
 import { NotificationService } from '../notifications/notification.service';
 import { WorksService } from './works.service';
 import { ErrorService } from '../errorhandling/error.service';
+import { RemoveDialogComponent } from '../shared/remove-dialog.component';
 
 
 declare var $:any;
@@ -61,6 +62,7 @@ export class SelectionDetailComponent implements AfterViewInit {
     @ViewChild(NavigationComponent) copyNav: NavigationComponent;
     @ViewChild(NavigationComponent) moveNav: NavigationComponent;
     @ViewChild(UserInputComponent) userinput: UserInputComponent;
+    @ViewChild(RemoveDialogComponent) dialog: RemoveDialogComponent;
 
     public items: CItem[];
     public tags: Tag[];
@@ -119,15 +121,7 @@ export class SelectionDetailComponent implements AfterViewInit {
         this.tags = tags;
     }
     removePrompt() {
-        $('#remove_prompt').modal('open');
-    }
-    cancelPrompt() {
-        $('#remove_prompt').modal('close');
-    }
-    removeItems() {
-        this.works.remove(this.items);
-        this.service.clear();
-        this.cancelPrompt();
+        this.dialog.show(this.items);
     }
     addTag(event: any) {
         this.tagsservice.resolve(event.value).subscribe(tag => {

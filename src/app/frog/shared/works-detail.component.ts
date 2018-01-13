@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { CItem, Tag, User, Gallery } from './models';
 import { CommentService } from './comment.service';
 import { SelectionService } from './selection.service';
+import { RemoveDialogComponent } from './remove-dialog.component';
 import { UserService } from '../user/user.service';
 import { WorksService } from '../works/works.service';
 import { CropperComponent } from '../works/cropper.component';
@@ -74,6 +75,7 @@ declare var $:any;
 })
 export class WorksDetailComponent implements OnDestroy, AfterViewInit {
     @ViewChild(CropperComponent) cropper: CropperComponent;
+    @ViewChild(RemoveDialogComponent) dialog: RemoveDialogComponent;
 
     private title: string = '';
     private description: string = '';
@@ -150,7 +152,7 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
         this.subs.forEach(sub => sub.unsubscribe());
     }
     ngAfterViewInit() {
-        $('#remove_prompt_single').modal();
+
     }
     @HostListener('window:keypress', ['$event'])
     keyDownEvent(event: KeyboardEvent) {
@@ -284,15 +286,6 @@ export class WorksDetailComponent implements OnDestroy, AfterViewInit {
         }
     }
     removePrompt() {
-        $('#remove_prompt_single').modal('open');
-    }
-    cancelPrompt() {
-        $('#remove_prompt_single').modal('close');
-    }
-    removeItems() {
-        this.works.remove([this.item]);
-        this.service.clear();
-        this.cancelPrompt();
-        this.hide();
+        this.dialog.show([this.item]);
     }
 }

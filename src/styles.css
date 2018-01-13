@@ -155,3 +155,7 @@ img {
     image-rendering: -webkit-optimize-contrast;
     -ms-interpolation-mode: nearest-neighbor;
 }
+
+.no-overflow {
+    overflow: hidden !important;
+}
