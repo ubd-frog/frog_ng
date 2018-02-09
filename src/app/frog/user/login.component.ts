@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { UserService } from './user.service';
 import { GalleryService } from '../works/gallery.service';
+import {Result} from "../shared/models";
 
 
 @Component({
@@ -36,6 +37,7 @@ export class LoginComponent implements OnInit {
     ngOnInit() { }
     clickHandler() {
         this.service.login(this.email, this.password).subscribe(response => {
+            response = response as Result;
             if (response.isError) {
                 this.message = response.message;
             }

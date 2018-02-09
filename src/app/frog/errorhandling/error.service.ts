@@ -41,6 +41,16 @@ export class ErrorService {
         }
         return res.values || [];
     }
+    extractData(res: Result) {
+        if (res.isError) {
+            let notification = new Notification(res.message, 'error');
+            notification.error = true;
+            notification.timeout = 8000;
+            this.notify.add(notification);
+            return [];
+        }
+        return res || [];
+    }
     handleError(error: any) {
         if (error === null) {
             return;

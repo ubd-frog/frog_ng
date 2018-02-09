@@ -92,7 +92,7 @@ export class UserService {
         };
 
         return this.http.post(url, options)
-            .map(this.errors.extractValue);
+            .map(this.errors.extractData);
     }
     logout() {
         let url = '/frog/logout';
