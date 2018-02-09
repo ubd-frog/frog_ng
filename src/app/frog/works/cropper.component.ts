@@ -147,9 +147,9 @@ export class CropperComponent implements AfterViewChecked {
                     original.height = this.source.height + delta.y;
                     break;
                 case 'ne':
-                    original.y = this.source.y - delta.y;
-                    original.width = this.source.width + delta.y;
-                    original.height = this.source.height + delta.y;
+                    original.y = this.source.y + delta.y;
+                    original.width = this.source.width - delta.y;
+                    original.height = this.source.height - delta.y;
                     break;
                 case 'se':
                     original.width = this.source.width + delta.x;
