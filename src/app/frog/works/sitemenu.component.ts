@@ -1,4 +1,5 @@
-import { Component, OnInit, trigger, state, style, transition, animate, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 import { PreferencesService } from '../user/preferences.service';
 import { UserService } from '../user/user.service';

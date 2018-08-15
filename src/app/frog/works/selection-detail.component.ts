@@ -1,4 +1,5 @@
-import { Component, AfterViewInit, ViewChild, HostListener, trigger, state, style, transition, animate } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, HostListener } from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Router } from '@angular/router';
 
 import { SelectionService } from '../shared/selection.service';
@@ -13,7 +14,7 @@ import { ErrorService } from '../errorhandling/error.service';
 import { RemoveDialogComponent } from '../shared/remove-dialog.component';
 
 
-declare var $:any;
+declare var $: any;
 
 
 @Component({
@@ -84,7 +85,7 @@ export class SelectionDetailComponent implements AfterViewInit {
         service.selection.subscribe(items => {
             this.items = items;
             this.enabled = items.length > 0;
-            this.guids = this.items.map(function(_) {return _.guid}).join(',');
+            this.guids = this.items.map(function (_) { return _.guid }).join(',');
             this.aggregateTags();
             if (this.items.length == 0) {
                 this.visible = 'hide';
@@ -163,7 +164,7 @@ export class SelectionDetailComponent implements AfterViewInit {
     toggle() {
         this.userinput.query = '';
         this.tags.map(tag => tag.added = false);
-        this.visible = (this.visible == 'hide') ? 'show': 'hide';
+        this.visible = (this.visible == 'hide') ? 'show' : 'hide';
     }
     gallerySelectHandler(gallery: Gallery, move: boolean = false) {
         let guids = this.items.map(item => item.guid);

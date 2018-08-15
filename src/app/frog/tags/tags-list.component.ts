@@ -1,4 +1,5 @@
-import { Component, OnDestroy, trigger, state, style } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { trigger, state, style } from '@angular/animations';
 import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';

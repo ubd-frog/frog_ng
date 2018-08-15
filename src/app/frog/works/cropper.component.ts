@@ -1,4 +1,5 @@
-import { Component, Input, Output, ViewChild, ElementRef, EventEmitter, AfterViewChecked, HostListener, trigger, state, style } from '@angular/core';
+import { Component, Input, Output, ViewChild, ElementRef, EventEmitter, AfterViewChecked, HostListener } from '@angular/core';
+import { trigger, state, style } from '@angular/animations';
 
 import { WorksService } from './works.service';
 import { Point, Rect } from '../shared/euclid';
@@ -91,7 +92,7 @@ export class CropperComponent implements AfterViewChecked {
     }
     crop() {
         let ratio: number = this.width / this.item.width;
-        let v = this.rect.toArray().map((x) => {return x / ratio;})
+        let v = this.rect.toArray().map((x) => { return x / ratio; })
         this.service.cropItem(this.item, v[0], v[1], v[0] + v[2], v[1] + v[3]).subscribe(item => {
             this.item = item;
             item.thumbnail += '?foo=' + new Date().getTime();
@@ -115,11 +116,11 @@ export class CropperComponent implements AfterViewChecked {
         this.origin = new Point(event.clientX, event.clientY);
         this.source = new Rect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
     }
-    move(event:MouseEvent) {
+    move(event: MouseEvent) {
         if (this.isMouseDown) {
             let delta: Point = new Point(event.clientX - this.origin.x, event.clientY - this.origin.y);
             let original = new Rect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
-            switch(this.handle) {
+            switch (this.handle) {
                 case 'center':
                     original.x = this.source.x + delta.x;
                     original.y = this.source.y + delta.y;
