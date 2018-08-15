@@ -6,6 +6,7 @@ import { CItem, CImage } from '../shared/models';
 import { Point, Matrix, Rect } from '../shared/euclid';
 import { SelectionService } from '../shared/selection.service';
 
+const kThumbnailSize = 256;
 
 @Component({
     selector: 'frog-image',
@@ -85,7 +86,7 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
 
         let xhr: XMLHttpRequest = new XMLHttpRequest();
         xhr.open('GET', this.object.image, true);
-        xhr.onprogress = function(e) {
+        xhr.onprogress = function (e) {
             this.percent = (e.loaded / e.total) * 100;
         }.bind(this);
         xhr.send();
@@ -104,7 +105,7 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         this.isMouseDown = false;
         this.main = this.xform;
     }
-    down(event:MouseEvent) {
+    down(event: MouseEvent) {
         if (event.button == 0) {
             event.preventDefault();
             this.isMouseDown = true;
@@ -112,11 +113,11 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
             this.origin.y = event.clientY;
         }
     }
-    move(event:MouseEvent) {
+    move(event: MouseEvent) {
         if (this.isMouseDown) {
             event.preventDefault();
-            let x:number = event.clientX - this.origin.x;
-            let y:number = event.clientY - this.origin.y;
+            let x: number = event.clientX - this.origin.x;
+            let y: number = event.clientY - this.origin.y;
 
             if (event.shiftKey) {
                 if (this.object.width / this.object.height > 1.0) {
@@ -132,16 +133,16 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
             this.render();
         }
     }
-    zoom(event:WheelEvent) {
-        let scale:number = 1.0;
+    zoom(event: WheelEvent) {
+        let scale: number = 1.0;
         if (event.deltaY < 0) {
             scale += 0.05;
         }
         else {
             scale -= 0.05;
         }
-        let x:number = event.clientX;
-        let y:number = event.clientY;
+        let x: number = event.clientX;
+        let y: number = event.clientY;
         this.xform = Matrix.Identity().x(this.main);
         this.translate(-x, -y);
         this.scale(scale, scale);
@@ -149,16 +150,16 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         this.main = this.xform;
         this.render();
     }
-    zoomFF(event:WheelEvent) {
-        let scale:number = 1.0;
+    zoomFF(event: WheelEvent) {
+        let scale: number = 1.0;
         if (event.detail < 0) {
             scale += 0.05;
         }
         else {
             scale -= 0.05;
         }
-        let x:number = event.clientX;
-        let y:number = event.clientY;
+        let x: number = event.clientX;
+        let y: number = event.clientY;
         this.xform = Matrix.Identity().x(this.main);
         this.translate(-x, -y);
         this.scale(scale, scale);
@@ -189,7 +190,7 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         this.img.nativeElement.style.top = '';
         if (this.ext === 'gif') {
             this.img.nativeElement.style.left = (window.innerWidth / 2) - (this.object.width / 2) + 'px';
-            this.img.nativeElement.style.top = (window.innerHeight / 2) - (this.object.height/ 2) + 'px';
+            this.img.nativeElement.style.top = (window.innerHeight / 2) - (this.object.height / 2) + 'px';
         }
         else {
             if (this.tileBackground) {
@@ -212,11 +213,19 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
     }
     renderThumbnail() {
         let rect = this.xform.rect;
-        let miniscale = 260 / this.object.width;
-        let scale = rect.width / this.object.width;
+        let minscale, scale;
+        if (this.object.width >= this.object.height) {
+            minscale = kThumbnailSize / this.object.width;
+            scale = rect.width / this.object.width;
+        }
+        else {
+            minscale = kThumbnailSize / this.object.height;
+            scale = rect.height / this.object.height;
+        }
+
         let offset = new Point(
-            this.width - (this.object.width * miniscale) - 20,
-            this.height - (this.object.height * miniscale) - 20,
+            this.width - (this.object.width * minscale) - 20,
+            this.height - (this.object.height * minscale) - 20,
         );
         let x = Math.abs(Math.min(0, rect.x / scale));
         let y = Math.abs(Math.min(0, rect.y / scale));
@@ -226,8 +235,8 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         let fullrect = new Rect(
             Math.floor(offset.x),
             Math.floor(offset.y),
-            Math.floor(this.object.width * miniscale),
-            Math.floor(this.object.height * miniscale)
+            Math.floor(this.object.width * minscale),
+            Math.floor(this.object.height * minscale)
         );
         let sourcerect = new Rect(
             x,
@@ -236,10 +245,10 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
             height
         );
         let destrect = new Rect(
-            offset.x + (x * miniscale),
-            offset.y + (y * miniscale),
-            width * miniscale,
-            height * miniscale
+            offset.x + (x * minscale),
+            offset.y + (y * minscale),
+            width * minscale,
+            height * minscale
         );
 
         this.ctx.globalAlpha = 0.5;
@@ -256,7 +265,7 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         this.ctx.strokeStyle = '#fff';
         this.ctx.strokeRect(destrect.x + 0.5, destrect.y + 0.5, destrect.width, destrect.height);
     }
-    center(scale:number = 1.0) {
+    center(scale: number = 1.0) {
         this.xform = new Matrix([
             [this.object.width, 0, 0],
             [0, this.object.height, 0],
@@ -279,22 +288,22 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         scale = (scale > 1.0) ? 1.0 : scale;
         this.center(scale);
     }
-    translate(x:number, y:number) {
-        let m1:Matrix = new Matrix([
+    translate(x: number, y: number) {
+        let m1: Matrix = new Matrix([
             [1, 0, 0],
             [0, 1, 0],
             [x, y, 1]
         ]);
-        let m2:Matrix = this.xform.x(m1);
+        let m2: Matrix = this.xform.x(m1);
         this.xform = m2.dup();
     }
-    scale(x:number, y:number) {
-        let m1:Matrix = new Matrix([
+    scale(x: number, y: number) {
+        let m1: Matrix = new Matrix([
             [x, 0, 0],
             [0, y, 0],
             [0, 0, 1]
         ]);
-        let m2:Matrix = this.xform.x(m1);
+        let m2: Matrix = this.xform.x(m1);
         this.xform = m2.dup();
     }
 }
