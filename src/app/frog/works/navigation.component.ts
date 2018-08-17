@@ -1,4 +1,5 @@
-import { Component, Output, EventEmitter, ElementRef, trigger, state, style, transition, animate } from '@angular/core';
+import { Component, Output, EventEmitter, ElementRef } from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 import { GalleryService } from './gallery.service';
 import { UserService } from '../user/user.service';
@@ -6,7 +7,7 @@ import { WorksService } from './works.service';
 import { Gallery } from '../shared/models';
 
 
-declare var $:any;
+declare var $: any;
 
 
 @Component({
@@ -66,7 +67,7 @@ export class NavigationComponent {
         });
     }
     private securityIcon(gallery: Gallery) {
-        switch(gallery.security) {
+        switch (gallery.security) {
             case 0:
                 return 'lock_open';
             case 1:

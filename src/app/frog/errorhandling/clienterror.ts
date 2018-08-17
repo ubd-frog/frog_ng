@@ -5,10 +5,10 @@ import { ErrorService } from './error.service';
 
 @Injectable()
 export class ClientError extends ErrorHandler {
-    constructor(private injector:Injector) {
-        super(true);
+    constructor(private injector: Injector) {
+        super();
     }
-    handleError(error: any) : void {
+    handleError(error: any): void {
         const service = this.injector.get(ErrorService);
         service.clientError(error);
 

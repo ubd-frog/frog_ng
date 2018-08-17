@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 
 import { Result, User } from '../shared/models';
 import { ErrorService } from '../errorhandling/error.service';
@@ -16,7 +15,7 @@ export class UserService {
     public users: BehaviorSubject<User[]>;
 
     constructor(
-        private http:HttpClient,
+        private http: HttpClient,
         private router: Router,
         private errors: ErrorService
     ) {
@@ -69,8 +68,7 @@ export class UserService {
             params: params
         };
 
-        return this.http.get('/frog/getuser', options)
-            .map(res => {
+        return this.http.get('/frog/getuser', options).map(res => {
             let response = res as Result;
             if (response.isError) {
                 this.router.navigate(['/login']);
@@ -78,7 +76,7 @@ export class UserService {
             return true;
         }).catch(() => {
             this.router.navigate(['/login']);
-            return Observable.of(false)
+            return of(false);
         });
     }
     login(email, password) {

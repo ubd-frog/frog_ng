@@ -1,4 +1,5 @@
-import { Component, trigger, state, style } from '@angular/core';
+import { Component } from '@angular/core';
+import { trigger, state, style } from '@angular/animations';
 
 import { Subscription } from 'rxjs/Subscription';
 
