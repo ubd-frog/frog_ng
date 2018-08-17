@@ -8,6 +8,8 @@ import { SelectionService } from '../shared/selection.service';
 import { ImageAtlas, kMaxCanvasSize } from './image-atlas';
 
 
+declare var Plyr: any;
+
 @Component({
     selector: 'frog-video',
     templateUrl: './html/video.html',
