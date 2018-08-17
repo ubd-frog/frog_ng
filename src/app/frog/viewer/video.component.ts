@@ -8,6 +8,8 @@ import { SelectionService } from '../shared/selection.service';
 import { ImageAtlas, kMaxCanvasSize } from './image-atlas';
 
 
+declare var Plyr: any;
+
 @Component({
     selector: 'frog-video',
     templateUrl: './html/video.html',
@@ -63,6 +65,12 @@ export class VideoComponent implements OnDestroy {
     }
     ngAfterViewInit() {
         this.element = this.vid.nativeElement;
+        const player = new Plyr(
+            this.element,
+            {
+                'controls': ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen']
+            }
+        );
         this.ctx = this.viewport.nativeElement.getContext('2d');
         let sub = Observable.fromEvent(<any>this.element, 'timeupdate').subscribe(event => {
             this.frame = Math.floor(this.object.framerate * this.element.currentTime);
@@ -129,7 +137,7 @@ export class VideoComponent implements OnDestroy {
             }
         }
     }
-    down(event:MouseEvent) {
+    down(event: MouseEvent) {
         if (event.button == 0) {
             if (this.frameview) {
                 this.isMouseDown = true;
@@ -149,9 +157,9 @@ export class VideoComponent implements OnDestroy {
             }
         }
     }
-    move(event:MouseEvent) {
+    move(event: MouseEvent) {
         if (this.isMouseDown) {
-            let x:number = event.clientX - this.origin.x;
+            let x: number = event.clientX - this.origin.x;
             let padding = 6;
             let frame = Math.floor(this.currentframe + x / padding) % this.frameCount;
             if (frame < 0) {
@@ -172,7 +180,7 @@ export class VideoComponent implements OnDestroy {
         ]);
         this.fitToWindow();
     }
-    center(scale:number = 1.0) {
+    center(scale: number = 1.0) {
         this.xform = new Matrix([
             [this.object.width, 0, 0],
             [0, this.object.height, 0],
@@ -196,22 +204,22 @@ export class VideoComponent implements OnDestroy {
 
         this.margin = (window.innerHeight / 2) - ((this.xform.elements[1][1] + this.infoPadding) / 2);
     }
-    translate(x:number, y:number) {
-        let m1:Matrix = new Matrix([
+    translate(x: number, y: number) {
+        let m1: Matrix = new Matrix([
             [1, 0, 0],
             [0, 1, 0],
             [x, y, 1]
         ]);
-        let m2:Matrix = this.xform.x(m1);
+        let m2: Matrix = this.xform.x(m1);
         this.xform = m2.dup();
     }
-    scale(x:number, y:number) {
-        let m1:Matrix = new Matrix([
+    scale(x: number, y: number) {
+        let m1: Matrix = new Matrix([
             [x, 0, 0],
             [0, y, 0],
             [0, 0, 1]
         ]);
-        let m2:Matrix = this.xform.x(m1);
+        let m2: Matrix = this.xform.x(m1);
         this.xform = m2.dup();
     }
     imageArray() {
