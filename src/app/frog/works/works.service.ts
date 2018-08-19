@@ -58,7 +58,7 @@ export class WorksService {
             }
         });
     }
-    get(id:number=0, append:boolean=false) {
+    get(id: number = 0, append: boolean = false) {
         if (window.location.pathname == this.routecache && !append) {
             return;
         }
@@ -92,12 +92,12 @@ export class WorksService {
 
                 for (let item of items) {
                     let obj: CItem;
-                    switch(item.guid.charAt(0)) {
+                    switch (item.guid.charAt(0)) {
                         case '1':
-                            obj = <CImage>item;
+                            obj = Object.assign(new CImage(), item);
                             break;
                         case '2':
-                            obj = <CVideo>item;
+                            obj = Object.assign(new CVideo(), item);
                             break;
                     }
                     if (!obj) {
@@ -105,7 +105,7 @@ export class WorksService {
                         continue;
                     }
 
-                    obj.author = <User>obj.author;
+                    obj.author = Object.assign(new User(), obj.author);
 
                     this.items.push(obj);
                     this.guids.push(obj.guid);
@@ -128,7 +128,7 @@ export class WorksService {
             element.length = 0;
         });
     }
-    addTerm(term:any, bucket:number=0, append:boolean=false) {
+    addTerm(term: any, bucket: number = 0, append: boolean = false) {
         term = (parseFloat(term) % 1 === 0) ? parseInt(term) : encodeURIComponent(term);
         if (!append) {
             this.terms[bucket].length = 0;
@@ -140,20 +140,20 @@ export class WorksService {
     setTerms(terms: any) {
         this.terms = terms;
     }
-    likeItem(item:CItem) {
+    likeItem(item: CItem) {
         let url = '/frog/like/' + item.guid;
         this.notify.add(new Notification('Liked', 'thumb_up'));
         this.http.put(url, null)
             .map(this.errors.extractValues, this.errors)
             .subscribe(items => {
-            let index = this.guids.indexOf(items[0].guid);
-            this.items[index].like_count = items[0].like_count;
-        }, error => this.errors.handleError(error));
+                let index = this.guids.indexOf(items[0].guid);
+                this.items[index].like_count = items[0].like_count;
+            }, error => this.errors.handleError(error));
     }
     update(item: CItem) {
         let url = '/frog/piece/' + item.guid + '/';
         let options = {
-            body: {title: item.title, description: item.description},
+            body: { title: item.title, description: item.description },
             withCredentials: true
         };
 
@@ -166,7 +166,7 @@ export class WorksService {
         let url = '/frog/switchartist';
         let options = {
             body: {
-                guids: items.map(function(_) { return _.guid; }).join(','),
+                guids: items.map(function (_) { return _.guid; }).join(','),
                 artist: user.id
             },
             withCredentials: true
@@ -175,17 +175,17 @@ export class WorksService {
         this.http.post(url, options)
             .map(this.errors.extractValues, this.errors)
             .subscribe(() => {
-            items.map(function(_) { _.author = user; });
-            this.notify.add(new Notification('New artist set', 'done'));
-        }, error => this.errors.handleError(error));
+                items.map(function (_) { _.author = user; });
+                this.notify.add(new Notification('New artist set', 'done'));
+            }, error => this.errors.handleError(error));
     }
     editTags(items: CItem[], add: Tag[], remove: Tag[]) {
         let url = '/frog/tag/manage';
         let options = {
             body: {
-                guids: items.map(function(_) { return _.guid; }).join(','),
-                add: add.map(function(_) { return _.id; }).join(','),
-                rem: remove.map(function(_) { return _.id; }).join(',')
+                guids: items.map(function (_) { return _.guid; }).join(','),
+                add: add.map(function (_) { return _.id; }).join(','),
+                rem: remove.map(function (_) { return _.id; }).join(',')
             },
             withCredentials: true
         };
@@ -197,7 +197,7 @@ export class WorksService {
     }
     download(items: CItem[]) {
         let url = '/frog/download';
-        let params = new HttpParams().set('guids', items.map(function(_) { return _.guid; }).join(','));
+        let params = new HttpParams().set('guids', items.map(function (_) { return _.guid; }).join(','));
         let options = {
             params: params
         };
@@ -232,7 +232,7 @@ export class WorksService {
         let url = '/frog/gallery/' + this.id;
         let options = {
             body: {
-                guids: items.map(function(_) { return _.guid; }).join(',')
+                guids: items.map(function (_) { return _.guid; }).join(',')
             },
             withCredentials: true
         };
@@ -315,7 +315,7 @@ export class WorksService {
         let url = '/frog/piece/' + item.guid + '/';
         let options = new RequestOptions();
 
-        options.body = {crop: [x, y, width, height]};
+        options.body = { crop: [x, y, width, height] };
         options.withCredentials = true;
         return this.http.post(url, options).map(this.errors.extractValue, this.errors);
     }
