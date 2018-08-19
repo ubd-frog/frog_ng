@@ -9,6 +9,8 @@ export class ImageAtlas {
     private columns: number;
     private rows: number;
     private sub: Subscription;
+    private complete: boolean;
+    private timevalue: number;
     public canvas: any;
     public ctx: CanvasRenderingContext2D;
     public loadedFrame: BehaviorSubject<number>;
@@ -21,7 +23,13 @@ export class ImageAtlas {
         this.columns = Math.floor(kMaxCanvasSize / this.item.width);
         this.rows = Math.floor(kMaxCanvasSize / this.item.height);
         this.loadedFrame = new BehaviorSubject<number>(0);
-
+        this.complete = false;
+        this.timevalue = 0.0;
+    }
+    init() {
+        if (this.complete) {
+            return;
+        }
         this.sub = Observable.fromEvent(<any>this.element, 'seeked').subscribe(event => {
             let offset = this.getFrame(this.element.currentTime);
             this.drawFrame(offset);
@@ -51,9 +59,9 @@ export class ImageAtlas {
         let time = this.getTime(offset + 1);
         if (time <= this.element.duration) {
             this.element.currentTime = time;
-            // setTimeout(() => this.element.currentTime = time, 0);
         }
         else {
+            this.complete = true;
             this.sub.unsubscribe();
             this.loadedFrame.complete();
         }
