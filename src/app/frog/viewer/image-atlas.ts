@@ -10,7 +10,6 @@ export class ImageAtlas {
     private rows: number;
     private sub: Subscription;
     private complete: boolean;
-    private timevalue: number;
     public canvas: any;
     public ctx: CanvasRenderingContext2D;
     public loadedFrame: BehaviorSubject<number>;
@@ -24,7 +23,6 @@ export class ImageAtlas {
         this.rows = Math.floor(kMaxCanvasSize / this.item.height);
         this.loadedFrame = new BehaviorSubject<number>(0);
         this.complete = false;
-        this.timevalue = 0.0;
     }
     init() {
         if (this.complete) {
