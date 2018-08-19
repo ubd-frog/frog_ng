@@ -41,18 +41,19 @@ export class TagsListComponent implements OnDestroy {
     private order: boolean = true;
     private edit: number = -1;
     private editfield: string = '';
-    private deleteCheck: number = -1;
+    public deleteCheck: number = -1;
     public tags: Tag[];
     public merge: Tag[];
     public visible: string = 'hide';
     public showall: boolean = false;
+    public deleteselectioncheck: boolean;
 
     constructor(private service: TagsService, private router: Router) {
         this.merge = [];
 
         this.subs.push(service.contentTags.subscribe(tags => {
-            this.tags = tags;
-            this._tags = this.tags.slice(0);
+            this._tags = tags;
+            this.tags = this._tags.slice(0);
             this.merge = [];
             this.sortBy('name');
         }));
@@ -80,8 +81,20 @@ export class TagsListComponent implements OnDestroy {
     submit(event) {
         event.preventDefault();
         if (this.merge.length > 1) {
-            this.service.merge(this.merge.map(tag => { return tag.id; }));
+            this.service.merge(this.merge.map(tag => tag.id));
         }
+    }
+    deleteTags(event) {
+        event.preventDefault();
+        this.merge.forEach(tag => {
+            this.service.remove(tag).subscribe();
+            let index = this._tags.indexOf(tag);
+            this._tags.splice(index, 1);
+        });
+
+        this.merge = [];
+        this.tags = this._tags.slice(0);
+        this.deleteselectioncheck = false;
     }
     sortBy(attr: string) {
         this.tags.sort((a, b) => {

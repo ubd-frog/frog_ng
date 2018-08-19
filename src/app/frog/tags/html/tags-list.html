@@ -1,13 +1,19 @@
 <div [@panelState]="visible" id="modal">
     <div class="modal open modal-fixed-footer">
         <div class="modal-content">
-            <a class="right" (click)="close()"><i class="material-icons">close</i></a>
+            <a class="right" (click)="close()">
+                <i class="material-icons">close</i>
+            </a>
             <h4>Tag Management</h4>
             <div class="row">
                 <div class="col s6">
                     <div class="row">
-                        <a class="waves-effect waves-light light-green btn" (click)="sortBy('name')"><i class="material-icons">sort_by_alpha</i></a>
-                        <a class="waves-effect waves-light light-green btn" (click)="sortBy('count')"><i class="material-icons">sort</i></a>
+                        <a class="waves-effect waves-light light-green btn" (click)="sortBy('name')">
+                            <i class="material-icons">sort_by_alpha</i>
+                        </a>
+                        <a class="waves-effect waves-light light-green btn" (click)="sortBy('count')">
+                            <i class="material-icons">sort</i>
+                        </a>
                         <div class="switch">
                             <label>
                                 <input type="checkbox" [(ngModel)]="showall" (click)="toggleFilter()">
@@ -22,29 +28,38 @@
                         </ul>
                         <ul *ngIf="tags" class="collection">
                             <li class="collection-item tag-item" *ngFor="let tag of tags; let i=index;" (click)="toggleSelection(tag)" [class.red-text]="tag.count == 0">
-                                    <span *ngIf="edit != i">
-                                        <span (dblclick)="editTag(i)">{{tag.name}}</span>
-                                        <a (click)="queryAll($event, tag)" class="secondary-content">
-                                            <i class="material-icons">find_in_page</i>
-                                        </a>
-                                        <a (click)="remove($event, tag)" class="secondary-content">
-                                            <i class="material-icons" [class.red-text]="deleteCheck == i">close</i>
-                                        </a>
-                                        <span class="secondary-content badge">{{tag.count}}</span>
-                                    </span>
-                                <input class="input-field" autofocus="autofocus" *ngIf="edit == i" type="text" [(ngModel)]="editfield" (keyup.enter)="saveEdit()" (keyup.esc)="edit = -1" (blur)="edit = -1" />
+                                <span *ngIf="edit != i">
+                                    <span (dblclick)="editTag(i)">{{tag.name}}</span>
+                                    <a (click)="queryAll($event, tag)" class="secondary-content">
+                                        <i class="material-icons">find_in_page</i>
+                                    </a>
+                                    <a (click)="remove($event, tag)" class="secondary-content">
+                                        <i class="material-icons" [class.red-text]="deleteCheck == i">close</i>
+                                    </a>
+                                    <span class="secondary-content badge">{{tag.count}}</span>
+                                </span>
+                                <input class="input-field" autofocus="autofocus" *ngIf="edit == i" type="text" [(ngModel)]="editfield" (keyup.enter)="saveEdit()"
+                                    (keyup.esc)="edit = -1" (blur)="edit = -1" />
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div class="col s6">
-                    <p>Select tags from the list on the left.  The first tag will be the root where the other selected tags will get merged into.</p>
+                    <p>Select tags from the list on the left. The first tag will be the root where the other selected tags will
+                        get merged into.</p>
                     <a class="waves-effect waves-light light-green btn" (click)="submit($event)" [class.disabled]="merge.length < 2">merge</a>
+                    <!-- Delete Button -->
+                    <a class="waves-effect waves-light red lighten-2 btn" (click)="deleteselectioncheck = true" [class.disabled]="merge.length < 1"
+                        *ngIf="!deleteselectioncheck">delete</a>
+                    <a class="waves-effect waves-light red btn" (click)="deleteTags($event)" *ngIf="deleteselectioncheck">I'm Sure, Delete</a>
+
                     <ul *ngIf="merge.length > 0" class="collection">
                         <li class="collection-item" *ngFor="let tag of merge; let i=index;">
                             <div [class.light-green-text]="i == 0" [class.root]="i == 0">
                                 {{tag.name}}
-                                <a class="secondary-content" (click)="toggleSelection(tag)"><i class="material-icons light-green-text">close</i></a>
+                                <a class="secondary-content" (click)="toggleSelection(tag)">
+                                    <i class="material-icons light-green-text">close</i>
+                                </a>
                             </div>
                         </li>
                     </ul>
