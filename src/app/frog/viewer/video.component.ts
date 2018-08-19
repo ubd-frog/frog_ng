@@ -109,6 +109,7 @@ export class VideoComponent implements OnDestroy {
         this.frameview = false;
         this.atlas = new ImageAtlas(this.element, this.object);
         this.loadingframes = true;
+
         let sub = this.atlas.loadedFrame.subscribe(
             frame => this.loadedframe = frame,
             () => null,
@@ -121,6 +122,11 @@ export class VideoComponent implements OnDestroy {
                 )
             }
         );
+        this.subs.push(sub);
+
+        sub = Observable.fromEvent(<any>this.vid.nativeElement, 'canplay').subscribe(event => {
+            this.play();
+        });
         this.subs.push(sub);
     }
     // -- Events
@@ -230,6 +236,7 @@ export class VideoComponent implements OnDestroy {
             this.element.pause();
             this.element.loop = false;
             this.frameview = true;
+            this.atlas.init();
             setTimeout(() => this.element.currentTime = 0.0, 0);
         }
     }
@@ -243,12 +250,11 @@ export class VideoComponent implements OnDestroy {
     }
     play() {
         if (this.frameview) {
-            this.timer = window.setTimeout(() => {
+            this.timer = setTimeout(() => {
                 let frame = this.loadedframe + 1;
                 frame = frame % this.frameCount;
                 this.loadedframe = frame;
                 this.drawFrame(frame);
-                this.play();
             }, 1000 / this.object.framerate);
         }
         else {
