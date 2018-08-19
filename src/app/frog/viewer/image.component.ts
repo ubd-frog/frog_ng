@@ -64,7 +64,7 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
             this.resize();
         });
         this.sub = this.service.detail.distinctUntilChanged().subscribe(data => {
-            if (data.item) {
+            if (data.item && data.item.guid.charAt(0) === '1') {
                 setTimeout(() => this.setImage(data.item), 0);
             }
         });
