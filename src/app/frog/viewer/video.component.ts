@@ -250,7 +250,7 @@ export class VideoComponent implements OnDestroy {
     }
     play() {
         if (this.frameview) {
-            this.timer = setTimeout(() => {
+            this.timer = window.setTimeout(() => {
                 let frame = this.loadedframe + 1;
                 frame = frame % this.frameCount;
                 this.loadedframe = frame;
