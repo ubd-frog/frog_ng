@@ -58,13 +58,17 @@ export class WorksService {
             }
         });
     }
-    get(id: number = 0, append: boolean = false) {
-        if (window.location.pathname == this.routecache && !append) {
+    get(id = 0, append = false, force = false) {
+        if (force) {
+            this.routecache = null;
+            append = false;
+        }
+        if (window.location.pathname === this.routecache && !append) {
             return;
         }
         this.routecache = window.location.pathname;
 
-        if (id > 0) {
+        if (id >= 0) {
             this.id = id;
         }
 
