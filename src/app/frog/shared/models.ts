@@ -23,7 +23,7 @@ export class Tag {
     public count: number;
     public added: boolean;
 
-    constructor(id: number, name: string, artist: boolean=false, count: number=0) {
+    constructor(id: number, name: string, artist: boolean = false, count: number = 0) {
         this.id = id;
         this.name = name;
         this.artist = artist;
@@ -148,6 +148,7 @@ export class Preferences {
     slideshowRandomize: boolean;
     slideshowPlayVideo: boolean;
     slideshowDuration: number;
+    minimap: boolean;
 }
 
 

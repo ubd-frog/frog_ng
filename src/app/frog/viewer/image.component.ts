@@ -1,10 +1,12 @@
-import { Component, Input, AfterViewInit, AfterViewChecked, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, AfterViewInit, AfterViewChecked, OnDestroy, HostListener, ViewChild, ElementRef, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
-import { CItem, CImage } from '../shared/models';
+import { CItem, CImage, Preferences } from '../shared/models';
 import { Point, Matrix, Rect } from '../shared/euclid';
 import { SelectionService } from '../shared/selection.service';
+import { PreferencesService } from '../user/preferences.service';
+import { Subscription } from 'rxjs';
 
 const kThumbnailSize = 256;
 
@@ -22,7 +24,7 @@ const kThumbnailSize = 256;
         '.gif { opacity: 1; width: inherit; height: inherit; }'
     ]
 })
-export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecked {
+export class ImageComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
     @ViewChild('canvas') canvas: ElementRef;
     @ViewChild('img') img: ElementRef;
     @Input() hide_minimap: boolean;
@@ -40,18 +42,37 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
     private postinit: boolean = false;
     private pattern: CanvasPattern;
     private tileBackground: boolean;
+    private preferences: Preferences;
+    private subs: Subscription[];
+
     public object: CImage;
     public width: number;
     public height: number;
     public percent;
     public ext: string;
 
-    constructor(canvas: ElementRef, img: ElementRef, private service: SelectionService) {
+    constructor(
+        canvas: ElementRef,
+        img: ElementRef,
+        private service: SelectionService,
+        private prefservice: PreferencesService
+    ) {
         this.width = window.innerWidth;
         this.height = window.innerHeight;
         this.object = new CImage();
         this.tileBackground = false;
+        this.subs = [];
     }
+
+    ngOnInit() {
+        let sub = this.prefservice.preferences.subscribe(p => {
+            if (p.minimap === false) {
+                this.hide_minimap = true;
+            }
+        });
+        this.subs.push(sub);
+    }
+
     ngAfterViewInit() {
         this.ctx = this.canvas.nativeElement.getContext('2d');
         this.element = this.img.nativeElement;
@@ -63,11 +84,13 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
             }
             this.resize();
         });
-        this.sub = this.service.detail.distinctUntilChanged().subscribe(data => {
+
+        let sub = this.service.detail.distinctUntilChanged().subscribe(data => {
             if (data.item && data.item.guid.charAt(0) === '1') {
                 setTimeout(() => this.setImage(data.item), 0);
             }
         });
+        this.subs.push(sub);
     }
     ngAfterViewChecked() {
         if (this.dirty) {
@@ -76,7 +99,7 @@ export class ImageComponent implements OnDestroy, AfterViewInit, AfterViewChecke
         }
     }
     ngOnDestroy() {
-        this.sub.unsubscribe();
+        this.subs.forEach(s => s.unsubscribe());
     }
     setImage(image: CItem) {
         this.percent = 0;
