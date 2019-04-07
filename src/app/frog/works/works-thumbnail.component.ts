@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, ElementRef, AfterViewInit, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
@@ -11,7 +11,7 @@ import { SelectionService } from '../shared/selection.service';
 import { PreferencesService } from '../user/preferences.service';
 
 
-declare var $:any;
+declare var $: any;
 
 
 @Component({
@@ -30,14 +30,12 @@ declare var $:any;
         '.tag { line-height: 26px; background-color: #fff; color: #000; margin: 0 2px; padding: 2px; border: 1px solid #333; border-radius: 2px;}'
     ]
 })
-export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
+export class WorksThumbnailComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() item;
-    @ViewChild('img') img: ElementRef;
 
     private selecteditems: CItem[] = [];
     private ctrlKey: boolean;
     private subs: Subscription[];
-    private viewportsub: Subscription;
     private loaded: boolean;
     public prefs: Preferences;
     public thumbnail: string;
@@ -50,10 +48,11 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
         private viewportservice: ViewportService,
         private tags: TagsService,
         private prefservice: PreferencesService
-        ) {
-        this.service.selection.subscribe(items => this.selecteditems = items);
+    ) {
         this.subs = [];
         this.thumbnail = '/public/pixel.png';
+    }
+    ngOnInit() {
         let sub = this.service.selectionRect.subscribe(rect => {
             let r = this.element.nativeElement.getBoundingClientRect();
             if (rect.intersects(r)) {
@@ -63,17 +62,20 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
         this.subs.push(sub);
         sub = this.prefservice.preferences.subscribe(prefs => this.prefs = prefs);
         this.subs.push(sub);
+        sub = this.service.selection.subscribe(items => this.selecteditems = items);
+        this.subs.push(sub);
     }
     ngOnDestroy() {
         this.subs.forEach(sub => sub.unsubscribe());
     }
     ngAfterViewInit() {
-        this.viewportsub = this.viewportservice.guids.subscribe(guids => {
+        let sub = this.viewportservice.guids.subscribe(guids => {
             if (guids.indexOf(this.item.guid) != -1 && !this.loaded) {
                 this.loaded = true;
-                setTimeout(() => {this.load();});
+                setTimeout(() => { this.load(); });
             }
         });
+        this.subs.push(sub);
     }
     load() {
         this.thumbnail = this.item.thumbnail;
@@ -89,7 +91,7 @@ export class WorksThumbnailComponent implements OnDestroy, AfterViewInit {
             let guids = [this.item.guid];
             let index = 0;
             if (this.selecteditems.length) {
-                guids = this.selecteditems.map(function(x) { return x.guid; });
+                guids = this.selecteditems.map(function (x) { return x.guid; });
                 index = guids.indexOf(this.item.guid);
                 if (index === -1) {
                     guids.push(this.item.guid);

@@ -3,11 +3,9 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 
 import { PreferencesService } from '../user/preferences.service';
 import { UserService } from '../user/user.service';
-import { SiteConfig, User } from '../shared/models';
-import { Subscription } from 'rxjs';
-import { TagsListComponent } from '../tags/tags-list.component';
+import { SiteConfig, User, Preferences } from '../shared/models';
+import { Subscription, Observable } from 'rxjs';
 import { GalleryService } from './gallery.service';
-import { ReleaseNotesComponent } from '../releasenotes/release-notes.component';
 import { SiteConfigService } from '../shared/siteconfig.service';
 
 
@@ -38,13 +36,10 @@ import { SiteConfigService } from '../shared/siteconfig.service';
     ]
 })
 export class SiteMenuComponent implements OnInit, OnDestroy {
-    @ViewChild(TagsListComponent) tagslist: TagsListComponent;
-    @ViewChild(ReleaseNotesComponent) releasenotes: ReleaseNotesComponent;
-
     private elementRef: ElementRef;
     private subs: Subscription[] = [];
     public visible = 'hide';
-    public user: User;
+    public user$: Observable<User>;
     public siteconfig: SiteConfig;
 
     constructor(
@@ -55,15 +50,15 @@ export class SiteMenuComponent implements OnInit, OnDestroy {
         private element: ElementRef
     ) {
         this.elementRef = element;
-        let sub = this.userservice.user.subscribe(user => this.user = user);
-        this.subs.push(sub);
-        sub = this.siteconfigservice.siteconfig.subscribe(data => {
+    }
+
+    ngOnInit() {
+        this.user$ = this.userservice.user;
+        let sub = this.siteconfigservice.siteconfig.subscribe(data => {
             this.siteconfig = data;
         });
         this.subs.push(sub);
     }
-
-    ngOnInit() { }
     ngOnDestroy() {
         this.subs.map(sub => sub.unsubscribe());
     }
