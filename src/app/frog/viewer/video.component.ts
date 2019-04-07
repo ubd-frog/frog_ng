@@ -8,7 +8,7 @@ import { SelectionService } from '../shared/selection.service';
 import { ImageAtlas, kMaxCanvasSize } from './image-atlas';
 
 
-declare var Plyr: any;
+// declare var Plyr: any;
 
 @Component({
     selector: 'frog-video',
@@ -65,12 +65,12 @@ export class VideoComponent implements OnDestroy {
     }
     ngAfterViewInit() {
         this.element = this.vid.nativeElement;
-        const player = new Plyr(
-            this.element,
-            {
-                'controls': ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen']
-            }
-        );
+        // const player = new Plyr(
+        //     this.element,
+        //     {
+        //         'controls': ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen']
+        //     }
+        // );
         this.ctx = this.viewport.nativeElement.getContext('2d');
         let sub = Observable.fromEvent(<any>this.element, 'timeupdate').subscribe(event => {
             this.frame = Math.floor(this.object.framerate * this.element.currentTime);
