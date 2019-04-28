@@ -2,15 +2,15 @@ import { Component } from '@angular/core';
 import { trigger, state, style } from '@angular/animations';
 
 import { Subscription } from 'rxjs/Subscription';
+import { ReleaseNote } from '../../shared/models';
+import { ReleaseNotesService } from '../release-notes.service';
+import { StorageService } from '../../shared/storage.service';
 
-import { ReleaseNote } from '../shared/models';
-import { ReleaseNotesService } from './release-notes.service';
-import { StorageService } from '../shared/storage.service';
 
 
 @Component({
     selector: 'release-notes',
-    templateUrl: './html/release_notes.html',
+    templateUrl: './release-notes.component.html',
     styles: [
         'div#modal { position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.48); z-index: 4000; }',
         '.modal { display: block; top: 10%; width: 80%; }',

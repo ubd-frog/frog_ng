@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '../user.service';
+import { GalleryService } from '../../works/gallery.service';
+import { Result } from '../../shared/models';
 
-import { UserService } from './user.service';
-import { GalleryService } from '../works/gallery.service';
-import {Result} from "../shared/models";
 
 
 @Component({
-    templateUrl: './html/login.html',
+    templateUrl: './login.component.html',
     styles: [
         'body { font-family: Helvetica;background: #333;-webkit-font-smoothing: antialiased; }',
         'form { width: 380px;margin: 4em auto;padding: 3em 2em 2em 2em;background: #666;border: 1px solid #777;box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px; }',

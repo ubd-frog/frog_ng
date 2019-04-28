@@ -1,13 +1,13 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Tag } from '../../shared/models';
+import { TagsService } from '../tags.service';
+import { isInt } from '../../shared/common';
 
-import { TagsService } from './tags.service';
-import { Tag } from '../shared/models';
-import { isInt } from '../shared/common';
 
 
 @Component({
     selector: 'tag',
-    templateUrl: './html/tag.html',
+    templateUrl: './tag.component.html',
     styles: [
         '.chip, .chip > i.material-icons { height: 24px; line-height: 24px; border-radius: 2px; }',
         '.chip > i.material-icons:first-child { margin-right: 8px; font-size: 16px; height: 24px; line-height: 24px; }',
@@ -44,8 +44,8 @@ export class TagComponent implements OnInit, OnDestroy, AfterViewInit {
             this.resolveTag();
         });
     }
-    ngOnInit() {}
-    ngOnDestroy() {}
+    ngOnInit() { }
+    ngOnDestroy() { }
     private resolveTag() {
         this.service.tags.subscribe(tags => {
             let tag = this.service.getTagById(this.tag.id) || this.service.getTagByName(this.tag.name);

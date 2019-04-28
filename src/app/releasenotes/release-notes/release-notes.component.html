@@ -5,7 +5,7 @@
             <h4>Release Notes</h4>
             <div *ngFor="let note of notes">
                 <small>{{note.date | date:"MMMM  d, y"}}</small>
-                <div [innerHTML]="note.notes | MarkdownToHtml"></div>
+                <div [innerHTML]="note.notes"></div>
                 <hr />
             </div>
         </div>

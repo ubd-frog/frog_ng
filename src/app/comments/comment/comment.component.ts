@@ -1,13 +1,13 @@
 import { Component, Input, AfterContentInit } from '@angular/core';
 
-import { UserService } from '../user/user.service';
-import { Comment, User } from './models';
-import { CommentService } from './comment.service';
+import { User, Comment } from '../../shared/models';
+import { CommentService } from '../comment.service';
+import { UserService } from '../../user/user.service';
 
 
 @Component({
     selector: 'comment-item',
-    templateUrl: './html/comment.html',
+    templateUrl: './comment.component.html',
     styles: [
         '.comment-body { position: relative; width: 100%; overflow: visible; vertical-align: top; line-height: initial; }',
         '.comment-body .commenter a { font-size: 16px; font-weight: 300; }',

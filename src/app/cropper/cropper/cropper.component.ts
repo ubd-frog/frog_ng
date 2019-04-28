@@ -1,13 +1,13 @@
 import { Component, Input, Output, ViewChild, ElementRef, EventEmitter, AfterViewChecked, HostListener } from '@angular/core';
 import { trigger, state, style } from '@angular/animations';
+import { Point, Rect } from '../../shared/euclid';
+import { WorksService } from '../../works/works.service';
 
-import { WorksService } from './works.service';
-import { Point, Rect } from '../shared/euclid';
 
 
 @Component({
     selector: 'cropper',
-    templateUrl: './html/cropper.html',
+    templateUrl: './cropper.component.html',
     styles: [
         'div#modal { position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.48); z-index: 4000; }',
         '.modal { display: block; top: 10%; width: 80%; }',
@@ -87,8 +87,10 @@ export class CropperComponent implements AfterViewChecked {
             return;
         }
         let imgrect = new Rect(0, 0, this.item.width, this.item.height).fit(this.content.nativeElement.clientWidth - 48, this.content.nativeElement.clientHeight - 48 - 37);
-        this.width = imgrect.width;
-        this.height = imgrect.height;
+        setTimeout(() => {
+            this.width = imgrect.width;
+            this.height = imgrect.height;
+        }, 0);
     }
     crop() {
         let ratio: number = this.width / this.item.width;

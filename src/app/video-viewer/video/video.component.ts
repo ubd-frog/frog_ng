@@ -1,18 +1,16 @@
 import { Component, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
 
 import { Observable, Subscription } from 'rxjs';
+import { Point, Matrix } from '../../shared/euclid';
+import { ImageAtlas, kMaxCanvasSize } from '../image-atlas';
+import { CVideo, CItem } from '../../shared/models';
+import { SelectionService } from '../../shared/selection.service';
 
-import { CItem, CVideo } from '../shared/models';
-import { Point, Matrix } from '../shared/euclid';
-import { SelectionService } from '../shared/selection.service';
-import { ImageAtlas, kMaxCanvasSize } from './image-atlas';
 
-
-// declare var Plyr: any;
 
 @Component({
     selector: 'frog-video',
-    templateUrl: './html/video.html',
+    templateUrl: './video.component.html',
     styles: [
         'video, canvas { width: 100%; height: 100%; }',
         '.video_player { position: relative; margin: 0 auto; z-index: 3000; }',

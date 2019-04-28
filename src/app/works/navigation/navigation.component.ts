@@ -1,10 +1,10 @@
 import { Component, Output, EventEmitter, ElementRef } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Gallery } from '../../shared/models';
+import { GalleryService } from '../gallery.service';
+import { UserService } from '../../user/user.service';
+import { WorksService } from '../works.service';
 
-import { GalleryService } from './gallery.service';
-import { UserService } from '../user/user.service';
-import { WorksService } from './works.service';
-import { Gallery } from '../shared/models';
 
 
 declare var $: any;
@@ -12,7 +12,7 @@ declare var $: any;
 
 @Component({
     selector: 'works-nav',
-    templateUrl: './html/navigation.html',
+    templateUrl: './navigation.component.html',
     styles: [
         'ul { width: 360px; border: 1px solid #333; }',
         '#create_form { min-height: 0; }',

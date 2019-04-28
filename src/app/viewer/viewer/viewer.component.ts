@@ -2,25 +2,24 @@ import { Component, OnInit, OnDestroy, HostListener, ViewChild } from '@angular/
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { Subscription } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
+import { Subscription, Observable } from 'rxjs';
+import { ImageComponent } from '../../image-viewer/image/image.component';
+import { VideoComponent } from '../../video-viewer/video/video.component';
+import { CItem, Preferences } from '../../shared/models';
+import { WorksService } from '../../works/works.service';
+import { SelectionService } from '../../shared/selection.service';
+import { StorageService } from '../../shared/storage.service';
+import { SlideshowService } from '../../shared/slideshow.service';
+import { PreferencesService } from '../../user/preferences.service';
+import { randomInt } from '../../shared/common';
 
-import { CItem, Preferences } from '../shared/models';
-import { SelectionService } from '../shared/selection.service';
-import { StorageService } from '../shared/storage.service';
-import { randomInt } from '../shared/common';
-import { SlideshowService } from '../shared/slideshow.service';
-import { WorksService } from '../works/works.service';
-import { PreferencesService } from '../user/preferences.service';
-import { ImageComponent } from './image.component';
-import { VideoComponent } from './video.component';
 
-declare var $:any;
+declare var $: any;
 
 
 @Component({
     selector: 'viewer',
-    templateUrl: './html/viewer.html',
+    templateUrl: './viewer.component.html',
     styles: [
         '#viewer { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }',
         '.actions { position: absolute; top: 16px; right: 16px; z-index: 3001; }',
@@ -233,13 +232,13 @@ export class ViewerComponent implements OnInit, OnDestroy {
         // Use closeroute
         this.router.navigate([this.closeroute || this.service.routecache || '/w/1']);
     }
-    setIndex(index:number) {
+    setIndex(index: number) {
         if (this.objects[index].guid.charAt(0) === this.objects[this.index].guid.charAt(0)) {
             this.selectionservice.clearDetailItem();
         }
         this.index = index;
         if (this.objects.length) {
-            switch(this.objects[index].guid.charAt(0)) {
+            switch (this.objects[index].guid.charAt(0)) {
                 case '1':
                     this.itemtype = 'image';
                     break;
@@ -256,7 +255,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
             if (this.slideshow) {
                 url.push('slideshow');
             }
-            this.router.navigate(url, {replaceUrl: true});
+            this.router.navigate(url, { replaceUrl: true });
         }
     }
     playSlideShow() {

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions } from '@angular/http';
+import { Result } from '../shared/models';
+import { HttpClient } from '@angular/common/http';
 
-import { NotificationService } from '../notifications/notification.service';
-import { Notification, Result } from '../shared/models';
+// import { NotificationService } from '../notifications/notification.service';
 
 
 @Injectable()
 export class ErrorService {
-    constructor(private http: Http, private notify: NotificationService) {
+    constructor(private http: HttpClient) {//, private notify: NotificationService) {
 
     }
     clientError(error: any) {
@@ -22,10 +23,10 @@ export class ErrorService {
     }
     extractValue(res: Result) {
         if (res.isError) {
-            let notification = new Notification(res.message, 'error');
-            notification.error = true;
-            notification.timeout = 8000;
-            this.notify.add(notification);
+            // let notification = new Notification(res.message, 'error');
+            // notification.error = true;
+            // notification.timeout = 8000;
+            // this.notify.add(notification);
             return null;
         }
         return res.value || null;
@@ -33,20 +34,20 @@ export class ErrorService {
 
     extractValues(res: Result) {
         if (res.isError) {
-            let notification = new Notification(res.message, 'error');
-            notification.error = true;
-            notification.timeout = 8000;
-            this.notify.add(notification);
+            // let notification = new Notification(res.message, 'error');
+            // notification.error = true;
+            // notification.timeout = 8000;
+            // this.notify.add(notification);
             return [];
         }
         return res.values || [];
     }
     extractData(res: Result) {
         if (res.isError) {
-            let notification = new Notification(res.message, 'error');
-            notification.error = true;
-            notification.timeout = 8000;
-            this.notify.add(notification);
+            // let notification = new Notification(res.message, 'error');
+            // notification.error = true;
+            // notification.timeout = 8000;
+            // this.notify.add(notification);
             return [];
         }
         return res || [];
@@ -68,9 +69,9 @@ export class ErrorService {
             // Client error
             this.clientError(error);
         }
-        let notification = new Notification(message, 'error');
-        notification.error = true;
-        notification.timeout = 8000;
-        this.notify.add(notification);
+        // let notification = new Notification(message, 'error');
+        // notification.error = true;
+        // notification.timeout = 8000;
+        // this.notify.add(notification);
     }
 }

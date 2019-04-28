@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { CItem, CImage, CVideo, Tag, User, Notification, Gallery } from '../shared/models';
-import { NotificationService } from '../notifications/notification.service';
+// import { NotificationService } from '../notifications/notification.service';
 import { GalleryService } from "./gallery.service";
 import { PreferencesService } from "../user/preferences.service";
 import { ErrorService } from "../errorhandling/error.service";
@@ -31,7 +31,7 @@ export class WorksService {
 
     constructor(
         private http: HttpClient,
-        private notify: NotificationService,
+        // private notify: NotificationService,
         private galleryservice: GalleryService,
         private prefs: PreferencesService,
         private errors: ErrorService
@@ -146,7 +146,7 @@ export class WorksService {
     }
     likeItem(item: CItem) {
         let url = '/frog/like/' + item.guid;
-        this.notify.add(new Notification('Liked', 'thumb_up'));
+        // this.notify.add(new Notification('Liked', 'thumb_up'));
         this.http.put(url, null)
             .map(this.errors.extractValues, this.errors)
             .subscribe(items => {
@@ -161,7 +161,7 @@ export class WorksService {
             withCredentials: true
         };
 
-        this.notify.add(new Notification('Item details updated', 'done'));
+        // this.notify.add(new Notification('Item details updated', 'done'));
 
         return this.http.put(url, options)
             .map(this.errors.extractValue, this.errors);
@@ -180,7 +180,7 @@ export class WorksService {
             .map(this.errors.extractValues, this.errors)
             .subscribe(() => {
                 items.map(function (_) { _.author = user; });
-                this.notify.add(new Notification('New artist set', 'done'));
+                // this.notify.add(new Notification('New artist set', 'done'));
             }, error => this.errors.handleError(error));
     }
     editTags(items: CItem[], add: Tag[], remove: Tag[]) {
@@ -194,7 +194,7 @@ export class WorksService {
             withCredentials: true
         };
 
-        this.notify.add(new Notification('Tags modified', 'label'));
+        // this.notify.add(new Notification('Tags modified', 'label'));
 
         return this.http.post(url, options)
             .map(this.errors.extractValues, this.errors);
@@ -281,7 +281,7 @@ export class WorksService {
                     }
 
                     let message = `Items ${verb}! <a href="/w/${copyTo || this.id}">Go There</a>`;
-                    this.notify.add(new Notification(message));
+                    // this.notify.add(new Notification(message));
                 });
             });
     }

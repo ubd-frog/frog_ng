@@ -6,7 +6,7 @@ const RE_URL = new RegExp(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a
 @Pipe({
     name: 'commentUrl'
 })
-export class CommentURLPipe implements PipeTransform {
+export class CommentUrlPipe implements PipeTransform {
     transform(value: string) {
         if (!value) {
             return value;

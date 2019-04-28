@@ -40,7 +40,7 @@
                 <div class="artist">
                     <div *ngIf="!editing" class="artist-name-and-headline">
                         <div class="name">
-                            <a href="{{authorLink}}" class="light-green-text">{{item.author.name | capitalize:true}}</a>
+                            <a href="{{authorLink}}" class="light-green-text">{{item.author.name}}</a>
                         </div>
                         <div class="headline">{{item.author.email}}</div>
                     </div>
@@ -93,7 +93,7 @@
             </div>
             <div *ngIf="gallery" class="col s6">
                 <a (click)="copyNav.toggle()" class="waves-effect waves-light btn blue lighten-2"><i class="material-icons left">content_copy</i> Copy To</a>
-                <works-nav #copyNav (onSelect)="gallerySelectHandler($event)"></works-nav>
+                <!-- <works-nav #copyNav (onSelect)="gallerySelectHandler($event)"></works-nav> -->
             </div>
         </div>
         <div *ngIf="gallery" class="row">
@@ -102,7 +102,7 @@
             </div>
             <div class="col s6">
                 <a (click)="moveNav.toggle()" class="waves-effect waves-light btn blue"><i class="material-icons left">exit_to_app</i> Move To</a>
-                <works-nav #moveNav (onSelect)="gallerySelectHandler($event, true)"></works-nav>
+                <!-- <works-nav #moveNav (onSelect)="gallerySelectHandler($event, true)"></works-nav>-->
             </div>
         </div>
         <hr />

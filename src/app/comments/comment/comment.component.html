@@ -8,7 +8,7 @@
 </div>
 <div class="comment-body">
     <div class="commenter">
-        <a class="light-green-text">{{comment.user?.name | capitalize:true}}</a>
+        <a class="light-green-text">{{comment.user?.name}}</a>
     </div>
     <div class="commenter-headline grey-text text-darken-1">{{comment.user?.email}}</div>
     <i *ngIf="isOwner" (click)="edit()" class="material-icons right pointer" [class.light-green-text]="editing">{{(editing) ? "check_circle" : "edit"}}</i>

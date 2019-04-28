@@ -1,12 +1,12 @@
 import { Component, ElementRef, Input, Output, EventEmitter, OnInit, AfterViewInit } from '@angular/core';
+import { User } from '../../shared/models';
+import { UserService } from '../user.service';
 
-import { UserService } from './user.service';
-import { User } from '../shared/models';
 
 
 @Component({
     selector: 'userinput',
-    templateUrl: './html/userinput.html',
+    templateUrl: './userinput.component.html',
     styles: [
         '.input-field { height: 64px; }',
         '.input-field label.active { transform: translateY(0); }',
@@ -22,6 +22,7 @@ import { User } from '../shared/models';
 export class UserInputComponent implements OnInit, AfterViewInit {
     @Output() onSelect = new EventEmitter<any>();
     @Input() user: User;
+
     private users: User[];
     private selectedIndex: number;
     public query: string;
@@ -57,7 +58,7 @@ export class UserInputComponent implements OnInit, AfterViewInit {
         }
         else {
             if (this.query !== '') {
-                this.filteredList = this.users.filter(function(user) {
+                this.filteredList = this.users.filter(function (user) {
                     return user.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
                 }.bind(this));
             }
@@ -66,7 +67,7 @@ export class UserInputComponent implements OnInit, AfterViewInit {
             }
         }
     }
-    select(user=null) {
+    select(user = null) {
         if (user === null) {
             user = this.filteredList[this.selectedIndex];
         }

@@ -1,17 +1,16 @@
 import { Component, AfterViewInit, ViewChild, HostListener } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Router } from '@angular/router';
+import { NavigationComponent } from '../navigation/navigation.component';
+import { UserInputComponent } from '../../user/userinput/userinput.component';
+import { RemoveDialogComponent } from '../../shared/remove-dialog/remove-dialog.component';
+import { CItem, Tag, User, Gallery } from '../../shared/models';
+import { SelectionService } from '../../shared/selection.service';
+import { WorksService } from '../works.service';
+import { TagsService } from '../../tags/tags.service';
+import { UserService } from '../../user/user.service';
+import { ErrorService } from '../../errorhandling/error.service';
 
-import { SelectionService } from '../shared/selection.service';
-import { Tag, Gallery, User, Notification, CItem } from '../shared/models';
-import { TagsService } from '../tags/tags.service';
-import { NavigationComponent } from './navigation.component';
-import { UserService } from '../user/user.service';
-import { UserInputComponent } from '../user/userinput.component';
-import { NotificationService } from '../notifications/notification.service';
-import { WorksService } from './works.service';
-import { ErrorService } from '../errorhandling/error.service';
-import { RemoveDialogComponent } from '../shared/remove-dialog.component';
 
 
 declare var $: any;
@@ -19,7 +18,7 @@ declare var $: any;
 
 @Component({
     selector: 'selection-detail',
-    templateUrl: './html/selection-detail.html',
+    templateUrl: './selection-detail.component.html',
     styles: [
         '.side-nav { padding: 6px .25rem 0 .25rem; width: 360px; z-index: 3010; }',
         '.side-nav li { line-height: inherit; }',
@@ -77,7 +76,7 @@ export class SelectionDetailComponent implements AfterViewInit {
         private works: WorksService,
         private tagsservice: TagsService,
         private userservice: UserService,
-        private notify: NotificationService,
+        // private notify: NotificationService,
         private errors: ErrorService,
         private router: Router) {
         this.tags = [];
@@ -177,6 +176,6 @@ export class SelectionDetailComponent implements AfterViewInit {
     }
     selectArtistHandler(user: User) {
         this.works.setArtist(this.items, user);
-        this.notify.add(new Notification('Artists changed', 'done'));
+        // this.notify.add(new Notification('Artists changed', 'done'));
     }
 }

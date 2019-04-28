@@ -1,18 +1,18 @@
 import { Component, OnInit, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-
-import { PreferencesService } from '../user/preferences.service';
-import { UserService } from '../user/user.service';
-import { SiteConfig, User, Preferences } from '../shared/models';
 import { Subscription, Observable } from 'rxjs';
-import { GalleryService } from './gallery.service';
-import { SiteConfigService } from '../shared/siteconfig.service';
+import { User, SiteConfig } from '../../shared/models';
+import { PreferencesService } from '../../user/preferences.service';
+import { UserService } from '../../user/user.service';
+import { GalleryService } from '../gallery.service';
+import { SiteConfigService } from '../../shared/siteconfig.service';
+
 
 
 @Component({
     moduleId: module.id,
     selector: 'site-menu',
-    templateUrl: './html/site-menu.html',
+    templateUrl: './sitemenu.component.html',
     styles: [
         'ul { position:absolute; right: 0; min-width: 250px; border: 1px solid #333; }',
         'li.active { background-color: #2b2b2b; }',

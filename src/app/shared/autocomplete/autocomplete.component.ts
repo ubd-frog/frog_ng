@@ -1,12 +1,12 @@
-import {Component, ElementRef, Input, Output, EventEmitter, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { TagsService } from '../../tags/tags.service';
+import { Tag } from '../models';
 
-import { TagsService } from '../tags/tags.service';
-import { Tag } from './models';
-import {Subscription} from "rxjs";
 
 @Component({
     selector: 'autocomplete',
-    templateUrl: './html/autocomplete.html',
+    templateUrl: './autocomplete.component.html',
     styles: [
         '.input-field { height: 64px; }',
         '.input-field label.active { transform: translateY(0); }',
@@ -97,7 +97,7 @@ export class AutocompleteComponent {
             this.filteredList = [];
         }
     }
-    select(event: any, item:Tag = null) {
+    select(event: any, item: Tag = null) {
         if (this.textedit.nativeElement.value.length === 0) {
             return;
         }

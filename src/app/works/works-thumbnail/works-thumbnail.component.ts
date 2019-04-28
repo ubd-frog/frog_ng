@@ -2,13 +2,13 @@ import { Component, Input, OnDestroy, ElementRef, AfterViewInit, ViewChild, OnIn
 import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
+import { CItem, Preferences } from '../../shared/models';
+import { SelectionService } from '../../shared/selection.service';
+import { WorksService } from '../works.service';
+import { ViewportService } from '../viewport.service';
+import { TagsService } from '../../tags/tags.service';
+import { PreferencesService } from '../../user/preferences.service';
 
-import { WorksService } from './works.service';
-import { ViewportService } from './viewport.service';
-import { CItem, Preferences } from '../shared/models';
-import { TagsService } from '../tags/tags.service';
-import { SelectionService } from '../shared/selection.service';
-import { PreferencesService } from '../user/preferences.service';
 
 
 declare var $: any;
@@ -16,7 +16,7 @@ declare var $: any;
 
 @Component({
     selector: 'thumbnail',
-    templateUrl: './html/works-thumbnail.html',
+    templateUrl: './works-thumbnail.component.html',
     styles: [
         'img { width: 100%; height: auto; display: block; }',
         'p { position: absolute; bottom: 12px; width: 100%; font-size: 18px; color: #fff; font-weight: normal; overflow: hidden; cursor: pointer; line-height: initial; }',

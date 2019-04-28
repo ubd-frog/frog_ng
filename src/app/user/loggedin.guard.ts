@@ -5,7 +5,9 @@ import { Observable } from 'rxjs';
 import { UserService } from './user.service';
 
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class LoggedInGuard implements CanActivate {
 
     constructor(private service: UserService) {

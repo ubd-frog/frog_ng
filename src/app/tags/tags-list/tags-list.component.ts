@@ -3,14 +3,13 @@ import { trigger, state, style } from '@angular/animations';
 import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
-
-import { TagsService } from './tags.service';
-import { Tag } from '../shared/models';
+import { Tag } from '../../shared/models';
+import { TagsService } from '../tags.service';
 
 
 @Component({
     selector: 'tags-list',
-    templateUrl: './html/tags-list.html',
+    templateUrl: './tags-list.component.html',
     styles: [
         'div#modal { position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.48); z-index: 4000; }',
         '.modal { display: block; top: 10%; width: 80%; }',

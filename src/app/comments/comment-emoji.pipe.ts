@@ -1,12 +1,12 @@
-import { shortnameToImage,  } from 'emojione';
-import {PipeTransform, Pipe} from "@angular/core";
+import { shortnameToImage, } from 'emojione';
+import { PipeTransform, Pipe } from "@angular/core";
 
 
 
 @Pipe({
     name: 'emojione'
 })
-export class EmojiOnePipe implements PipeTransform {
+export class CommentEmojiPipe implements PipeTransform {
     transform(value: string) {
         if (!value) {
             return value;

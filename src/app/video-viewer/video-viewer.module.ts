@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { VideoComponent } from './video/video.component';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [VideoComponent]
+    imports: [
+        CommonModule
+    ],
+    declarations: [VideoComponent],
+    exports: [VideoComponent]
 })
 export class VideoViewerModule { }

@@ -1,12 +1,12 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, HostListener } from '@angular/core';
+import { Point, Rect } from '../../shared/euclid';
+import { SelectionService } from '../../shared/selection.service';
 
-import { Point, Rect } from '../shared/euclid';
-import { SelectionService } from '../shared/selection.service';
 
 
 @Component({
     selector: 'selection-marquee',
-    templateUrl: './html/selection.html',
+    templateUrl: './selection.component.html',
     styles: [
         'div { position: absolute; border: 1px solid rgb(51,153,255); background: rgba(51, 153, 255, 0.5); z-index: 1000; }'
     ]
@@ -38,7 +38,7 @@ export class SelectionComponent implements OnInit, AfterViewInit {
         document.body.classList.remove('noselect');
     }
     @HostListener('window:mousedown', ['$event'])
-    down(event:MouseEvent) {
+    down(event: MouseEvent) {
         if (event.button == 0 && event.shiftKey) {
             event.preventDefault();
             document.body.classList.add('noselect');
@@ -50,11 +50,11 @@ export class SelectionComponent implements OnInit, AfterViewInit {
         }
     }
     @HostListener('window:mousemove', ['$event'])
-    move(event:MouseEvent) {
+    move(event: MouseEvent) {
         if (this.isMouseDown && event.shiftKey) {
             event.preventDefault();
-            let x:number = event.clientX - this.origin.x;
-            let y:number = event.clientY - this.origin.y;
+            let x: number = event.clientX - this.origin.x;
+            let y: number = event.clientY - this.origin.y;
             this.rect.width = 0;
             this.rect.height = 0;
 

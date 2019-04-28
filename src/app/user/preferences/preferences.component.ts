@@ -2,17 +2,17 @@ import { Component } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 import { Subscription } from 'rxjs';
+import { Gallery, User, Preferences } from '../../shared/models';
+import { PreferencesService } from '../preferences.service';
+import { UserService } from '../user.service';
+import { GalleryService } from '../../works/gallery.service';
+import { ErrorService } from '../../errorhandling/error.service';
 
-import { User, Gallery, Preferences } from '../shared/models';
-import { PreferencesService } from './preferences.service';
-import { UserService } from './user.service';
-import { GalleryService } from '../works/gallery.service';
-import { ErrorService } from '../errorhandling/error.service';
 
 
 @Component({
     selector: 'preferences',
-    templateUrl: './html/preferences.html',
+    templateUrl: './preferences.component.html',
     styles: [
         '.side-nav { padding: 6px .25rem 0 .25rem; width: 360px; z-index: 3010; }',
         '.side-nav li { line-height: inherit; }',

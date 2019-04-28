@@ -1,14 +1,13 @@
 import { Component, HostListener } from '@angular/core';
+import { SelectionService } from '../../shared/selection.service';
+import { StorageService } from '../../shared/storage.service';
+import { WorksService } from '../works.service';
 
-import { WorksService } from './works.service';
-import { SelectionService } from '../shared/selection.service';
-import { StorageService } from '../shared/storage.service';
-import { Notification } from '../shared/models';
-import { NotificationService } from '../notifications/notification.service';
+
 
 
 @Component({
-    templateUrl: './html/works.html',
+    templateUrl: './works.component.html',
     styles: [
         '#works_detail { z-index: 4000; }',
         'works-filter { position: fixed; top: 0; z-index: 900; width: 100%; }',
@@ -23,8 +22,8 @@ export class WorksComponent {
         private service: SelectionService,
         private storage: StorageService,
         private workservice: WorksService,
-        private notify: NotificationService
-        ) {
+        // private notify: NotificationService
+    ) {
         this.service.selection.subscribe(items => {
             this.guids = items.map(item => item.guid);
         });
@@ -41,15 +40,15 @@ export class WorksComponent {
         }
         if (event.ctrlKey && event.key === 'c' && this.guids.length > 0) {
             event.preventDefault();
-            this.storage.set('clipboard', {'guids': this.guids, 'id': null});
+            this.storage.set('clipboard', { 'guids': this.guids, 'id': null });
             this.service.clear();
-            this.notify.add(new Notification('Copy', 'content_copy'));
+            // this.notify.add(new Notification('Copy', 'content_copy'));
         }
         if (event.ctrlKey && event.key === 'x' && this.guids.length > 0) {
             event.preventDefault();
-            this.storage.set('clipboard', {'guids': this.guids, 'id': this.workservice.id});
+            this.storage.set('clipboard', { 'guids': this.guids, 'id': this.workservice.id });
             this.service.clear();
-            this.notify.add(new Notification('Cut', 'content_cut'));
+            // this.notify.add(new Notification('Cut', 'content_cut'));
         }
         if (event.ctrlKey && event.key === 'v') {
             if (document.activeElement.tagName === 'BODY') {

@@ -1,18 +1,17 @@
-import {Component, OnDestroy, HostListener} from '@angular/core';
+import { Component, OnDestroy, HostListener } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable, Subscription, } from 'rxjs';
+import { UploadFile } from '../models';
+import { Tag } from '../../shared/models';
+import { UploaderService } from '../uploader.service';
+import { TagsService } from '../../tags/tags.service';
+import { ErrorService } from '../../errorhandling/error.service';
 
-import { UploaderService } from './uploader.service';
-import { UploadFile } from './models';
-import { Tag } from '../shared/models';
-import { TagsService } from '../tags/tags.service';
-import { ErrorService } from '../errorhandling/error.service';
 
 
 @Component({
     selector: 'uploader',
-    templateUrl: './html/uploader.html',
+    templateUrl: './uploader.component.html',
     styles: [
         'div#uploader { position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.48); z-index: 4000; }',
         '.modal { display: block; top: 10%; width: 80%; }',

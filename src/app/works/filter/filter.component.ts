@@ -1,25 +1,25 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
+import { NavigationComponent } from '../navigation/navigation.component';
+import { TagsListComponent } from '../../tags/tags-list/tags-list.component';
+import { ReleaseNotesComponent } from '../../releasenotes/release-notes/release-notes.component';
+import { SiteConfig, User, ReleaseNote, Tag, Gallery } from '../../shared/models';
+import { WorksService } from '../works.service';
+import { UploaderService } from '../../uploader/uploader.service';
+import { PreferencesService } from '../../user/preferences.service';
+import { GalleryService } from '../gallery.service';
+import { UserService } from '../../user/user.service';
+import { TagsService } from '../../tags/tags.service';
+import { ReleaseNotesService } from '../../releasenotes/release-notes.service';
+import { SiteConfigService } from '../../shared/siteconfig.service';
 
-import { WorksService } from './works.service';
-import { GalleryService } from './gallery.service';
-import { NavigationComponent } from './navigation.component';
-import { Tag, Gallery, User, SiteConfig, ReleaseNote } from '../shared/models';
-import { TagsService } from '../tags/tags.service';
-import { UploaderService } from '../uploader/uploader.service';
-import { PreferencesService } from '../user/preferences.service';
-import { UserService } from '../user/user.service';
-import { TagsListComponent } from '../tags/tags-list.component';
-import { ReleaseNotesService } from '../releasenotes/release-notes.service';
-import { ReleaseNotesComponent } from '../releasenotes/release-notes.component';
-import { SiteConfigService } from '../shared/siteconfig.service';
 
 
 @Component({
     selector: 'works-filter',
-    templateUrl: './html/filter.html',
+    templateUrl: './filter.component.html',
     styles: [
         '#filtered_results { position: relative; display: inline-flex; height: 100%; margin: 0 10px; }',
         '.file-field { height: 64px; padding: 0 15px; }',

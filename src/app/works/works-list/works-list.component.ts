@@ -1,15 +1,14 @@
 import { Component, OnDestroy, AfterViewInit, HostListener, ElementRef } from '@angular/core';
 
 import { Subscription } from 'rxjs';
-
-import { WorksService } from './works.service';
-import { CItem } from '../shared/models';
-import { SelectionService } from '../shared/selection.service';
+import { CItem } from '../../shared/models';
+import { WorksService } from '../works.service';
+import { SelectionService } from '../../shared/selection.service';
 
 
 @Component({
     selector: 'works-list',
-    templateUrl: './html/works-list.html',
+    templateUrl: './works-list.component.html',
     styles: [
         '.spinner { position: fixed; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%; color: #fff; font-size: 36px; text-align: center; padding-top: 50%; z-index: 3001; }',
         '.col {padding: 0;}',
@@ -25,7 +24,7 @@ export class WorksListComponent implements OnDestroy, AfterViewInit {
     public loading: boolean;
     public items: CItem[] = [];
 
-    constructor(private element: ElementRef, private service:WorksService, private selectionservice: SelectionService) {
+    constructor(private element: ElementRef, private service: WorksService, private selectionservice: SelectionService) {
         this.subs = [];
         let sub = this.service.results.subscribe(items => {
             if (this.items.length != items[0].length) {

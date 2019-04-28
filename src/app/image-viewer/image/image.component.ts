@@ -1,18 +1,18 @@
 import { Component, Input, AfterViewInit, AfterViewChecked, OnDestroy, HostListener, ViewChild, ElementRef, OnInit } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Subscription, Observable } from 'rxjs';
 
-import { CItem, CImage, Preferences } from '../shared/models';
-import { Point, Matrix, Rect } from '../shared/euclid';
-import { SelectionService } from '../shared/selection.service';
-import { PreferencesService } from '../user/preferences.service';
-import { Subscription } from 'rxjs';
+import { Point, Matrix, Rect } from '../../shared/euclid';
+import { Preferences, CImage, CItem } from '../../shared/models';
+import { SelectionService } from '../../shared/selection.service';
+import { PreferencesService } from '../../user/preferences.service';
+
 
 const kThumbnailSize = 256;
 
 @Component({
     selector: 'frog-image',
-    templateUrl: './html/image.html',
+    templateUrl: './image.component.html',
     styles: [
         '.spinner { position: fixed; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%; color: #fff; font-size: 36px; text-align: center; padding-top: 50%; z-index: 3001; }',
         'canvas { cursor: move; }',
