@@ -7,14 +7,7 @@ import { UserService } from '../user.service';
 @Component({
     selector: 'userinput',
     templateUrl: './userinput.component.html',
-    styles: [
-        '.input-field { height: 64px; }',
-        '.input-field label.active { transform: translateY(0); }',
-        '.input-field input[type=search]+label { left: inherit; }',
-        '.autocomplete-content { position: absolute; width: 100%; }',
-        '.complete-selected { background-color: #eee; }',
-        '#root { position: relative; }'
-    ],
+    styleUrls: ['./userinput.component.css'],
     host: {
         '(document:click)': 'handleClick($event)'
     }

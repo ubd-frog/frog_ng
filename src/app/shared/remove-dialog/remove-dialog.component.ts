@@ -8,10 +8,7 @@ import { SelectionService } from '../selection.service';
 @Component({
     selector: 'remove-dialog',
     templateUrl: './remove-dialog.component.html',
-    styles: [
-        '.modal-block { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #00000082; z-index: 4001; }',
-        '.modal { display: block; top: 15%; }'
-    ]
+    styleUrls: ['./remove-dialog.component.css']
 })
 export class RemoveDialogComponent implements OnInit {
     public items: CItem[];

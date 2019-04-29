@@ -13,14 +13,7 @@ declare var $: any;
 @Component({
     selector: 'works-nav',
     templateUrl: './navigation.component.html',
-    styles: [
-        'ul { width: 360px; border: 1px solid #333; }',
-        '#create_form { min-height: 0; }',
-        'form { overflow: hidden; }',
-        'form div { padding: 0 20px 20px 20px; border: 1px solid #558b2f; border-width: 1px 0; background-color: #333; }',
-        'li.active { background-color: #2b2b2b; }',
-        'li:hover { background-color: #333; }'
-    ],
+    styleUrls: ['./navigation.component.css'],
     host: {
         '(document:click)': 'handleClick($event)'
     },

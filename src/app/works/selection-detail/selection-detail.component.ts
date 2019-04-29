@@ -19,32 +19,7 @@ declare var $: any;
 @Component({
     selector: 'selection-detail',
     templateUrl: './selection-detail.component.html',
-    styles: [
-        '.side-nav { padding: 6px .25rem 0 .25rem; width: 360px; z-index: 3010; }',
-        '.side-nav li { line-height: inherit; }',
-        'h3 { font-size: 22px; margin-bottom: 10px; margin-top: 0; font-weight: 200; line-height: 1.2em; }',
-        'h4 { margin-top: 0px; font-weight: 300; font-size: 18px; margin-bottom: 12.5px; line-height: 1.2em; }',
-        'h5 { text-transform: uppercase; letter-spacing: 1px; margin-top: 0px; font-weight: 300; font-size: 14px; }',
-        'a { color: inherit; transition: all 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53); font-weight: inherit; }',
-        'a.btn { line-height: 30px !important; height: 30px !important; padding: 0 20px; margin: 0 !important; }',
-        '.btn { line-height: 28px !important; height: 28px !important; padding: 0 2rem; font-size: 12px; }',
-        '.btn i { font-size: 1rem; }',
-        'i { vertical-align: middle; }',
-        'ul > div:first-child { overflow: auto; }',
-        'hr { margin: 8px 0; border-right-style: initial; border-bottom-style: initial; border-left-style: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initia l; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-width: 1px 0px 0px; border-top: 1px solid rgb(49, 49, 49); }',
-        '.separator { height: 1.8em; }',
-        '.separator-sm { height: 0.9em; }',
-        'ul > div > i { cursor: pointer; }',
-        '.brand-logo { font-size: 20px; font-weight: 500; }',
-
-        '.fixed-action-btn { top: 82px; right: 24px; height: 55px; }',
-        '#remove_prompt { z-index: 4000 !important; }',
-        '.stack { position: relative; height: 256px; }',
-        '.stack img { position: absolute; width: 128px; border: 1px solid #ccc; border-bottom-width: 20px; }',
-        '.side-nav { overflow-y: auto; }',
-        '#selection_bar { position:fixed; width: 100%; z-index: 3000; }',
-        '#selection_bar a { cursor: pointer; }'
-    ],
+    styleUrls: ['./selection-detail.component.css'],
     animations: [
         trigger('panelState', [
             state('show', style({

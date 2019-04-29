@@ -7,16 +7,7 @@ import { Tag } from '../models';
 @Component({
     selector: 'autocomplete',
     templateUrl: './autocomplete.component.html',
-    styles: [
-        '.input-field { height: 64px; }',
-        '.input-field label.active { transform: translateY(0); }',
-        '.input-field input[type=search]+label { left: inherit; }',
-        '.input-field > i { top: 8px; }',
-        '.dropdown-content li:hover { background-color: #f8f8f8; }',
-        '.autocomplete-content { position: absolute; width: 100%; }',
-        '.complete-selected { background-color: #eee; }',
-        '#root { position: relative; }'
-    ],
+    styleUrls: ['./autocomplete.component.css'],
     host: {
         '(document:click)': 'handleClick($event)'
     }

@@ -7,9 +7,7 @@ import { SelectionService } from '../../shared/selection.service';
 @Component({
     selector: 'selection-marquee',
     templateUrl: './selection.component.html',
-    styles: [
-        'div { position: absolute; border: 1px solid rgb(51,153,255); background: rgba(51, 153, 255, 0.5); z-index: 1000; }'
-    ]
+    styleUrls: ['./selection.component.css']
 })
 export class SelectionComponent implements OnInit, AfterViewInit {
     @ViewChild('canvas') canvas: ElementRef;

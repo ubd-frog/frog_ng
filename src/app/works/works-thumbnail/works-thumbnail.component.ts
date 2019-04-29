@@ -17,18 +17,7 @@ declare var $: any;
 @Component({
     selector: 'thumbnail',
     templateUrl: './works-thumbnail.component.html',
-    styles: [
-        'img { width: 100%; height: auto; display: block; }',
-        'p { position: absolute; bottom: 12px; width: 100%; font-size: 18px; color: #fff; font-weight: normal; overflow: hidden; cursor: pointer; line-height: initial; }',
-        'div > i { vertical-align: middle; cursor: pointer; }',
-        'div > small { vertical-align: middle; }',
-        '.actions { position: absolute; right: 4px; bottom: 4px; cursor: pointer; }',
-        '.tiny { font-size: 1.2rem; }',
-        '.author { position: absolute; left: 4px; bottom: 10px; font-size: 0.8rem; cursor: pointer; }',
-        '.semi { opacity: 0.5; }',
-        '.tags { position: absolute; top: 0; left: 0; }',
-        '.tag { line-height: 26px; background-color: #fff; color: #000; margin: 0 2px; padding: 2px; border: 1px solid #333; border-radius: 2px;}'
-    ]
+    styleUrls: ['./works-thumbnail.component.css']
 })
 export class WorksThumbnailComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() item;

@@ -1,0 +1,4 @@
+#works_detail { z-index: 4000; }
+works-filter { position: fixed; top: 0; z-index: 900; width: 100%; }
+works-list { position: absolute; top: 63px; overflow-x: hidden; width: 100%; }
+works-list { -webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none; }

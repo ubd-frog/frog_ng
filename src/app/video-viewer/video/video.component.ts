@@ -11,15 +11,7 @@ import { SelectionService } from '../../shared/selection.service';
 @Component({
     selector: 'frog-video',
     templateUrl: './video.component.html',
-    styles: [
-        'video, canvas { width: 100%; height: 100%; }',
-        '.video_player { position: relative; margin: 0 auto; z-index: 3000; }',
-        '.video_player canvas { cursor: ew-resize; }',
-        '.info { font-family: Courier; background-color: #000; }',
-        '.row { margin: 0; padding: 0; }',
-        'i { vertical-align: middle; }',
-        '.progress .determinate { transition: none !important; }'
-    ]
+    styleUrls: ['./video.component.css']
 })
 export class VideoComponent implements OnDestroy {
     @ViewChild('vid') vid: ElementRef;

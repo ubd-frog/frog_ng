@@ -8,11 +8,7 @@ import { isInt } from '../../shared/common';
 @Component({
     selector: 'tag',
     templateUrl: './tag.component.html',
-    styles: [
-        '.chip, .chip > i.material-icons { height: 24px; line-height: 24px; border-radius: 2px; }',
-        '.chip > i.material-icons:first-child { margin-right: 8px; font-size: 16px; height: 24px; line-height: 24px; }',
-        'span { cursor: pointer; }'
-    ]
+    styleUrls: ['./tag.component.css']
 })
 export class TagComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() item: any;

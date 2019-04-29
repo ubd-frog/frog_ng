@@ -13,12 +13,7 @@ import { SiteConfigService } from '../../shared/siteconfig.service';
     moduleId: module.id,
     selector: 'site-menu',
     templateUrl: './sitemenu.component.html',
-    styles: [
-        'ul { position:absolute; right: 0; min-width: 250px; border: 1px solid #333; }',
-        'li.active { background-color: #2b2b2b; }',
-        'li:hover, .divider { background-color: #333; }',
-        '.dropdown-content { overflow: hidden; opacity: 1; }'
-    ],
+    styleUrls: ['./sitemenu.component.css'],
     host: {
         '(document:click)': 'handleClick($event)'
     },

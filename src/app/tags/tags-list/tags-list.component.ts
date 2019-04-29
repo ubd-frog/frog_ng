@@ -10,19 +10,7 @@ import { TagsService } from '../tags.service';
 @Component({
     selector: 'tags-list',
     templateUrl: './tags-list.component.html',
-    styles: [
-        'div#modal { position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.48); z-index: 4000; }',
-        '.modal { display: block; top: 10%; width: 80%; }',
-        '.root { font-weight: bold; }',
-        '.modal-content { overflow: hidden; height: 100%; }',
-        '.modal-content > div.row { height: 86%; }',
-        '.modal-content div.row .col:first-child { height: 100%; }',
-        '.modal-content div.row .col:first-child > div:last-child { overflow-y: auto; height: 100%; }',
-        '.switch { display: inline; }',
-        'span.badge { right: 64px; }',
-        'a { cursor: pointer; }',
-        '.tag-item { cursor: pointer; }'
-    ],
+    styleUrls: ['./tags-list.component.css'],
     animations: [
         trigger('panelState', [
             state('show', style({

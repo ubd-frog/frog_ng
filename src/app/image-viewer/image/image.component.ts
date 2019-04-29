@@ -13,16 +13,7 @@ const kThumbnailSize = 256;
 @Component({
     selector: 'frog-image',
     templateUrl: './image.component.html',
-    styles: [
-        '.spinner { position: fixed; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%; color: #fff; font-size: 36px; text-align: center; padding-top: 50%; z-index: 3001; }',
-        'canvas { cursor: move; }',
-        'img { opacity: 0; width: 100%; height: 100%; position: absolute; cursor: url("//ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur") 7 5, default; }',
-        'img:active { cursor: url("//ssl.gstatic.com/ui/v1/icons/mail/images/2/closedhand.cur") 7 5, default; }',
-        '.info { position:absolute; width: 100%; font-family: monospace; font-weight: 500; }',
-        '.progress { position: absolute; margin: 0; background-color: transparent; }',
-
-        '.gif { opacity: 1; width: inherit; height: inherit; }'
-    ]
+    styleUrls: ['./image.component.css']
 })
 export class ImageComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
     @ViewChild('canvas') canvas: ElementRef;

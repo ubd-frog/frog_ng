@@ -20,12 +20,7 @@ import { SiteConfigService } from '../../shared/siteconfig.service';
 @Component({
     selector: 'works-filter',
     templateUrl: './filter.component.html',
-    styles: [
-        '#filtered_results { position: relative; display: inline-flex; height: 100%; margin: 0 10px; }',
-        '.file-field { height: 64px; padding: 0 15px; }',
-        '.file-field i { margin: 0; }',
-        '.file-field:hover { background-color: rgba(0,0,0,0.1); }'
-    ]
+    styleUrls: ['./filter.component.css']
 })
 export class FilterComponent implements OnInit, OnDestroy {
     @ViewChild(NavigationComponent) nav: NavigationComponent;

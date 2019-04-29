@@ -9,11 +9,7 @@ import { SelectionService } from '../../shared/selection.service';
 @Component({
     selector: 'works-list',
     templateUrl: './works-list.component.html',
-    styles: [
-        '.spinner { position: fixed; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%; color: #fff; font-size: 36px; text-align: center; padding-top: 50%; z-index: 3001; }',
-        '.col {padding: 0;}',
-        'works-detail { user-select: initial; }'
-    ]
+    styleUrls: ['./works-list.component.css']
 })
 export class WorksListComponent implements OnDestroy, AfterViewInit {
     private length: number = 0;
