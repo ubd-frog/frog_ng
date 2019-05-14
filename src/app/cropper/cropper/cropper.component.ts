@@ -36,16 +36,16 @@ export class CropperComponent implements AfterViewChecked {
     constructor(private service: WorksService) {
         this.rect = new Rect(0, 0, 400, 400);
         this.handle = '';
+        this.width = 400;
+        this.height = 400;
     }
     ngAfterViewChecked() {
         if (!this.item) {
             return;
         }
         let imgrect = new Rect(0, 0, this.item.width, this.item.height).fit(this.content.nativeElement.clientWidth - 48, this.content.nativeElement.clientHeight - 48 - 37);
-        setTimeout(() => {
-            this.width = imgrect.width;
-            this.height = imgrect.height;
-        }, 0);
+        this.width = imgrect.width;
+        this.height = imgrect.height;
     }
     crop() {
         let ratio: number = this.width / this.item.width;
