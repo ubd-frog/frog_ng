@@ -6,6 +6,7 @@ import { PreferencesService } from '../../user/preferences.service';
 import { UserService } from '../../user/user.service';
 import { GalleryService } from '../gallery.service';
 import { SiteConfigService } from '../../shared/siteconfig.service';
+import { TagsListComponent } from '../../tags/tags-list/tags-list.component';
 
 
 
@@ -31,6 +32,8 @@ import { SiteConfigService } from '../../shared/siteconfig.service';
     ]
 })
 export class SiteMenuComponent implements OnInit, OnDestroy {
+    @ViewChild('tagslist') tagslist: TagsListComponent;
+
     private elementRef: ElementRef;
     private subs: Subscription[] = [];
     public visible = 'hide';
@@ -81,7 +84,7 @@ export class SiteMenuComponent implements OnInit, OnDestroy {
             }
         }
     }
-    slideShowDialog() {
-
+    showTagsList(element: HTMLElement) {
+        this.tagslist.show();
     }
 }
