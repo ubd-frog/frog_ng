@@ -3,9 +3,9 @@
         <h5>{{gallery.title}}</h5>
     </div>
     <div class="col s6">
-        <input type="checkbox" class="filled-in" id="sub_weekly_{{gallery.id}}" [(ngModel)]="weekly" (change)="service.subscribe(gallery.id, 0)" />
+        <input type="checkbox" class="filled-in" [(ngModel)]="weekly" (change)="subscribe(gallery, 0)" />
         <label htmlFor="sub_weekly_{{gallery.id}}">Weekly</label>
-        <input type="checkbox" class="filled-in" id="sub_daily_{{gallery.id}}" [(ngModel)]="daily" (change)="service.subscribe(gallery.id, 1)" />
+        <input type="checkbox" class="filled-in" [(ngModel)]="daily" (change)="subscribe(gallery, 1)" />
         <label htmlFor="sub_daily_{{gallery.id}}">Daily</label>
     </div>
 </div>
