@@ -1,0 +1,3 @@
+img { width: 100%; height: auto; display: block; }
+textarea::-webkit-input-placeholder { color: #707070; }
+a { cursor: pointer !important; }

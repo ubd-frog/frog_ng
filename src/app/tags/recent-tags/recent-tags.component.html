@@ -1,0 +1,10 @@
+<div *ngIf="tags.length > 0">
+    <h6>Recent Tags</h6>
+    <tag *ngFor="let tag of tags" [item]="tag.name" [editable]="false" (click)="clickHandler($event, tag)"></tag>
+</div>
+<div *ngIf="tagset.length > 0" (click)="setClickHandler()">
+    <h6>Recent Set</h6>
+    <div  class="set">
+        <tag *ngFor="let tag of tagset" [item]="tag.name" [editable]="false" (click)="clickHandler($event, tag)"></tag>
+    </div>
+</div>

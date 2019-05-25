@@ -1,0 +1,6 @@
+<div class='row' [sortablejs]="item.children" [sortablejsOptions]="options">
+    <div *ngFor="let child of item.children" class='col s3 m3 l2 xl1'>
+        <a (click)="remove(child)" class="left"><i class="material-icons light-green-text">delete</i></a>
+        <group-thumbnail [item]="child" class="z-depth-1"></group-thumbnail>
+    </div>
+</div>

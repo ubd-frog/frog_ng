@@ -1,8 +1,0 @@
-<div class="progress" *ngIf="percent < 100">
-    <div class="determinate light-green" [style.width.%]="percent"></div>
-</div>
-<div class="info grey-text text-darken-1 center">
-    <span>{{object?.title}} - {{object?.author?.name}}</span>
-</div>
-<img #img src="{{object.image}}" (mousedown)="down($event)" (mousemove)="move($event)" (mousewheel)="zoom($event)" (DOMMouseScroll)="zoomFF($event)" [class.gif]="ext === 'gif'" />
-<canvas #canvas width="{{width}}" height="{{height}}"></canvas>
