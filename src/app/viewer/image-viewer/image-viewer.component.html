@@ -1,0 +1,17 @@
+<div class="progress" *ngIf="percent < 100">
+    <div class="determinate light-green" [style.width.%]="percent"></div>
+</div>
+<div class="info grey-text text-darken-1 center">
+    <span>{{object?.title}} - {{object?.author?.name}}</span>
+</div>
+
+<div class='actions hoverdisplay'>
+    <a (click)="setPanoramic()" class="waves-effect waves-light btn-floating right grey darken-4" title="Panoramic"><i
+            class="material-icons">panorama_horizontal</i></a>
+</div>
+<marzipano-viewer #pano *ngIf="object.panoramic"></marzipano-viewer>
+
+<img #img src="{{object.image}}" (mousewheel)="zoom($event)" (mousedown)="panStart($event)" (panend)="upTouch($event)"
+    (panstart)="panStart($event)" (panmove)="panMove($event)" (pinchin)="zoomTouch($event)" (DOMMouseScroll)="zoomFF($event)"
+    [class.gif]="ext === 'gif'" />
+<canvas #canvas width="{{width}}" height="{{height}}" [class.invisible]="object.panoramic"></canvas>

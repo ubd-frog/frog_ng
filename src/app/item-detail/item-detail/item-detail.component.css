@@ -1,0 +1,36 @@
+.side-nav { padding: 16px .25rem 0 .25rem; width: 360px; z-index: 4010; }
+.side-nav li { line-height: inherit; }
+h3 { font-size: 22px; margin-bottom: 10px; margin-top: 0; font-weight: 200; line-height: 1.2em; }
+h4 { margin-top: 0px; font-weight: 300; font-size: 18px; margin-bottom: 12.5px; line-height: 1.2em; }
+h5 { text-transform: uppercase; letter-spacing: 1px; margin-top: 0px; font-weight: 300; font-size: 14px; }
+a { transition: all 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53); font-weight: inherit; }
+a.btn { line-height: 30px !important; width: 100%; height: 30px !important; padding: 0 20px; margin: 0 !important; }
+.btn { font-size: 12px; }
+.btn i { font-size: 1rem; }
+i { vertical-align: middle; }
+ul > div:first-child { overflow: auto; }
+hr { margin: 8px 0; border-right-style: initial; border-bottom-style: initial; border-left-style: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initia l; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-width: 1px 0px 0px; border-top: 1px solid rgb(49, 49, 49); }
+.separator { height: 1.8em; }
+.separator-sm { height: 0.9em; }
+ul > div > i, #edit_actions i { cursor: pointer; }
+.center-align img { width: 80%; }
+.btn.file-field { width: 100%; padding: 0 12px; }
+
+td {font-size: 12px; padding: 6px 5px;}
+div.name { display: block; min-height: 30px; }
+div.name a { line-height: 28px; font-size: 28px; padding: 0; height: inherit; }
+.artist-name-and-headline { margin-left: 0; }
+.headline { line-height: 20px; font-size: 14px; min-height: 20px; }
+.list-inline { padding-left: 0px; margin-left: -5px; list-style: none; }
+.list-inline > li { display: inline-block; padding-left: 5px; padding-right: 5px; line-height: inherit; }
+.description p { white-space: pre-wrap; }
+comment-item { display: inline-flex; width: 100%; }
+.editable:hover i { display: block; }
+.file-field .btn { padding: 0 12px; }
+.file-field > a { margin: 0 12px 0 0; }
+textarea { border: none; border-left: 4px solid #4caf50; outline: none; transition: height 500ms; background-color: #1b1b1b; }
+textarea.expanded { height: 100px; }
+textarea::-webkit-input-placeholder { color: #707070; }
+#remove_prompt_single { z-index: 4020 !important; }
+#edit_actions { position: fixed; top: 0; width: 340px; z-index: 4011; padding-top: 6px; }
+b { cursor: pointer; text-decoration: underline; }

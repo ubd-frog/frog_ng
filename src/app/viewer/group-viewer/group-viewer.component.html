@@ -1,0 +1,20 @@
+<div class="keyboard">
+    <kbd class="light-green lighten-3" style="margin-right: 20px;">q</kbd>
+    <kbd class="light-green lighten-3" style="margin-right: 42px;">e</kbd>
+</div>
+<div id='viewer' class="noselect" [style.background]="prefs.backgroundColor">
+    <frog-image [hidden]="itemtype !== 'image'" [manual]="true"></frog-image>
+    <frog-video [hidden]="itemtype !== 'video'" [manual]="true"></frog-video>
+</div>
+<div class="row bottom">
+    <div class="col s8 l4">
+        <div class="row">
+            <div class="col s2" *ngFor="let item of objects; let i = index">
+                <a (click)="setIndex(i)">
+                    <img src="{{item.thumbnail}}" [class.active]="i === index" />
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+

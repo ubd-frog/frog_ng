@@ -1,0 +1,19 @@
+<i class="mdi tiny light-green-text asset-type" [ngClass]="'mdi-' + assettype"></i>
+
+<a href="/v/{{item.guid}}" (click)="clickHandler($event)">
+    <img #img src='{{thumbnail}}' [style.padding.px]="prefs.thumbnailPadding" />
+</a>
+
+<div class='thumbnail-details light-green-text' [class.semi]="prefs.semiTransparent">
+    <p class="truncate">{{item.title}}
+        <small>{{item.created | date:'short'}}</small>
+    </p>
+    <div class="actions text-green">
+        <i *ngIf="siteconfig.enable_likes" (click)="like()" class="tiny material-icons">thumb_up</i>
+        <small *ngIf="siteconfig.enable_likes">{{item.like_count}}</small>
+        <i (click)="setFocus($event)" class="tiny material-icons">comment</i>
+        <small>{{item.comment_count}}</small>
+        <i (click)="setFocus($event)" class="tiny material-icons">info</i>
+    </div>
+    <small class="author" (click)="setAuthor(item.author.name)">{{item.author.name | capitalize:true}}</small>
+</div>

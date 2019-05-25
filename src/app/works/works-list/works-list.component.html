@@ -1,0 +1,25 @@
+<works-detail></works-detail>
+
+<div *ngIf="loading" class='spinner'>
+    working...
+    <div class="preloader-wrapper small active">
+        <div class="spinner-layer spinner-green-only">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+                <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="items.length === 0">
+    <h5 class="light-green-text center-align">No images were found</h5>
+    <p class="light-green-text center-align">Upload something with the <i class="material-icons">cloud_upload</i> button at the top</p>
+</div>
+<div class='row'>
+    <thumbnail class='col m1' id="{{item.guid}}" [class.loaded]="item.loaded" [class.large]="prefs.largeThumbnails" *ngFor="let item of items" [item]="item" [class.selected]="item.selected" (dragstart)="dragStartHandler($event, item)"></thumbnail>
+</div>

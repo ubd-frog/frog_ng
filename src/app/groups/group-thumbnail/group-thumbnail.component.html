@@ -1,0 +1,9 @@
+<a href="/v/0/{{item.guid}}">
+    <img #img src='{{thumbnail}}' />
+</a>
+<div class='thumbnail-details light-green-text'>
+    <form #form="ngForm">
+        <input id="title" type="text" name="title" [(ngModel)]="item.title" (keydown)="$event.stopPropagation();" (keypress)="$event.stopPropagation();" />
+        <textarea id="description" name="description" class="materialize-textarea expanded" [(ngModel)]="item.description" (keydown)="$event.stopPropagation();" (keypress)="$event.stopPropagation();" placeholder="Description"></textarea>
+    </form>
+</div>

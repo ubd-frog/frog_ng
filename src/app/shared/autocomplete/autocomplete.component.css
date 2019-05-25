@@ -1,0 +1,8 @@
+.input-field { height: 64px; }
+.input-field label { transform: translateY(0); }
+.input-field input[type=search]+label { left: inherit; }
+.input-field > i { top: 8px; }
+.dropdown-content li:hover { background-color: #f8f8f8; }
+.autocomplete-content { position: absolute; width: 100%; }
+.complete-selected { background-color: #eee; }
+#root { position: relative; }
