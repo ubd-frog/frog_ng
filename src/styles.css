@@ -18,35 +18,56 @@ body {
     .row .col.m1{
         width:25%;margin-left:auto;left:auto;right:auto
     }
+    .row .col.m1.large{
+        width:50%;margin-left:auto;left:auto;right:auto
+    }
 }
 @media only screen and (min-width: 992px){
     .row .col.m1{
         width:20%;margin-left:auto;left:auto;right:auto
+    }
+    .row .col.m1.large{
+        width:33.33333333%;margin-left:auto;left:auto;right:auto
     }
 }
 @media only screen and (min-width: 1200px){
     .row .col.m1{
         width:16.666667%;margin-left:auto;left:auto;right:auto
     }
+    .row .col.m1.large{
+        width:33.33333333%;margin-left:auto;left:auto;right:auto
+    }
 }
 @media only screen and (min-width: 1440px){
     .row .col.m1{
         width:14.285714286%;margin-left:auto;left:auto;right:auto
+    }
+    .row .col.m1.large{
+        width:25%;margin-left:auto;left:auto;right:auto
     }
 }
 @media only screen and (min-width: 1680px){
     .row .col.m1{
         width:12.5%;margin-left:auto;left:auto;right:auto
     }
+    .row .col.m1.large{
+        width:25%;margin-left:auto;left:auto;right:auto
+    }
 }
 @media only screen and (min-width: 1920px){
     .row .col.m1{
         width:11.11111111111%;margin-left:auto;left:auto;right:auto
     }
+    .row .col.m1.large{
+        width:20%;margin-left:auto;left:auto;right:auto
+    }
 }
 @media only screen and (min-width: 2200px){
     .row .col.m1{
         width:10%;margin-left:auto;left:auto;right:auto
+    }
+    .row .col.m1.large{
+        width:16.666667%;margin-left:auto;left:auto;right:auto
     }
 }
 
