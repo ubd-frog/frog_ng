@@ -1,5 +1,7 @@
 /* Master Styles */
 
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 body {
    background-color: #202020;
    font-weight: 300 !important;

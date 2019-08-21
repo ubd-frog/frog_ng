@@ -1,6 +1,6 @@
 import { NgModule, enableProdMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule, BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientXsrfModule, HttpClientModule } from '@angular/common/http';
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -45,7 +45,7 @@ enableProdMode();
             headerName: 'X-CSRFToken'
         }),
         ReactiveFormsModule,
-        NoopAnimationsModule,
+        BrowserAnimationsModule,
 
         FrogAppRoutingModule,
         WorksRoutingModule,
