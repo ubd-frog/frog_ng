@@ -31,6 +31,7 @@ import { FrogAppRoutingModule } from './app-routing.module';
 import { WorksRoutingModule } from './works/works-routing.module';
 import { UserRoutingModule } from './user/user-routing.module';
 import { ViewerRoutingModule } from './viewer/viewer-routing.module';
+import { SiteconfigModule } from './siteconfig/siteconfig.module';
 
 
 enableProdMode();
@@ -64,7 +65,8 @@ enableProdMode();
         UserModule,
         ViewerModule,
         WorksModule,
-        ItemDetailModule
+        ItemDetailModule,
+        SiteconfigModule
     ],
     declarations: [
         AppComponent

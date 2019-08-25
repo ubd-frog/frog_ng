@@ -4,6 +4,8 @@ import { Title } from '@angular/platform-browser';
 
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Observable } from 'rxjs/Observable';
+import { first, last } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 
 import { Gallery, SiteConfig } from '../shared/models';
 import { ErrorService } from '../errorhandling/error.service';
@@ -22,7 +24,7 @@ export class GalleryService {
     private siteconfig: SiteConfig;
 
     constructor(
-        private http:HttpClient,
+        private http: HttpClient,
         private title: Title,
         private errors: ErrorService,
         private siteconfigservice: SiteConfigService
@@ -44,7 +46,7 @@ export class GalleryService {
         let galleryreq = this.http.get(url, options)
             .map(this.errors.extractValues, this.errors);
 
-        Observable.forkJoin([galleryreq, this.siteconfigservice.siteconfig]).subscribe(results => {
+        combineLatest(galleryreq, this.siteconfigservice.siteconfig).subscribe(results => {
             this._items = results[0];
             this.siteconfig = results[1];
             this.items.next(this._items);
