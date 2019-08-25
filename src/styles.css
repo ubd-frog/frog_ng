@@ -1,5 +1,7 @@
 /* Master Styles */
 
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 body {
    background-color: #202020;
    font-weight: 300 !important;
@@ -70,6 +72,11 @@ body {
         width:16.666667%;margin-left:auto;left:auto;right:auto
     }
 }
+
+input:not([type]), input[type=text]:not(.browser-default), input[type=password]:not(.browser-default), input[type=email]:not(.browser-default), input[type=url]:not(.browser-default), input[type=time]:not(.browser-default), input[type=date]:not(.browser-default), input[type=datetime]:not(.browser-default), input[type=datetime-local]:not(.browser-default), input[type=tel]:not(.browser-default), input[type=number]:not(.browser-default), input[type=search]:not(.browser-default), textarea.materialize-textarea {
+    margin: 0 !important;
+}
+.mat-form-field-infix { padding: .4375em 0 0 0 !important; }
 
 /*
  * See https://github.com/angular/angular.io/blob/master/public/docs/_examples/styles.css
