@@ -9,7 +9,7 @@ import { combineLatest } from 'rxjs';
 
 import { Gallery, SiteConfig } from '../shared/models';
 import { ErrorService } from '../errorhandling/error.service';
-import { SiteConfigService } from '../shared/siteconfig.service';
+import { SiteConfigService } from '../siteconfig';
 
 
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SiteConfigService } from '../../shared/siteconfig.service';
+import { SiteConfigService } from '../siteconfig.service';
 import { SiteConfig } from '../../shared/models';
 import { Subscription } from 'rxjs';
 

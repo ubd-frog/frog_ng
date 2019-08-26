@@ -14,7 +14,7 @@ import { CropperComponent } from '../../cropper/cropper/cropper.component';
 import { TagsService } from '../../tags/tags.service';
 import { GalleryService } from '../../works/gallery.service';
 import { ErrorService } from '../../errorhandling/error.service';
-import { SiteConfigService } from '../../shared/siteconfig.service';
+import { SiteConfigService } from '../../siteconfig';
 import { NotificationService } from '../../notifications/notification.service';
 import { GroupService } from '../../groups/group.service';
 

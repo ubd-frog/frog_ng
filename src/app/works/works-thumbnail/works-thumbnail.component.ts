@@ -10,7 +10,7 @@ import { CItem, Preferences, Tag, SiteConfig } from '../../shared/models';
 import { TagsService } from '../../tags/tags.service';
 import { SelectionService } from '../../shared/selection.service';
 import { PreferencesService } from '../../user/preferences.service';
-import { SiteConfigService } from '../../shared/siteconfig.service';
+import { SiteConfigService } from '../../siteconfig';
 import { ErrorService } from '../../errorhandling/error.service';
 
 

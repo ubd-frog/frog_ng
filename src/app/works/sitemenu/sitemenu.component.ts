@@ -9,8 +9,7 @@ import { SiteConfig, User } from '../../shared/models';
 import { Subscription, Observable } from 'rxjs';
 import { ManageTagsDialogComponent } from '../../tags/manage-tags-dialog/manage-tags-dialog.component';
 import { ReleasenotesDialogComponent } from '../../releasenotes/releasenotes-dialog/releasenotes-dialog.component';
-import { SiteConfigService } from '../../shared/siteconfig.service';
-import { SiteconfigComponent } from '../../siteconfig/siteconfig/siteconfig.component';
+import { SiteconfigComponent, SiteConfigService } from '../../siteconfig';
 
 
 @Component({
