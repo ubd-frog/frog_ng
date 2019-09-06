@@ -19,6 +19,7 @@ import { ItemDetailModule } from '../item-detail/item-detail.module';
 import { WorksService } from './works.service';
 import { GalleryService } from './gallery.service';
 import { ViewportService } from './viewport.service';
+import { SiteconfigComponent } from '../siteconfig/siteconfig/siteconfig.component';
 
 @NgModule({
     imports: [
@@ -35,6 +36,7 @@ import { ViewportService } from './viewport.service';
     ],
     declarations: [FilterComponent, SelectionComponent, SelectionDetailComponent, SiteMenuComponent, WorksComponent, WorksListComponent, WorksThumbnailComponent],
     exports: [SiteMenuComponent],
-    providers: [WorksService, GalleryService, ViewportService]
+    providers: [WorksService, GalleryService, ViewportService],
+    entryComponents: [SiteconfigComponent]
 })
 export class WorksModule { }

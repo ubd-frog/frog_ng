@@ -166,6 +166,7 @@ export class SiteConfig {
     icon: string;
     link: string;
     enable_likes: boolean;
+    default_gallery: number;
 }
 
 export class ReleaseNote {

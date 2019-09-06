@@ -1,13 +1,15 @@
 import { Component, OnInit, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
+import { MatDialog } from '@angular/material/dialog';
+
 import { PreferencesService } from '../../user/preferences.service';
 import { UserService } from '../../user/user.service';
 import { SiteConfig, User } from '../../shared/models';
 import { Subscription, Observable } from 'rxjs';
 import { ManageTagsDialogComponent } from '../../tags/manage-tags-dialog/manage-tags-dialog.component';
 import { ReleasenotesDialogComponent } from '../../releasenotes/releasenotes-dialog/releasenotes-dialog.component';
-import { SiteConfigService } from '../../shared/siteconfig.service';
+import { SiteconfigComponent, SiteConfigService } from '../../siteconfig';
 
 
 @Component({
@@ -44,6 +46,7 @@ export class SiteMenuComponent implements OnInit, OnDestroy {
         public preferencesService: PreferencesService,
         private userservice: UserService,
         private siteconfigservice: SiteConfigService,
+        private dialog: MatDialog,
         private element: ElementRef
     ) {
 
@@ -56,18 +59,23 @@ export class SiteMenuComponent implements OnInit, OnDestroy {
         });
         this.subs.push(sub);
     }
+
     ngOnDestroy() {
         this.subs.map(sub => sub.unsubscribe());
     }
+
     toggle() {
         this.visible = (this.visible === 'show') ? 'hide' : 'show';
     }
+
     show() {
         this.visible = 'show';
     }
+
     hide() {
         this.visible = 'hide';
     }
+
     handleClick(event) {
         let clickedComponent = event.target;
         let inside = false;
@@ -82,5 +90,9 @@ export class SiteMenuComponent implements OnInit, OnDestroy {
                 this.hide();
             }
         }
+    }
+
+    openSiteConfig() {
+        this.dialog.open(SiteconfigComponent, { width: '500px' });
     }
 }

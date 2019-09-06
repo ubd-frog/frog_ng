@@ -15,7 +15,7 @@ import { PreferencesService } from '../../user/preferences.service';
 import { ImageViewerComponent } from '../image-viewer/image-viewer.component';
 import { VideoViewerComponent } from '../video-viewer/video-viewer.component';
 import { GroupViewerComponent } from '../group-viewer/group-viewer.component';
-import { SiteConfigService } from '../../shared/siteconfig.service';
+import { SiteConfigService } from '../../siteconfig';
 
 
 @Component({

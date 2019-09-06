@@ -14,7 +14,7 @@ import { NotificationService } from '../../notifications/notification.service';
 import { WorksService } from '../works.service';
 import { ErrorService } from '../../errorhandling/error.service';
 import { GalleryService } from '../gallery.service';
-import { SiteConfigService } from '../../shared/siteconfig.service';
+import { SiteConfigService } from '../../siteconfig';
 import { GroupService } from '../../groups/group.service';
 import { RemoveDialogComponent } from '../../shared/remove-dialog/remove-dialog.component';
 

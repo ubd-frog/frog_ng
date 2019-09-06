@@ -13,7 +13,7 @@ import { PreferencesService } from '../../user/preferences.service';
 import { UserService } from '../../user/user.service';
 import { SiteMenuComponent } from '../sitemenu/sitemenu.component';
 import { ReleaseNotesService } from '../../releasenotes/releasenotes.service';
-import { SiteConfigService } from '../../shared/siteconfig.service';
+import { SiteConfigService } from '../../siteconfig';
 import { Observable } from 'rxjs/Observable';
 
 

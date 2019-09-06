@@ -17,6 +17,11 @@
                 <i class="material-icons left">loyalty</i> Manage Tags
             </a>
         </li>
+        <li>
+            <a (click)="openSiteConfig()" class="light-green-text">
+                <i class="material-icons left">settings_applications</i> Site Settings
+            </a>
+        </li>
         <li *ngIf="user.isManager">
             <a href="/admin/" target="_blank" rel="noopener noreferrer" class="light-green-text">
                 <i class="material-icons left">assignment_ind</i> Admin

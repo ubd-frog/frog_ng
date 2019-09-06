@@ -11,7 +11,6 @@ import { CommentUrlPipe } from './comment-url.pipe';
 import { NavigationComponent } from './navigation/navigation.component';
 import { SlideshowService } from './slideshow.service';
 import { SelectionService } from './selection.service';
-import { SiteConfigService } from './siteconfig.service';
 import { StorageService } from './storage.service';
 
 
@@ -23,6 +22,6 @@ import { StorageService } from './storage.service';
     ],
     declarations: [AutocompleteComponent, RemoveDialogComponent, CapitalizePipe, NavigationComponent, CommentEmojiPipe, CommentUrlPipe],
     exports: [CapitalizePipe, CommentEmojiPipe, CommentUrlPipe, AutocompleteComponent, NavigationComponent, RemoveDialogComponent],
-    providers: [SlideshowService, SelectionService, SiteConfigService, StorageService]
+    providers: [SlideshowService, SelectionService, StorageService]
 })
 export class SharedModule { }
