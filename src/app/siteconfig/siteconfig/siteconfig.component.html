@@ -17,7 +17,7 @@
             <img src="{{favicon}}" width="16" height="16" />
             <div>
                 <input type="file" #file style="display: none" (change)="onFilesAdded('favicon')" multiple />
-                <button mat-button color="primary" class="add-files-btn" (click)="addFiles()">
+                <button mat-flat-button color="accent" class="add-files-btn" (click)="addFiles()">
                     Choose Favicon
                 </button>
             </div>
@@ -26,5 +26,5 @@
 </div>
 <div mat-dialog-actions>
     <button mat-button [mat-dialog-close]>Cancel</button>
-    <button mat-button [mat-dialog-close] cdkFocusInitial (click)="save()">Save</button>
+    <button mat-raised-button [mat-dialog-close] cdkFocusInitial (click)="save()" color="primary">Save</button>
 </div>

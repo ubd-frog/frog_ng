@@ -1,6 +1,6 @@
 /* Master Styles */
 
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~@angular/material/prebuilt-themes/purple-green.css";
 
 body {
    background-color: #202020;
