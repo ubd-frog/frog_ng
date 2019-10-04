@@ -3,8 +3,8 @@
         <i (click)="toggle()" class="material-icons right">close</i>
     </div>
     <li class="stack">
-        <img *ngFor="let item of items | slice:0:10; let i = index" [style.left.px]="offset(i)" [style.top.px]="offset(i)" class="z-depth-1"
-            src="{{item.thumbnail}}">
+        <img *ngFor="let item of items | slice:0:10; let i = index" [style.left.px]="offset(i)"
+            [style.top.px]="offset(i)" class="z-depth-1" src="{{item.thumbnail}}">
     </li>
     <hr />
     <div class="row">
@@ -16,7 +16,7 @@
     </div>
     <div class="row">
         <div class="col s6">
-            <a href="{{BASE_HREF}}/frog/download?guids={{guids}}" class="waves-effect waves-light btn light-green">
+            <a href="/frog/download?guids={{guids}}" class="waves-effect waves-light btn light-green">
                 <i class="material-icons left">cloud_download</i> Download</a>
         </div>
         <div class="col s6">
@@ -42,7 +42,8 @@
             <h4 class="title">
                 <i class="material-icons light-green-text">label</i> Tags
             </h4>
-            <tag *ngFor="let tag of (tags | tagArtistFilter)" [item]="tag.id" [dark]="!tag.added" (onClose)="removeTag($event)" (onClick)="navigateToTag(tag)"></tag>
+            <tag *ngFor="let tag of (tags | tagArtistFilter)" [item]="tag.id" [dark]="!tag.added"
+                (onClose)="removeTag($event)" (onClick)="navigateToTag(tag)"></tag>
             <autocomplete (onSelect)="addTag($event)" [placeholder]="'Add Tags'" [icon]="'add'"></autocomplete>
         </div>
     </div>

@@ -87,7 +87,7 @@ thumbnail {
     display: inline-block;
     position: relative;
     border: 0px solid transparent;
-    background: url(/public/thumbnail_background.png);
+    background: url(assets/thumbnail_background.png);
     background-size: 100%;
     border-width: 1px 0 0 1px;
     line-height: 0;

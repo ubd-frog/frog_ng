@@ -49,7 +49,7 @@ export class WorksThumbnailComponent implements OnInit, OnDestroy, AfterViewInit
         private errors: ErrorService
     ) {
         this.subs = [];
-        this.thumbnail = '/public/pixel.png';
+        this.thumbnail = 'assets/pixel.png';
     }
 
     ngOnInit() {
@@ -76,12 +76,6 @@ export class WorksThumbnailComponent implements OnInit, OnDestroy, AfterViewInit
         });
     }
     ngAfterViewInit() {
-        this.viewportsub = this.viewportservice.guids.subscribe(guids => {
-            if (guids.indexOf(this.item.guid) !== -1 && !this.loaded) {
-                this.loaded = true;
-                setTimeout(() => { this.load(); });
-            }
-        });
         switch (this.item.guid.charAt(0)) {
             case '2':
                 this.assettype = 'video';
@@ -91,11 +85,21 @@ export class WorksThumbnailComponent implements OnInit, OnDestroy, AfterViewInit
                 break;
             case '6':
                 this.assettype = 'cube';
+                this.thumbnail = 'assets/cube.png'
                 break;
         }
+        this.viewportsub = this.viewportservice.guids.subscribe(guids => {
+            if (guids.indexOf(this.item.guid) !== -1 && !this.loaded) {
+                this.loaded = true;
+                setTimeout(() => { this.load(); });
+            }
+        });
     }
     load() {
-        this.thumbnail = this.item.thumbnail;
+        if (this.item.thumbnail) {
+            this.thumbnail = this.item.thumbnail;
+        }
+
         this.item.loaded = true;
         this.element.nativeElement.classList.add('loaded');
         this.link = `/v/0/${this.item.guid}`;
