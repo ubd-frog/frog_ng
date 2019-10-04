@@ -9,6 +9,7 @@ import { MarzipanoViewerComponent } from './marzipano-viewer/marzipano-viewer.co
 import { ViewerComponent } from './viewer/viewer.component';
 import { ItemDetailModule } from '../item-detail/item-detail.module';
 import { GroupViewerComponent } from './group-viewer/group-viewer.component';
+import { MarmosetService } from './marmoset.service';
 
 @NgModule({
     imports: [
@@ -17,6 +18,7 @@ import { GroupViewerComponent } from './group-viewer/group-viewer.component';
         ItemDetailModule,
     ],
     declarations: [ImageViewerComponent, VideoViewerComponent, MarmosetViewerComponent, MarzipanoViewerComponent, GroupViewerComponent, ViewerComponent],
-    exports: [ImageViewerComponent, VideoViewerComponent, MarmosetViewerComponent, MarzipanoViewerComponent]
+    exports: [ImageViewerComponent, VideoViewerComponent, MarmosetViewerComponent, MarzipanoViewerComponent],
+    providers: [MarmosetService],
 })
 export class ViewerModule { }
