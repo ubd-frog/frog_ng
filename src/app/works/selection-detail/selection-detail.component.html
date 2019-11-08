@@ -19,13 +19,13 @@
             <a href="/frog/download?guids={{guids}}" class="waves-effect waves-light btn light-green">
                 <i class="material-icons left">cloud_download</i> Download</a>
         </div>
-        <div class="col s6">
+        <div class="col s6" *ngIf="works.id">
             <a (click)="copyNav.toggle()" class="waves-effect waves-light btn blue lighten-2">
                 <i class="material-icons left">content_copy</i> Copy To</a>
             <works-nav #copyNav (onSelect)="gallerySelectHandler($event)"></works-nav>
         </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="works.id">
         <div class="col s6">
             <a (click)="removePrompt()" class="waves-effect waves-light btn red darken-4">
                 <i class="material-icons left">delete</i> Remove</a>
@@ -73,17 +73,17 @@
                         <i class="material-icons">add_to_photos</i>
                     </a>
                 </li>
-                <li *ngIf="works.id">
+                <li>
                     <a (click)="copyLink()" title="Get link to selected items">
                         <i class="material-icons">share</i>
                     </a>
                 </li>
-                <li *ngIf="works.id">
+                <li>
                     <a (click)="visible='show'">
                         <i class="material-icons">info_outline</i>
                     </a>
                 </li>
-                <li *ngIf="works.id">
+                <li>
                     <a href="{{BASE_HREF}}/frog/download?guids={{guids}}">
                         <i class="material-icons">cloud_download</i>
                     </a>
