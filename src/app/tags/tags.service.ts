@@ -16,10 +16,12 @@ export class TagsService {
     public contentTags: Observable<Tag[]>;
     private _tags: Tag[];
     private _ids: number[];
+    private contentTagsQueried: boolean;
 
     constructor(private http: HttpClient, private service: WorksService, private errors: ErrorService) {
         this._tags = [];
         this._ids = [];
+        this.contentTagsQueried = false;
         this.tags = new ReplaySubject<Tag[]>();
         this.contentTags = this.tags.map(tags => { return tags.filter(tag => !tag.artist); });
         this.get();
@@ -42,6 +44,10 @@ export class TagsService {
             }, error => this.errors.handleError(error));
     }
     getTagWithCount() {
+        if (this.contentTagsQueried) {
+            return;
+        }
+
         let params = new HttpParams();
         params = params.append('count', '1');
         params = params.append('timestamp', new Date().getTime().toString());
@@ -58,6 +64,7 @@ export class TagsService {
                     this._ids.push(tag.id);
                 }
                 this.tags.next(this._tags);
+                this.contentTagsQueried = true;
             }, error => this.errors.handleError(error));
     }
     resolve(name: string) {
