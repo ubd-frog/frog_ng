@@ -70,10 +70,13 @@ export class AutocompleteComponent {
         }
         this.query = this.textedit.nativeElement.value;
 
-        this.selectedIndex = (this.filteredList.length + this.selectedIndex) % this.filteredList.length;
-        this.selectedIndex = (isNaN(this.selectedIndex)) ? -1 : this.selectedIndex;
+        if (this.selectedIndex !== -1) {
+            // Keep the index in bounds
+            this.selectedIndex = (this.filteredList.length + this.selectedIndex) % this.filteredList.length;
+            this.selectedIndex = (isNaN(this.selectedIndex)) ? -1 : this.selectedIndex;
+        }
 
-        if (select) {
+        if (select && this.selectedIndex !== -1) {
             this.textedit.nativeElement.value = this.filteredList[this.selectedIndex];
         }
         else {
