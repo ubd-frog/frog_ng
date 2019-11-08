@@ -140,8 +140,9 @@ export class Gallery {
     owner: User;
     description: string;
     uploads: boolean;
-    parent: Gallery;
+    parent: number;
     hidden: boolean;
+    children: Gallery[];
 }
 
 export class Preferences {
