@@ -43,8 +43,8 @@ export class TagsService {
                 this.tags.next(this._tags);
             }, error => this.errors.handleError(error));
     }
-    getTagWithCount() {
-        if (this.contentTagsQueried) {
+    getTagWithCount(force: boolean = false) {
+        if (this.contentTagsQueried && !force) {
             return;
         }
 
@@ -122,7 +122,7 @@ export class TagsService {
         };
 
         this.http.post(url, options)
-            .subscribe(() => this.get(), error => this.errors.handleError(error));
+            .subscribe(() => { }, error => this.errors.handleError(error));
     }
     rename(tag: Tag) {
         let url = `/frog/tag/${tag.id}/`;

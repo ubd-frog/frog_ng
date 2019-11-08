@@ -76,6 +76,13 @@ export class ManageTagsDialogComponent implements OnInit, OnDestroy {
         event.preventDefault();
         if (this.merge.length > 1) {
             this.service.merge(this.merge.map(tag => tag.id));
+
+            this.merge.shift();
+            this.merge.forEach(tag => {
+                let index = this.tags.indexOf(tag);
+                this.tags.splice(index, 1);
+            });
+            this.merge = [];
         }
     }
     deleteTags(event) {
