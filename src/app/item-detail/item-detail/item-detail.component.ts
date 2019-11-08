@@ -140,6 +140,7 @@ export class ItemDetailComponent implements OnDestroy, AfterViewInit {
     hide() {
         this.visible = 'hide';
         this.prompted = false;
+        this.item.selected = false;
     }
     like() {
         this.works.likeItem(this.item);

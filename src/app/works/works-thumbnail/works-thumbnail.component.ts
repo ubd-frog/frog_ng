@@ -136,6 +136,7 @@ export class WorksThumbnailComponent implements OnInit, OnDestroy, AfterViewInit
     }
     setFocus(event) {
         this.service.setDetailItem(this.item);
+        this.item.selected = true;
     }
     setAuthor(name: string) {
         let tag = this.tags.getTagByName(name);
