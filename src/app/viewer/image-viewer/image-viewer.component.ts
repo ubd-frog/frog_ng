@@ -271,29 +271,33 @@ export class ImageViewerComponent implements OnInit, OnDestroy, AfterViewInit, A
     renderThumbnail() {
         let rect = this.xform.rect;
         let minscale, scale;
-        if (this.object.width >= this.object.height) {
-            minscale = kThumbnailSize / this.object.width;
-            scale = rect.width / this.object.width;
+
+        const imgwidth = this.element.naturalWidth;
+        const imgheight = this.element.naturalHeight;
+
+        if (imgwidth >= this.object.height) {
+            minscale = kThumbnailSize / imgwidth;
+            scale = rect.width / imgwidth;
         }
         else {
-            minscale = kThumbnailSize / this.object.height;
-            scale = rect.height / this.object.height;
+            minscale = kThumbnailSize / imgheight;
+            scale = rect.height / imgheight;
         }
 
         let offset = new Point(
-            this.width - (this.object.width * minscale) - 20,
-            this.height - (this.object.height * minscale) - 20,
+            this.width - (imgwidth * minscale) - 20,
+            this.height - (imgheight * minscale) - 20,
         );
         let x = Math.abs(Math.min(0, rect.x / scale));
         let y = Math.abs(Math.min(0, rect.y / scale));
-        let width = this.object.width - Math.abs(Math.max(0, (rect.x + rect.width - this.width) / scale)) - x;
-        let height = this.object.height - Math.abs(Math.max(0, (rect.y + rect.height - this.height) / scale)) - y;
+        let width = imgwidth - Math.abs(Math.max(0, (rect.x + rect.width - this.width) / scale)) - x;
+        let height = imgheight - Math.abs(Math.max(0, (rect.y + rect.height - this.height) / scale)) - y;
 
         let fullrect = new Rect(
             Math.floor(offset.x),
             Math.floor(offset.y),
-            Math.floor(this.object.width * minscale),
-            Math.floor(this.object.height * minscale)
+            Math.floor(imgwidth * minscale),
+            Math.floor(imgheight * minscale)
         );
         let sourcerect = new Rect(
             x,
