@@ -62,18 +62,19 @@
                     </div>
                 </div>
                 <div class="col s8 xl10">
-                    <div class="input-field">
-                        <input id="title" type="text" name="title" [(ngModel)]="item.title"
-                            (keydown)="$event.stopPropagation();" (keypress)="$event.stopPropagation();" />
-                        <label class="active" for="title">Title</label>
+                    <div class="row">
+                        <mat-form-field class="input-full-width">
+                            <input matInput id="title" type="text" name="title" placeholder="Title"
+                                [(ngModel)]="item.title" (keydown)="$event.stopPropagation();"
+                                (keypress)="$event.stopPropagation();" />
+                        </mat-form-field>
                     </div>
                     <div class="row">
-                        <div class="input-field">
-                            <textarea id="description" name="description" class="materialize-textarea expanded"
-                                [(ngModel)]="item.description" (keydown)="$event.stopPropagation();"
-                                (keypress)="$event.stopPropagation();"></textarea>
-                            <label for="description">Description</label>
-                        </div>
+                        <mat-form-field class="input-full-width">
+                            <textarea matInput id="description" name="description" class="materialize-textarea expanded"
+                                placeholder="Description" [(ngModel)]="item.description"
+                                (keydown)="$event.stopPropagation();" (keypress)="$event.stopPropagation();"></textarea>
+                        </mat-form-field>
                     </div>
                     <div class="input-field">
                         <h4 class="title">

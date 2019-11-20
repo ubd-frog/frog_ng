@@ -27,6 +27,7 @@ textarea::-webkit-input-placeholder { color: #707070; }
 #remove_prompt_single { z-index: 4000 !important; }
 #edit_actions { position: fixed; top: 0; width: 340px; z-index: 4000; padding-top: 6px; }
 b { cursor: pointer; text-decoration: underline; }
+.input-full-width { width: 100%; }
 
 section { background: #131313; margin: 12px; border: 1px solid #333; overflow: hidden; }
 header { font-size: 14pt; font-weight: 400; background: #333; padding: 8px; }

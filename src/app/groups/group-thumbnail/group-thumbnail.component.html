@@ -3,7 +3,18 @@
 </a>
 <div class='thumbnail-details light-green-text'>
     <form #form="ngForm">
-        <input id="title" type="text" name="title" [(ngModel)]="item.title" (keydown)="$event.stopPropagation();" (keypress)="$event.stopPropagation();" />
-        <textarea id="description" name="description" class="materialize-textarea expanded" [(ngModel)]="item.description" (keydown)="$event.stopPropagation();" (keypress)="$event.stopPropagation();" placeholder="Description"></textarea>
+        <div class="row">
+            <mat-form-field class="input-full-width">
+                <input matInput id="title" type="text" name="title" placeholder="Title" [(ngModel)]="item.title"
+                    (keydown)="$event.stopPropagation();" (keypress)="$event.stopPropagation();" />
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field class="input-full-width">
+                <textarea matInput id="description" name="description" class="materialize-textarea expanded"
+                    placeholder="Description" [(ngModel)]="item.description" (keydown)="$event.stopPropagation();"
+                    (keypress)="$event.stopPropagation();"></textarea>
+            </mat-form-field>
+        </div>
     </form>
 </div>

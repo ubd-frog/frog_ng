@@ -10,6 +10,7 @@ import { UserService } from "../../user/user.service";
 import { CropperComponent } from '../../cropper/cropper/cropper.component';
 import { UploaderService } from "../../uploader/uploader.service";
 import { SiteMenuComponent } from '../../works/sitemenu/sitemenu.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -18,7 +19,7 @@ import { SiteMenuComponent } from '../../works/sitemenu/sitemenu.component';
     styleUrls: ['./group-editor.component.css']
 })
 
-export class GroupEditorComponent implements AfterViewChecked, OnDestroy {
+export class GroupEditorComponent implements OnInit, AfterViewChecked, OnDestroy {
     @ViewChild('form') form;
     @ViewChild(CropperComponent) cropper: CropperComponent;
 
@@ -35,24 +36,28 @@ export class GroupEditorComponent implements AfterViewChecked, OnDestroy {
         private userservice: UserService,
         private tagsservice: TagsService,
         private uploadservice: UploaderService,
-        private errors: ErrorService,
+        private errors: ErrorService
     ) {
         this.formsub = true;
         this.subs = [];
-        let sub = route.params.subscribe(params => {
+    }
+
+    ngOnInit() {
+        let sub = this.route.params.subscribe(params => {
             this.userservice.get();
-            service.getGroup(+params['id']).subscribe(i => {
+            let sub = this.service.getGroup(+params['id']).subscribe(i => {
                 this.item = i;
                 this.formsub = false;
                 this.uploadservice.galleryid = 1;
             });
+            this.subs.push(sub);
         });
         this.subs.push(sub);
 
         sub = this.userservice.user.subscribe(user => this.user = user);
         this.subs.push(sub);
 
-        sub = uploadservice.uploadedFiles.subscribe(items => {
+        sub = this.uploadservice.uploadedFiles.subscribe(items => {
             this.service.append(this.item, items).subscribe(i => {
                 this.item = i;
             });
