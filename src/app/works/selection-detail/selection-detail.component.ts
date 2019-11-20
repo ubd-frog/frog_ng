@@ -45,11 +45,11 @@ export class SelectionDetailComponent implements AfterViewInit, OnDestroy {
     public items: CItem[];
     public tags: Tag[];
     public guids: string;
-    private subs: Subscription[];
     public siteconfig: SiteConfig;
     public user: User;
     public enabled = false;
     public visible = 'hide';
+    private subs: Subscription[];
 
     constructor(
         public service: SelectionService,
