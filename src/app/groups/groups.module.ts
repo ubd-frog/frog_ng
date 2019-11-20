@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SortablejsModule } from 'angular-sortablejs';
+import { MatButtonModule } from '@angular/material';
 
 import { GroupsRoutingModule } from './groups-routing.module';
 import { GroupEditorComponent } from './group-editor/group-editor.component';
@@ -22,6 +23,8 @@ import { GroupService } from './group.service';
         CommonModule,
         FormsModule,
         SortablejsModule,
+
+        MatButtonModule,
 
         GroupsRoutingModule,
         SharedModule,

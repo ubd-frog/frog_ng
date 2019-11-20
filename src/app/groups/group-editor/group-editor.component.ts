@@ -20,7 +20,6 @@ import { SiteMenuComponent } from '../../works/sitemenu/sitemenu.component';
 
 export class GroupEditorComponent implements AfterViewChecked, OnDestroy {
     @ViewChild('form') form;
-    @ViewChild(SiteMenuComponent) sitemenu: SiteMenuComponent;
     @ViewChild(CropperComponent) cropper: CropperComponent;
 
     public item: CGroup;
