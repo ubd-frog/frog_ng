@@ -139,7 +139,7 @@ export class UploaderComponent implements OnInit, OnDestroy {
     @HostListener('window:dragenter', ['$event'])
     dragEnter(event: DragEvent) {
         let types = Array.from(event.dataTransfer.types);
-        if (types.indexOf('text/html') === -1) {
+        if (types.indexOf('Files') !== -1) {
             this.service.show();
         }
     }
