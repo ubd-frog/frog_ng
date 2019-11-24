@@ -1,9 +1,11 @@
-<div class='video_player' [style.margin-top.px]="margin" [style.width.px]="xform.elements[0][0]" [style.height.px]="xform.elements[1][1]">
+<div class='video_player' [style.margin-top.px]="margin" [style.width.px]="xform.elements[0][0]"
+    [style.height.px]="xform.elements[1][1]">
     <video #vid [hidden]="frameview" poster="{{object.poster}}" controls="controls" loop="loop">
         <source type='video/mp4' src="{{object.video}}" />
     </video>
     <div [hidden]="!frameview">
-        <canvas #viewport width="{{object.width}}" height="{{object.height}}" (mouseup)="up($event)" (mousedown)="down($event)" (mousemove)="move($event)"></canvas>
+        <canvas #viewport width="{{object.width}}" height="{{object.height}}" (mouseup)="up($event)"
+            (mousedown)="down($event)" (mousemove)="move($event)"></canvas>
         <div class="progress grey">
             <div class="determinate white" [style.width.%]="(loadedframe / frameCount) * 100.0"></div>
         </div>

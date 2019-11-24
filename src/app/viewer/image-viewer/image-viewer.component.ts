@@ -108,13 +108,6 @@ export class ImageViewerComponent implements OnInit, OnDestroy, AfterViewInit, A
         this.object = <CImage>image;
         let parts = this.object.source.split('.');
         this.ext = parts[parts.length - 1];
-
-        let xhr: XMLHttpRequest = new XMLHttpRequest();
-        xhr.open('GET', this.object.image, true);
-        xhr.onprogress = function (e) {
-            this.percent = (e.loaded / e.total) * 100;
-        }.bind(this);
-        xhr.send();
     }
     // -- Events
     @HostListener('window:keypress', ['$event'])
