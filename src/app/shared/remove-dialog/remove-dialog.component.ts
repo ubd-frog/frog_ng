@@ -30,6 +30,13 @@ export class RemoveDialogComponent implements OnInit {
         this.hide();
     }
 
+    delete() {
+        this.works.delete(this.items);
+        this.selectionservice.clear();
+        this.selectionservice.clearDetailItem();
+        this.hide();
+    }
+
     show(items: CItem[]) {
         this.items = items;
         document.body.classList.add('no-overflow');

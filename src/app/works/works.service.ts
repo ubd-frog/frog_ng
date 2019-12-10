@@ -256,6 +256,25 @@ export class WorksService {
             .map(this.errors.extractValues, this.errors)
             .subscribe(null, error => this.errors.handleError(error));
     }
+    delete(items: CItem[]) {
+        items.forEach(item => {
+            let index = this.guids.indexOf(item.guid);
+            if (index !== -1) {
+                this.items.splice(index, 1);
+                this.guids.splice(index, 1);
+            }
+
+            let url = `/frog/piece/${item.guid}/`;
+            let options = {
+                withCredentials: true
+            };
+            this.http.delete(url, options)
+                .map(this.errors.extractValue, this.errors)
+                .subscribe(null, error => this.errors.handleError(error));
+        });
+
+        this.results.next([this.items, false]);
+    }
     resolveGuids(guids: string[]) {
         let url = '/frog/p';
         let params = new HttpParams().set('guids', guids.join(','));

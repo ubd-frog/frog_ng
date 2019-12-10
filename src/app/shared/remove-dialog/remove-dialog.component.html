@@ -2,12 +2,14 @@
     <div class="modal">
         <div class="modal-content">
             <h4>Remove Item<span *ngIf="items.length > 1">s</span> From Gallery?</h4>
-            <p *ngIf="items.length === 1">Are you sure you wish to remove this item from the current gallery?</p>
-            <p *ngIf="items.length > 1">Are you sure you wish to remove these items from the current gallery?</p>
-            <small>This does not delete anything, it simply removes the item<span *ngIf="items.length > 1">s</span></small>
+            <p>You can either <b>Remove</b> the selected item(s) which will simply removes the item from the current
+                gallery</p>
+            <p>Or</p>
+            <p>You can <b>Delete</b> the items so they will no longer show up in any gallery or search</p>
         </div>
         <div class="modal-footer">
-            <a (click)="confirm()" class=" modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
+            <a (click)="delete()" class=" modal-action modal-close waves-effect waves-green btn-flat">Delete</a>
+            <a (click)="confirm()" class=" modal-action modal-close waves-effect waves-green btn-flat">Remove</a>
             <a (click)="hide()" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
         </div>
     </div>
