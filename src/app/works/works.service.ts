@@ -54,7 +54,7 @@ export class WorksService {
             else if (p['orderby'] !== this.orderby) {
                 this.orderby = p['orderby'];
                 this.routecache = '';
-                this.get();
+                this.get(this.id);
             }
         });
     }
