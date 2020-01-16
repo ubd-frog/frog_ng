@@ -46,6 +46,8 @@ export class GalleryService {
         let galleryreq = this.http.get(url, options)
             .map(this.errors.extractValues, this.errors);
 
+        this.siteconfigservice.get();
+
         combineLatest(galleryreq, this.siteconfigservice.siteconfig).subscribe(results => {
             this._items = results[0];
             this.siteconfig = results[1];

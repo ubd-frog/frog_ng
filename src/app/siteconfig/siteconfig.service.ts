@@ -13,6 +13,10 @@ export class SiteConfigService {
 
     constructor(private http: HttpClient, private errors: ErrorService) {
         this.siteconfig = new ReplaySubject<SiteConfig>();
+        this.get();
+    }
+
+    get() {
         this.http.get('/frog/siteconfig')
             .map(this.errors.extractValue, this.errors)
             .subscribe(data => {
