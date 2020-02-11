@@ -88,7 +88,7 @@ export class Rect {
 
     public toString = () : string => {
         return 'Rect [' + [this.x, this.y, this.width, this.height].join(',') + ']';
-    }
+    };
     toArray() {
         return [this.x, this.y, this.width, this.height];
     }
@@ -106,7 +106,7 @@ export class Rect {
             other.right < this.left ||
             other.top > this.bottom ||
             other.bottom < this.top
-        )
+        );
         return !value;
     }
     fit(width, height) {

@@ -19,7 +19,7 @@ const MIME_TYPES = {
     'tif': 'image/tiff',
     'tiff': 'image/tiff',
     'mp4': 'video/mp4'
-}
+};
 
 
 @Component({

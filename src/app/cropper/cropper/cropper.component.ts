@@ -52,7 +52,7 @@ export class CropperComponent implements AfterViewChecked {
     }
     crop() {
         let ratio: number = this.width / this.item.width;
-        let v = this.rect.toArray().map((x) => { return x / ratio; })
+        let v = this.rect.toArray().map((x) => { return x / ratio; });
         this.service.cropItem(this.item, v[0], v[1], v[0] + v[2], v[1] + v[3]).subscribe(item => {
             this.item = item;
             item.thumbnail += '?foo=' + new Date().getTime();

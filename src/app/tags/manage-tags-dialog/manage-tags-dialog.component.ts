@@ -145,7 +145,7 @@ export class ManageTagsDialogComponent implements OnInit, OnDestroy {
         event.stopPropagation();
         let index = this.tags.indexOf(tag);
         if (this.deleteCheck != index) {
-            this.deleteCheck = index
+            this.deleteCheck = index;
             return;
         }
         this.deleteCheck = -1;

@@ -85,7 +85,7 @@ export class WorksThumbnailComponent implements OnInit, OnDestroy, AfterViewInit
                 break;
             case '6':
                 this.assettype = 'cube';
-                this.thumbnail = 'assets/cube.png'
+                this.thumbnail = 'assets/cube.png';
                 break;
         }
         this.viewportsub = this.viewportservice.guids.subscribe(guids => {
