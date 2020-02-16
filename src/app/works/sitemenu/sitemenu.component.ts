@@ -10,6 +10,7 @@ import { Subscription, Observable } from 'rxjs';
 import { ManageTagsDialogComponent } from '../../tags/manage-tags-dialog/manage-tags-dialog.component';
 import { ReleasenotesDialogComponent } from '../../releasenotes/releasenotes-dialog/releasenotes-dialog.component';
 import { SiteconfigComponent, SiteConfigService } from '../../siteconfig';
+import {BadgeDialogComponent} from "../../badge/badge-dialog/badge-dialog.component";
 
 
 @Component({
@@ -94,5 +95,9 @@ export class SiteMenuComponent implements OnInit, OnDestroy {
 
     openSiteConfig() {
         this.dialog.open(SiteconfigComponent, { width: '500px' });
+    }
+
+    openBadgeDialog() {
+        this.dialog.open(BadgeDialogComponent, { width: '800px' });
     }
 }

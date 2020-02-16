@@ -5,7 +5,7 @@ describe('frog-app App', function() {
 
   beforeEach(() => {
     page = new FrogAppPage();
-  })
+  });
 
   it('should display message saying app works', () => {
     page.navigateTo();

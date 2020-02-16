@@ -20,6 +20,8 @@ import { WorksService } from './works.service';
 import { GalleryService } from './gallery.service';
 import { ViewportService } from './viewport.service';
 import { SiteconfigComponent } from '../siteconfig/siteconfig/siteconfig.component';
+import {BadgeDialogComponent} from "../badge/badge-dialog/badge-dialog.component";
+import {BadgeModule} from "../badge/badge.module";
 
 @NgModule({
     imports: [
@@ -32,11 +34,12 @@ import { SiteconfigComponent } from '../siteconfig/siteconfig/siteconfig.compone
         ReleasenotesModule,
         UploaderModule,
         NotificationsModule,
-        ItemDetailModule
+        ItemDetailModule,
+        BadgeModule,
     ],
     declarations: [FilterComponent, SelectionComponent, SelectionDetailComponent, SiteMenuComponent, WorksComponent, WorksListComponent, WorksThumbnailComponent],
     exports: [SiteMenuComponent],
     providers: [WorksService, GalleryService, ViewportService],
-    entryComponents: [SiteconfigComponent]
+    entryComponents: [SiteconfigComponent, BadgeDialogComponent]
 })
 export class WorksModule { }
