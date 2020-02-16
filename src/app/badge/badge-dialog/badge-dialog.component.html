@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>Badge Editor</h1>
+<div mat-dialog-content>
+    <div class="row">
+        <div class="col m6">
+            <div *ngFor="let badge of badges$ | async">
+                <table>
+                    <tr>
+                        <td><tag [item]="badge.tag.id" [editable]="false" (onClick)="selectBadge(badge)"></tag></td>
+                        <td><img src="{{badge.image}}" height="32"/></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col m6">
+            <form [formGroup]="form">
+                <div>
+                    <autocomplete [artists]="false" [placeholder]="'Choose Tag'" [icon]="'label'" (onSelect)="setTag($event.value)"></autocomplete>
+                </div>
+                <div>
+                    <input type="file" #file style="display: none" (change)="onFilesAdded()" />
+                    <button mat-flat-button color="accent" class="add-files-btn" (click)="addFiles()">
+                        Choose Image
+                    </button>
+                </div>
+            </form>
+            <h5>Preview: {{form.value.tag}}</h5>
+            <div class="preview">
+                <img class="tag-badge" src="{{badgeimage || imageurl}}" />
+                <img src="assets/bliss.png" width="256" height="256" />
+            </div>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]>Cancel</button>
+    <button mat-raised-button [mat-dialog-close] [disabled]="!form.valid" cdkFocusInitial (click)="save()" color="primary">Save</button>
+</div>

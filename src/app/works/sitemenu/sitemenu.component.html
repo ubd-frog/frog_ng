@@ -17,9 +17,14 @@
                 <i class="material-icons left">loyalty</i> Manage Tags
             </a>
         </li>
-        <li>
+        <li *ngIf="user.isManager">
             <a (click)="openSiteConfig()" class="light-green-text">
                 <i class="material-icons left">settings_applications</i> Site Settings
+            </a>
+        </li>
+        <li *ngIf="user.isManager">
+            <a (click)="openBadgeDialog()" class="light-green-text">
+                <i class="material-icons left">bookmark</i> Badges
             </a>
         </li>
         <li *ngIf="user.isManager">

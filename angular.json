@@ -15,7 +15,12 @@
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "tsConfig": "src/tsconfig.json",
-                        "assets": [],
+                        "assets": [
+                            "src/assets/pixel.png",
+                            "src/assets/cube.png",
+                            "src/assets/thumbnail_background.png",
+                            "src/assets/bliss.png"
+                        ],
                         "styles": [
                             "src/styles.css"
                         ],

@@ -1,6 +1,7 @@
 <i class="mdi tiny light-green-text asset-type" [ngClass]="'mdi-' + assettype"></i>
 
 <a href="/v/{{item.guid}}" (click)="clickHandler($event)">
+    <badge [tags]="item.tags"></badge>
     <img #img src='{{thumbnail}}' [style.padding.px]="prefs.thumbnailPadding" />
 </a>
 

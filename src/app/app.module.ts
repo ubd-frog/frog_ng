@@ -32,6 +32,7 @@ import { WorksRoutingModule } from './works/works-routing.module';
 import { UserRoutingModule } from './user/user-routing.module';
 import { ViewerRoutingModule } from './viewer/viewer-routing.module';
 import { SiteconfigModule } from './siteconfig/siteconfig.module';
+import {BadgeModule} from "./badge/badge.module";
 
 
 enableProdMode();
@@ -66,7 +67,8 @@ enableProdMode();
         ViewerModule,
         WorksModule,
         ItemDetailModule,
-        SiteconfigModule
+        SiteconfigModule,
+        BadgeModule,
     ],
     declarations: [
         AppComponent
