@@ -5,10 +5,11 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { UploaderService } from '../uploader.service';
 import { UploadFile } from '../models';
-import { Tag } from '../../shared/models';
+import {Gallery, Tag} from '../../shared/models';
 import { GroupService } from '../../groups/group.service';
 import { TagsService } from '../../tags/tags.service';
 import { ErrorService } from '../../errorhandling/error.service';
+import {GalleryService} from "../../works/gallery.service";
 
 
 @Component({
@@ -27,17 +28,20 @@ export class UploaderComponent implements OnInit, OnDestroy {
     public total: number;
     public creategroup: boolean;
     public description: string;
+    public gallery: Gallery;
 
     constructor(
         private service: UploaderService,
         private tagsservice: TagsService,
         private groupservice: GroupService,
+        private galleryservice: GalleryService,
         private errors: ErrorService
     ) {
         this.files = [];
         this.tags = [];
         this.total = 0;
         this.subs = [];
+        this.gallery = null;
     }
     ngOnInit() {
         let sub = this.service.requested.subscribe(show => {
@@ -57,6 +61,9 @@ export class UploaderComponent implements OnInit, OnDestroy {
                 this.groupservice.create(items);
             }
         });
+        this.subs.push(sub);
+
+        sub = this.galleryservice.gallery.subscribe(gallery => this.gallery = gallery);
         this.subs.push(sub);
     }
 
@@ -138,6 +145,9 @@ export class UploaderComponent implements OnInit, OnDestroy {
     }
     @HostListener('window:dragenter', ['$event'])
     dragEnter(event: DragEvent) {
+        if (this.gallery && !this.gallery.uploads) {
+            return;
+        }
         let types = Array.from(event.dataTransfer.types);
         if (types.indexOf('Files') !== -1) {
             this.service.show();

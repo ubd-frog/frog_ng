@@ -17,7 +17,7 @@
                         <i class="material-icons">card_giftcard</i>
                     </a>
                 </li>
-                <li>
+                <li *ngIf="gallery.uploads">
                     <div class="file-field input-field">
                         <i class="material-icons">cloud_upload</i>
                         <input type="file" multiple (change)="addFiles($event)" title="Upload files">
