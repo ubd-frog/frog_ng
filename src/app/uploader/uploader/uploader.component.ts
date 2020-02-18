@@ -48,6 +48,7 @@ export class UploaderComponent implements OnInit, OnDestroy {
             if (show && !this.visible) {
                 this.tags = [];
                 this.total = 0;
+                this.description = "";
             }
             this.visible = show;
         }, error => this.errors.handleError(error));

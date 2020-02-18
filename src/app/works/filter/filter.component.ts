@@ -50,6 +50,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.subs = [];
         this.notes = [];
         this.blank = false;
+        this.gallery = new Gallery();
     }
     ngOnInit() {
         let sub;
