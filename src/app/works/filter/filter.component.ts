@@ -64,6 +64,8 @@ export class FilterComponent implements OnInit, OnDestroy {
         sub = this.releasenotesservice.notes.subscribe(notes => this.notes = notes);
         this.subs.push(sub);
 
+        this.siteconfigservice.get();
+
         // These two depend on each other
         let obssiteconfig = this.siteconfigservice.siteconfig;
         let obsroute = this.route.params;
