@@ -19,7 +19,8 @@
                             "src/assets/pixel.png",
                             "src/assets/cube.png",
                             "src/assets/thumbnail_background.png",
-                            "src/assets/bliss.png"
+                            "src/assets/bliss.png",
+                            "src/assets/frog.png"
                         ],
                         "styles": [
                             "src/styles.css"
