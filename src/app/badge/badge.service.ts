@@ -64,11 +64,29 @@ export class BadgeService {
             });
     }
 
+    delete(id: number) {
+        let url = `/frog/badge/${id}/`;
+        let options = {
+            withCredentials: true
+        };
+
+        this.http.delete(url, options)
+            .map(this.errorservice.extractValue, this.errorservice)
+            .subscribe(() => {
+                for (let i = 0;i<this.cache.length;i++) {
+                    if (this.cache[i].id === id) {
+                        this.cache.splice(i, 1);
+                        break;
+                    }
+                }
+                this.badges.next(this.cache);
+            });
+    }
+
     getByTag(tag: string) {
         for (let i = 0;i<this.cache.length;i++) {
             if (this.cache[i].tag.name === tag) {
                 return this.cache[i];
-                break;
             }
         }
 

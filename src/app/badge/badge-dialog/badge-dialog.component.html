@@ -2,14 +2,15 @@
 <div mat-dialog-content>
     <div class="row">
         <div class="col m6">
-            <div *ngFor="let badge of badges$ | async">
-                <table>
-                    <tr>
-                        <td><tag [item]="badge.tag.id" [editable]="false" (onClick)="selectBadge(badge)"></tag></td>
-                        <td><img src="{{badge.image}}" height="32"/></td>
-                    </tr>
-                </table>
-            </div>
+            <mat-nav-list>
+                <mat-list-item *ngFor="let badge of badges$ | async" (click)="selectBadge(badge)">
+                    <a matLine>{{ badge.tag.name }}</a>
+                    <img src="{{badge.image}}" height="32"/>
+                    <button mat-icon-button (click)="deleteBadge(badge)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-list-item>
+            </mat-nav-list>
         </div>
         <div class="col m6">
             <form [formGroup]="form">

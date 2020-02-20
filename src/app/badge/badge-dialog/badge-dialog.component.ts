@@ -104,4 +104,8 @@ export class BadgeDialogComponent extends SmartComponent implements OnInit {
 
         this.badgeservice.update(value.tag, value.image_file);
     }
+
+    deleteBadge(badge: Badge) {
+        this.badgeservice.delete(badge.id);
+    }
 }

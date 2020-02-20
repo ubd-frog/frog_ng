@@ -10,6 +10,8 @@ import {BadgeDialogComponent} from './badge-dialog/badge-dialog.component';
 import {BadgeService} from "./badge.service";
 import {SharedModule} from "../shared/shared.module";
 import {TagsModule} from "../tags/tags.module";
+import {MatListModule} from "@angular/material/list";
+import {MatIconModule} from "@angular/material/icon";
 
 
 @NgModule({
@@ -22,6 +24,8 @@ import {TagsModule} from "../tags/tags.module";
         MatButtonModule,
         MatInputModule,
         MatCheckboxModule,
+        MatListModule,
+        MatIconModule,
 
         SharedModule,
         TagsModule,
