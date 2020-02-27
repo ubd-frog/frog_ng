@@ -64,6 +64,8 @@ export class ViewerComponent implements OnInit, OnDestroy {
         this.subs.push(sub);
         sub = this.siteconfigservice.siteconfig.subscribe(v => this.siteconfig = v);
         this.subs.push(sub);
+
+        this.siteconfigservice.get();
     }
     ngOnInit() {
         let sub = this.route.params.subscribe(params => {
