@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { Router } from "@angular/router";
+import {Injectable} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {Router} from "@angular/router";
 
-import { Observable } from "rxjs/Observable";
-import { ReplaySubject } from "rxjs/ReplaySubject";
+import {Observable} from "rxjs/Observable";
+import {ReplaySubject} from "rxjs/ReplaySubject";
 
-import { CGroup, CItem } from "../shared/models";
-import { WorksService } from "../works/works.service";
-import { ErrorService } from "../errorhandling/error.service";
+import {CGroup, CItem} from "../shared/models";
+import {WorksService} from "../works/works.service";
+import {ErrorService} from "../errorhandling/error.service";
 
 
 @Injectable()
@@ -30,7 +30,7 @@ export class GroupService {
     getGroup(id: number) {
         let subject = new ReplaySubject<CGroup>();
         let found = false;
-        for (let i=0;i<this.groups.length;++i) {
+        for (let i = 0; i < this.groups.length; ++i) {
             if (this.groups[i].id === id) {
                 subject.next(this.groups[i]);
                 found = true;
@@ -60,12 +60,12 @@ export class GroupService {
         this.http.post(url, options)
             .map(this.errors.extractValue)
             .subscribe(() => {
-            this.works.get(0, false, true);
-        });
+                this.works.get(this.works.id, false, true);
+            });
     }
 
     append(group: CGroup, items: CItem[]) {
-        let subs  = [];
+        let subs = [];
         let subject = new ReplaySubject<CGroup>();
         let url = `/frog/piece/group/${group.id}/`;
         let options = {
@@ -86,10 +86,10 @@ export class GroupService {
             this.http.get(`/frog/piece/group/${group.id}/`)
                 .map(this.errors.extractValue)
                 .subscribe(i => {
-                this.works.remove(items, true);
-                group.children = i.children;
-                subject.next(i);
-            });
+                    this.works.remove(items, true);
+                    group.children = i.children;
+                    subject.next(i);
+                });
         });
 
         return subject;
@@ -109,8 +109,8 @@ export class GroupService {
         this.http.put(url, options)
             .map(this.errors.extractValue)
             .subscribe(() => {
-            this.works.remove([item], true);
-        });
+                this.works.remove([item], true);
+            });
     }
 
     remove(group: CGroup, item: CItem) {
@@ -127,7 +127,7 @@ export class GroupService {
             .map(this.errors.extractValue)
             .subscribe(() => {
 
-        });
+            });
     }
 
     ungroup(group: CGroup) {
@@ -139,10 +139,10 @@ export class GroupService {
         this.http.delete(url, options)
             .map(this.errors.extractValue)
             .subscribe(() => {
-            if (this.works.id) {
-                this.works.get(0, false, true);
-            }
-            this.router.navigate(['w/' + (this.works.id || 1)]);
-        });
+                if (this.works.id) {
+                    this.works.get(this.works.id, false, true);
+                }
+                this.router.navigate(['w/' + (this.works.id || 1)]);
+            });
     }
 }
