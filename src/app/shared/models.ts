@@ -110,10 +110,16 @@ export class CVideo extends CItem {
     poster: string;
     framerate: number;
     duration: number;
+    get image(): string {
+        return this.poster;
+    }
 }
 
 export class CGroup extends CItem {
     children: CItem[];
+    get image() {
+        return this.children.length > 0 ? this.children[0] : null;
+    }
 }
 
 export class Notification {

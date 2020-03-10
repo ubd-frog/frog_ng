@@ -45,7 +45,7 @@ export class CropperComponent implements AfterViewChecked {
 
         let width = this.item.width;
         let height = this.item.height;
-        this.image = (this.item.guid.charAt(0) === '4') ? this.item.children[0].image : this.item.image;
+        this.image = this.item.image;
         let imgrect = new Rect(0, 0, width, height).fit(this.content.nativeElement.clientWidth - 48, this.content.nativeElement.clientHeight - 48 - 37);
         this.width = imgrect.width;
         this.height = imgrect.height;

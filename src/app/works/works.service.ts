@@ -283,7 +283,37 @@ export class WorksService {
         };
 
         return this.http.get(url, options)
-            .map(this.errors.extractValues, this.errors);
+            .map(this.errors.extractValues, this.errors)
+            .map(items => {
+                let resolved = [];
+                for (let item of items) {
+                    let obj = null;
+                    switch (item.guid.charAt(0)) {
+                        case '1':
+                            obj = Object.assign(new CImage(), item);
+                            break;
+                        case '2':
+                            obj = Object.assign(new CVideo(), item);
+                            break;
+                        case '4':
+                            obj = Object.assign(new CGroup(), item);
+                            break;
+                        case '6':
+                            obj = Object.assign(new CItem(), item);
+                            break;
+                    }
+                    if (!obj) {
+                        console.error(`Item guid was invalid: ${JSON.stringify(item)}`);
+                        continue;
+                    }
+
+                    obj.author = Object.assign(new User(), obj.author);
+
+                    resolved.push(obj);
+                }
+
+                return resolved;
+            });
     }
     copyItems(guids: string[], copyfrom: number = null, copyto: number = null) {
         let url = '/frog/gallery/' + (copyto || this.id);
